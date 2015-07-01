@@ -23,9 +23,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-/**
- * A placeholder fragment containing a simple view.
- */
 public class SignupFragment extends Fragment implements Validator.ValidationListener {
 
     @NotEmpty
