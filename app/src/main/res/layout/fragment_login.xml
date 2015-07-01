@@ -1,22 +1,38 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:gravity="center_vertical"
-    android:orientation="vertical"
-    android:padding="@dimen/activity_horizontal_margin">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/imageView"
+        android:src="@mipmap/test1"
+        android:scaleType="centerCrop" />
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/email_text_input_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical">
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        android:layout_weight="0"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="175dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        app:hintTextAppearance="@style/TextHintLogin">
 
         <EditText
             android:id="@+id/email_edit_text"
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
             android:hint="@string/email"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFFFFF" />
     </android.support.design.widget.TextInputLayout>
 
 
@@ -24,33 +40,47 @@
         android:id="@+id/password_text_input_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical">
+        android:textColorHint="#FFFFFF"
+        android:layout_weight="0"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/email_text_input_layout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        app:hintTextAppearance="@style/TextHintLogin">
 
         <EditText
             android:id="@+id/password_edit_text"
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
             android:hint="@string/password"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFFFFF" />
     </android.support.design.widget.TextInputLayout>
 
     <Button
         android:id="@+id/login_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Login"
         android:layout_gravity="right"
-        android:text="Login" />
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="50dp" />
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/password_text_input_layout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginRight="10dp" />
 
     <Button
         android:id="@+id/signup_button"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Not registered? Sign up here!"
+        android:text="New User? Sign up here!"
         android:textAllCaps="false"
-        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
-</LinearLayout>
+        android:textAppearance="@style/TextAppearance.AppCompat.Small"
+        android:textColor="#FFFFFF"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/login_button"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>
