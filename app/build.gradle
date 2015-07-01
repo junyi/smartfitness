@@ -25,5 +25,6 @@ dependencies {
 
     compile 'com.parse.bolts:bolts-android:1.+'
     compile 'com.android.support:design:22.2.0'
-    compile 'com.jakewharton:butterknife:7.0.0'
+    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.mobsandgeeks:android-saripaar:2.0-SNAPSHOT'
 }
