@@ -1,9 +1,11 @@
 package astar.smartfitness;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.FrameLayout;
 
 public class LaunchActivity extends AppCompatActivity {
 
@@ -15,7 +17,13 @@ public class LaunchActivity extends AppCompatActivity {
     }
 
     private void showLoginFragment() {
-        getSupportFragmentManager().beginTransaction().add(R.id.container, new LoginFragment()).commit();
+        FrameLayout container = (FrameLayout) findViewById(R.id.container);
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        if (container.getChildCount() == 0)
+            ft.add(R.id.container, new LoginFragment());
+        else
+            ft.replace(R.id.container, new LoginFragment());
+        ft.commit();
     }
 
 
@@ -26,6 +34,11 @@ public class LaunchActivity extends AppCompatActivity {
     public void gotoSignup(String role) {
         SignupFragment f = SignupFragment.newInstance(role);
         replaceFragment(f);
+    }
+
+    public void fromSignupSuccess() {
+        showLoginFragment();
+        Snackbar.make(getWindow().getDecorView().findViewById(android.R.id.content), "Sign up success!", Snackbar.LENGTH_SHORT).show();
     }
 
     private void replaceFragment(Fragment f) {

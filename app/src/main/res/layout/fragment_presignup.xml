@@ -16,7 +16,7 @@
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:tag="patient"
+        android:tag="Patient"
         android:text="@string/presignup_patient_desc"
         android:textAllCaps="false"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />
@@ -26,7 +26,7 @@
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:tag="caregiver"
+        android:tag="Caregiver"
         android:text="@string/presignup_caregiver_desc"
         android:textAllCaps="false"
         android:textAppearance="@style/TextAppearance.AppCompat.Large" />

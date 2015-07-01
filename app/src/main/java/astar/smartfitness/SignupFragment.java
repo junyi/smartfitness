@@ -1,9 +1,9 @@
 package astar.smartfitness;
 
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,17 +16,26 @@ import com.mobsandgeeks.saripaar.annotation.Email;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.mobsandgeeks.saripaar.annotation.Password;
 import com.mobsandgeeks.saripaar.annotation.Size;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
+import com.parse.ParseRole;
+import com.parse.SaveCallback;
 
 import java.util.List;
 
+import astar.smartfitness.model.User;
+import bolts.Capture;
+import bolts.Continuation;
+import bolts.Task;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.OnLongClick;
 
 public class SignupFragment extends Fragment implements Validator.ValidationListener {
     public final static String ARG_ROLE = "role";
-    public final static String ROLE_PATIENT = "patient";
-    public final static String ROLE_CAREGIVER = "caregiver";
+    public final static String ROLE_PATIENT = "Patient";
+    public final static String ROLE_CAREGIVER = "Caregiver";
 
     private String role;
 
@@ -126,8 +135,21 @@ public class SignupFragment extends Fragment implements Validator.ValidationList
             Utils.showKeyboard(getActivity());
     }
 
+    @OnLongClick(R.id.signup_button)
+    public boolean populateWithMockData() {
+        firstNameEditText.setText("Jun Yi");
+        lastNameEditText.setText("Hee");
+        phoneEditText.setText("83876831");
+        postalCodeEditText.setText("123456");
+        emailEditText.setText("junyi.hjy@gmail.com");
+        passwordEditText.setText("heejunyi");
+        confirmPasswordEditText.setText("heejunyi");
+
+        return true;
+    }
+
     @OnClick(R.id.signup_button)
-    public void signup() {
+    public void clientValidate() {
         firstNameTextInputLayout.setErrorEnabled(false);
         lastNameTextInputLayout.setErrorEnabled(false);
         phoneTextInputLayout.setErrorEnabled(false);
@@ -141,7 +163,8 @@ public class SignupFragment extends Fragment implements Validator.ValidationList
 
     @Override
     public void onValidationSucceeded() {
-        Snackbar.make(getView(), "Yay! No error!", Snackbar.LENGTH_SHORT).show();
+        Log.d("Smartfitness", "Validation succeeded");
+        serverValidate();
     }
 
     @Override
@@ -155,5 +178,85 @@ public class SignupFragment extends Fragment implements Validator.ValidationList
             textInputLayout.setErrorEnabled(true);
             textInputLayout.setError(error.getCollatedErrorMessage(getActivity()));
         }
+    }
+
+    private void serverValidate() {
+        String email = emailEditText.getText().toString();
+        String password = passwordEditText.getText().toString();
+        String firstName = firstNameEditText.getText().toString();
+        String lastName = lastNameEditText.getText().toString();
+        String phone = phoneEditText.getText().toString();
+        String postalCode = postalCodeEditText.getText().toString();
+
+        final User user = new User();
+        user.setUsername(email);
+        user.setEmail(email);
+        user.setPassword(password);
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setPhone(phone);
+        user.setPostalCode(postalCode);
+
+        final ParseQuery<ParseRole> roleQuery = ParseRole.getQuery().whereEqualTo("name", role);
+
+        final Capture<ParseRole> capture = new Capture<>();
+
+        user.saveInBackground(new SaveCallback() {
+            @Override
+            public void done(ParseException e) {
+                if(e!=null)
+                    e.printStackTrace();
+            }
+        });
+//
+//        roleQuery.getFirstInBackground().continueWith(new Continuation<ParseRole, Object>() {
+//            @Override
+//            public Object then(Task<ParseRole> task) throws Exception {
+//                if (task.isFaulted())
+//                    throw task.getError();
+//                if (task.isCancelled()) {
+//                    // the save was cancelled.
+//                } else if (task.isFaulted()) {
+//                    // the save failed.
+//                    Exception error = task.getError();
+//                    Log.e("Signup error", error.getMessage());
+//                }
+//                Log.d("Smartfitness", "inside role");
+//
+//                Log.d("Smartfitness", task.getResult().getName());
+//
+//                capture.set(task.getResult());
+//                return user.saveInBackground();
+//            }
+//        }).continueWith(new Continuation<Object, Object>() {
+//            @Override
+//            public Object then(Task<Object> task) throws Exception {
+//                if (task.isFaulted())
+//                    throw task.getError();
+//                Log.d("Smartfitness", user.getObjectId());
+//                ParseRole role = capture.get();
+//                role.getUsers().add(user);
+//                return role.saveInBackground();
+//            }
+//        }).continueWith(new Continuation<Object, Object>() {
+//            @Override
+//            public Object then(Task<Object> task) throws Exception {
+//                if (task.isCancelled()) {
+//                    // the save was cancelled.
+//                } else if (task.isFaulted()) {
+//                    // the save failed.
+//                    Exception error = task.getError();
+//                    Log.e("Signup error", error.getMessage());
+//                } else {
+//                    signupSuccess();
+//                }
+//                return null;
+//            }
+//        }, Task.UI_THREAD_EXECUTOR);
+
+    }
+
+    private void signupSuccess() {
+        ((LaunchActivity) getActivity()).fromSignupSuccess();
     }
 }
