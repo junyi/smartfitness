@@ -11,11 +11,11 @@ import android.widget.EditText;
 
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
+import com.mobsandgeeks.saripaar.annotation.ConfirmPassword;
 import com.mobsandgeeks.saripaar.annotation.Email;
+import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.mobsandgeeks.saripaar.annotation.Password;
-import com.parse.LogInCallback;
-import com.parse.ParseException;
-import com.parse.ParseUser;
+import com.mobsandgeeks.saripaar.annotation.Size;
 
 import java.util.List;
 
@@ -26,7 +26,35 @@ import butterknife.OnClick;
 /**
  * A placeholder fragment containing a simple view.
  */
-public class LoginFragment extends Fragment implements Validator.ValidationListener {
+public class SignupFragment extends Fragment implements Validator.ValidationListener {
+
+    @NotEmpty
+    @Bind(R.id.first_name_edit_text)
+    EditText firstNameEditText;
+
+    @Bind(R.id.first_name_text_input_layout)
+    TextInputLayout firstNameTextInputLayout;
+
+    @NotEmpty
+    @Bind(R.id.last_name_edit_text)
+    EditText lastNameEditText;
+
+    @Bind(R.id.last_name_text_input_layout)
+    TextInputLayout lastNameTextInputLayout;
+
+
+    @Bind(R.id.phone_edit_text)
+    EditText phoneEditText;
+
+    @Bind(R.id.phone_text_input_layout)
+    TextInputLayout phoneTextInputLayout;
+
+    @Size(min = 6, max = 6, message = "Postal code must be 6 digits long.")
+    @Bind(R.id.postal_code_edit_text)
+    EditText postalCodeEditText;
+
+    @Bind(R.id.postal_code_text_input_layout)
+    TextInputLayout postalCodeInputLayout;
 
     @Email
     @Bind(R.id.email_edit_text)
@@ -42,17 +70,23 @@ public class LoginFragment extends Fragment implements Validator.ValidationListe
     @Bind(R.id.password_text_input_layout)
     TextInputLayout passwordTextInputLayout;
 
+    @ConfirmPassword
+    @Bind(R.id.confirm_password_edit_text)
+    EditText confirmPasswordEditText;
+
+    @Bind(R.id.confirm_password_text_input_layout)
+    TextInputLayout confirmPasswordTextInputLayout;
+
     private Validator validator;
 
-    public LoginFragment() {
+    public SignupFragment() {
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_login, container, false);
+        View view = inflater.inflate(R.layout.fragment_signup, container, false);
         ButterKnife.bind(this, view);
-
         return view;
     }
 
@@ -63,36 +97,23 @@ public class LoginFragment extends Fragment implements Validator.ValidationListe
         validator = new Validator(this);
         validator.setValidationListener(this);
 
+        firstNameEditText.setTag(firstNameTextInputLayout);
+        lastNameEditText.setTag(lastNameTextInputLayout);
+        phoneEditText.setTag(phoneTextInputLayout);
+        postalCodeEditText.setTag(postalCodeInputLayout);
         emailEditText.setTag(emailTextInputLayout);
         passwordEditText.setTag(passwordTextInputLayout);
-
-
+        confirmPasswordEditText.setTag(confirmPasswordTextInputLayout);
     }
 
-    @OnClick(R.id.login_button)
-    public void login() {
+    @OnClick
+    public void signup() {
         Utils.hideKeyboard(getActivity());
-        emailTextInputLayout.setErrorEnabled(false);
-        passwordTextInputLayout.setErrorEnabled(false);
         validator.validate();
-        validator.validate(true);
-    }
-
-    @OnClick(R.id.signup_button)
-    public void gotoPreSignup() {
-        //TODO Transition to pre-signup view
     }
 
     @Override
     public void onValidationSucceeded() {
-        String email = emailEditText.getText().toString();
-        String password = passwordEditText.getText().toString();
-        ParseUser.logInInBackground(email, password, new LogInCallback() {
-            @Override
-            public void done(ParseUser parseUser, ParseException e) {
-                //TODO Transition to view after login
-            }
-        });
         Snackbar.make(getView(), "Yay! No error!", Snackbar.LENGTH_SHORT).show();
     }
 
@@ -107,6 +128,5 @@ public class LoginFragment extends Fragment implements Validator.ValidationListe
             textInputLayout.setErrorEnabled(true);
             textInputLayout.setError(error.getCollatedErrorMessage(getActivity()));
         }
-
     }
 }

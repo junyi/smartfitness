@@ -5,8 +5,16 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_launch">LaunchActivity</string>
 
-<!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="email">E-mail address</string>
     <string name="password">Password</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="presignup_patient_desc">I need a caregiver</string>
+    <string name="presignup_caregiver_desc">I want a care job</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="phone">Mobile phone</string>
+    <string name="address">Address</string>
+    <string name="postal_code">Postal code</string>
+    <string name="signup">Sign up</string>
 </resources>
