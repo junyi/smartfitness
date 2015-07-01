@@ -1,8 +1,13 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorAccent">#FFFFFF</item>
         <!-- Customize your theme here. -->
+    </style>
+
+    <style name="TextHintLogin" parent="@style/TextAppearance.AppCompat">
+        <item name="android:textColor">#FFFFFF</item>
     </style>
 
 </resources>

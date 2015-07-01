@@ -128,6 +128,13 @@ public class SignupFragment extends Fragment implements Validator.ValidationList
 
     @OnClick(R.id.signup_button)
     public void signup() {
+        firstNameTextInputLayout.setErrorEnabled(false);
+        lastNameTextInputLayout.setErrorEnabled(false);
+        phoneTextInputLayout.setErrorEnabled(false);
+        postalCodeInputLayout.setErrorEnabled(false);
+        emailTextInputLayout.setErrorEnabled(false);
+        passwordTextInputLayout.setErrorEnabled(false);
+        confirmPasswordTextInputLayout.setErrorEnabled(false);
         Utils.hideKeyboard(getActivity());
         validator.validate();
     }
