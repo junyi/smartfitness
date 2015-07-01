@@ -1,9 +1,10 @@
 package astar.smartfitness;
 
-import android.app.Fragment;
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +49,15 @@ public class LoginFragment extends Fragment implements Validator.ValidationListe
     }
 
     @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        if (!(activity instanceof LaunchActivity)) {
+            throw new ClassCastException("Activity must be LaunchActivity");
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
@@ -66,7 +76,8 @@ public class LoginFragment extends Fragment implements Validator.ValidationListe
         emailEditText.setTag(emailTextInputLayout);
         passwordEditText.setTag(passwordTextInputLayout);
 
-
+        if (emailEditText.requestFocus())
+            Utils.showKeyboard(getActivity());
     }
 
     @OnClick(R.id.login_button)
@@ -80,7 +91,7 @@ public class LoginFragment extends Fragment implements Validator.ValidationListe
 
     @OnClick(R.id.signup_button)
     public void gotoPreSignup() {
-        //TODO Transition to pre-signup view
+        ((LaunchActivity) getActivity()).gotoPresignup();
     }
 
     @Override
@@ -107,6 +118,5 @@ public class LoginFragment extends Fragment implements Validator.ValidationListe
             textInputLayout.setErrorEnabled(true);
             textInputLayout.setError(error.getCollatedErrorMessage(getActivity()));
         }
-
     }
 }

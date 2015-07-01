@@ -1,9 +1,9 @@
 package astar.smartfitness;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +24,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class SignupFragment extends Fragment implements Validator.ValidationListener {
+    public final static String ARG_ROLE = "role";
+    public final static String ROLE_PATIENT = "patient";
+    public final static String ROLE_CAREGIVER = "caregiver";
+
+    private String role;
 
     @NotEmpty
     @Bind(R.id.first_name_edit_text)
@@ -79,9 +84,24 @@ public class SignupFragment extends Fragment implements Validator.ValidationList
     public SignupFragment() {
     }
 
+    public static SignupFragment newInstance(String role) {
+
+        Bundle args = new Bundle();
+        args.putString(ARG_ROLE, role);
+
+        SignupFragment fragment = new SignupFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        Bundle args = getArguments();
+        if (args != null) {
+            role = args.getString(ARG_ROLE, ROLE_PATIENT);
+        }
+
         View view = inflater.inflate(R.layout.fragment_signup, container, false);
         ButterKnife.bind(this, view);
         return view;
@@ -101,9 +121,12 @@ public class SignupFragment extends Fragment implements Validator.ValidationList
         emailEditText.setTag(emailTextInputLayout);
         passwordEditText.setTag(passwordTextInputLayout);
         confirmPasswordEditText.setTag(confirmPasswordTextInputLayout);
+
+        if (firstNameEditText.requestFocus())
+            Utils.showKeyboard(getActivity());
     }
 
-    @OnClick
+    @OnClick(R.id.signup_button)
     public void signup() {
         Utils.hideKeyboard(getActivity());
         validator.validate();

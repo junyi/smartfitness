@@ -1,5 +1,6 @@
 package astar.smartfitness;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,9 +10,6 @@ import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-/**
- * A placeholder fragment containing a simple view.
- */
 public class PreSignupFragment extends Fragment {
 
     public PreSignupFragment() {
@@ -25,11 +23,20 @@ public class PreSignupFragment extends Fragment {
         return view;
     }
 
-    @OnClick(R.id.caregiver_button)
-    public void gotoSignup(View view) {
-        //TODO Transition to signup
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
 
+        if (!(activity instanceof LaunchActivity)) {
+            throw new ClassCastException("Activity must be LaunchActivity");
+        }
+    }
+
+    @OnClick({R.id.caregiver_button, R.id.patient_button})
+    public void gotoSignup(View view) {
         // role is either <code>patient</code> or <code>caregiver</code>
         String role = (String) view.getTag();
+
+        ((LaunchActivity) getActivity()).gotoSignup(role);
     }
 }
