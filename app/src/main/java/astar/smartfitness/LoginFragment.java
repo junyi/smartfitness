@@ -76,8 +76,6 @@ public class LoginFragment extends Fragment implements Validator.ValidationListe
         emailEditText.setTag(emailTextInputLayout);
         passwordEditText.setTag(passwordTextInputLayout);
 
-        if (emailEditText.requestFocus())
-            Utils.showKeyboard(getActivity());
     }
 
     @OnClick(R.id.login_button)

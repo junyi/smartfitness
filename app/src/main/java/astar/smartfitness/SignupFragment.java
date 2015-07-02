@@ -20,6 +20,7 @@ import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseRole;
 import com.parse.SaveCallback;
+import com.parse.SignUpCallback;
 
 import java.util.List;
 
@@ -31,6 +32,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnLongClick;
+import timber.log.Timber;
 
 public class SignupFragment extends Fragment implements Validator.ValidationListener {
     public final static String ARG_ROLE = "role";
@@ -201,62 +203,76 @@ public class SignupFragment extends Fragment implements Validator.ValidationList
 
         final Capture<ParseRole> capture = new Capture<>();
 
-        user.saveInBackground(new SaveCallback() {
+        roleQuery.getFirstInBackground().continueWithTask(new Continuation<ParseRole, Task<Void>>() {
             @Override
-            public void done(ParseException e) {
-                if(e!=null)
-                    e.printStackTrace();
+            public Task<Void> then(Task<ParseRole> task) throws Exception {
+                if (task.isFaulted()) {
+                    handleError(task.getError());
+                } else {
+                    Timber.d(task.getResult().getName());
+                    capture.set(task.getResult());
+                    return user.signUpInBackground();
+                }
+
+                return Task.cancelled();
             }
-        });
-//
-//        roleQuery.getFirstInBackground().continueWith(new Continuation<ParseRole, Object>() {
-//            @Override
-//            public Object then(Task<ParseRole> task) throws Exception {
-//                if (task.isFaulted())
-//                    throw task.getError();
-//                if (task.isCancelled()) {
-//                    // the save was cancelled.
-//                } else if (task.isFaulted()) {
-//                    // the save failed.
-//                    Exception error = task.getError();
-//                    Log.e("Signup error", error.getMessage());
-//                }
-//                Log.d("Smartfitness", "inside role");
-//
-//                Log.d("Smartfitness", task.getResult().getName());
-//
-//                capture.set(task.getResult());
-//                return user.saveInBackground();
-//            }
-//        }).continueWith(new Continuation<Object, Object>() {
-//            @Override
-//            public Object then(Task<Object> task) throws Exception {
-//                if (task.isFaulted())
-//                    throw task.getError();
-//                Log.d("Smartfitness", user.getObjectId());
-//                ParseRole role = capture.get();
-//                role.getUsers().add(user);
-//                return role.saveInBackground();
-//            }
-//        }).continueWith(new Continuation<Object, Object>() {
-//            @Override
-//            public Object then(Task<Object> task) throws Exception {
-//                if (task.isCancelled()) {
-//                    // the save was cancelled.
-//                } else if (task.isFaulted()) {
-//                    // the save failed.
-//                    Exception error = task.getError();
-//                    Log.e("Signup error", error.getMessage());
-//                } else {
-//                    signupSuccess();
-//                }
-//                return null;
-//            }
-//        }, Task.UI_THREAD_EXECUTOR);
+        }).continueWithTask(new Continuation<Void, Task<Void>>() {
+            @Override
+            public Task<Void> then(Task<Void> task) throws Exception {
+                if (task.isCancelled()) {
+                    Timber.d("Task is cancelled");
+                } else if (task.isFaulted()) {
+                    Timber.e("Error!");
+                    handleError(task.getError());
+                } else {
+                    ParseRole role = capture.get();
+                    role.getUsers().add(user);
+                    return role.saveInBackground();
+                }
+                return Task.cancelled();
+            }
+        }).onSuccess(new Continuation<Void, Void>() {
+            @Override
+            public Void then(Task<Void> task) throws Exception {
+                if (task.isCancelled()) {
+                    Timber.d("Task is cancelled");
+                } else if (task.isFaulted()) {
+                    handleError(task.getError());
+                } else {
+                    signupSuccess();
+                }
+                return null;
+            }
+        }, Task.UI_THREAD_EXECUTOR);
 
     }
 
     private void signupSuccess() {
         ((LaunchActivity) getActivity()).fromSignupSuccess();
+    }
+
+    private void handleError(Exception e) {
+        if (e instanceof ParseException) {
+            ParseException error = (ParseException) e;
+            int errorCode = error.getCode();
+
+            Timber.e(e.getMessage());
+
+            switch (errorCode) {
+                case ParseException.USERNAME_TAKEN:
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            emailTextInputLayout.setErrorEnabled(true);
+                            emailTextInputLayout.setError("This e-mail has already been registered");
+                        }
+                    });
+
+                default:
+
+            }
+        } else {
+            e.printStackTrace();
+        }
     }
 }
