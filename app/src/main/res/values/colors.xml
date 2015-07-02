@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="semi_white">#55555555</color>
+    <color name="login_blue">#5177b0</color>
 </resources>
