@@ -23,6 +23,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import timber.log.Timber;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -99,10 +100,48 @@ public class LoginFragment extends Fragment implements Validator.ValidationListe
         ParseUser.logInInBackground(email, password, new LogInCallback() {
             @Override
             public void done(ParseUser parseUser, ParseException e) {
-                //TODO Transition to view after login
+                if (e == null) {
+                    onLoginSucceeded();
+                } else {
+                    handleError(e);
+                }
             }
         });
-        Snackbar.make(getView(), "Yay! No error!", Snackbar.LENGTH_SHORT).show();
+    }
+
+    private void onLoginSucceeded() {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Snackbar.make(getView(), "Yay! Login success!", Snackbar.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void handleError(Exception e) {
+        if (e instanceof ParseException) {
+            ParseException error = (ParseException) e;
+            int errorCode = error.getCode();
+
+            Timber.e(e.getMessage());
+
+            switch (errorCode) {
+                case ParseException.EMAIL_NOT_FOUND:
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            emailTextInputLayout.setErrorEnabled(true);
+                            emailTextInputLayout.setError("E-mail not found");
+                        }
+                    });
+                    break;
+
+                default:
+
+            }
+        } else {
+            e.printStackTrace();
+        }
     }
 
     @Override

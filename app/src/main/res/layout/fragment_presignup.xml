@@ -17,11 +17,10 @@
 
     <Button
         android:id="@+id/patient_button"
-        style="?android:attr/borderlessButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:tag="Patient"
-        android:text="Patient"
+        android:text="@string/patient"
         android:textAllCaps="false"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         fontPath="fonts/Roboto-Thin.ttf"
@@ -34,15 +33,14 @@
         android:paddingBottom="10dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:background="#55AAAAAA" />
+        android:background="@drawable/semi_white_button_bg" />
 
     <Button
         android:id="@+id/caregiver_button"
-        style="?android:attr/borderlessButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:tag="Caregiver"
-        android:text="Caregiver"
+        android:text="@string/caregiver"
         android:textAllCaps="false"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         fontPath="fonts/Roboto-Thin.ttf"
@@ -55,7 +53,7 @@
         android:paddingTop="10dp"
         android:layout_marginRight="20dp"
         android:layout_marginLeft="20dp"
-        android:background="#55AAAAAA" />
+        android:background="@drawable/semi_white_button_bg" />
 
     <LinearLayout
         android:orientation="vertical"

@@ -17,4 +17,8 @@
     <string name="address">Address</string>
     <string name="postal_code">Postal code</string>
     <string name="signup">Sign up</string>
+    <string name="caregiver">Caregiver</string>
+    <string name="patient">Patient</string>
+    <string name="login">Login</string>
+    <string name="nric_fin">NRIC/FIN</string>
 </resources>

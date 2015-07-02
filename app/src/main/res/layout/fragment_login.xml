@@ -12,59 +12,59 @@
         android:src="@mipmap/sfs_bg" />
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginTop="47dp"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="47dp"
+        android:gravity="center"
+        android:orientation="vertical">
 
         <TextView
+            android:id="@+id/textView"
+            fontPath="fonts/Chunkfive.otf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="SMART"
-            android:id="@+id/textView"
             android:layout_above="@+id/password_text_input_layout"
             android:layout_centerHorizontal="true"
-            android:textSize="50sp"
-            fontPath="fonts/Chunkfive.otf"
             android:layout_marginBottom="-20dp"
-            android:textColor="#DDFFFFFF" />
+            android:text="SMART"
+            android:textColor="#DDFFFFFF"
+            android:textSize="50sp" />
 
         <TextView
+            android:id="@+id/textView2"
+            fontPath="fonts/Chunkfive.otf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="FITNESS"
-            android:id="@+id/textView2"
             android:layout_alignTop="@+id/textView"
             android:layout_centerHorizontal="true"
-            android:textSize="50sp"
-            fontPath="fonts/Chunkfive.otf"
             android:layout_marginBottom="-10dp"
-            android:textColor="#DDFFFFFF" />
+            android:text="FITNESS"
+            android:textColor="#DDFFFFFF"
+            android:textSize="50sp" />
 
         <TextView
+            android:id="@+id/textView3"
+            fontPath="fonts/Roboto-Light.ttf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Healthcare at your fingertips"
-            android:id="@+id/textView3"
-            fontPath="fonts/Roboto-Light.ttf"/>
+            android:text="Healthcare at your fingertips" />
     </LinearLayout>
 
     <astar.smartfitness.widget.SmartTextInputLayout
         android:id="@+id/email_text_input_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:layout_weight="0"
         android:textColor="#FFFFFF"
         android:textColorHint="#FFFFFF"
-        app:hintTextAppearance="@style/TextHintLogin"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginRight="15dp"
-        android:layout_marginLeft="15dp">
+        app:hintTextAppearance="@style/TextHintLogin">
 
         <EditText
             android:id="@+id/email_edit_text"
@@ -79,55 +79,55 @@
 
     <astar.smartfitness.widget.SmartTextInputLayout
         android:id="@+id/password_text_input_layout"
+        fontPath="fonts/Roboto-Regular.ttf"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:textColorHint="#FFFFFF"
-        app:hintTextAppearance="@style/TextHintLogin"
         android:layout_below="@+id/email_text_input_layout"
         android:layout_centerHorizontal="true"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        fontPath="fonts/Roboto-Regular.ttf">
+        android:layout_weight="0"
+        android:textColorHint="#FFFFFF"
+        app:hintTextAppearance="@style/TextHintLogin">
 
         <EditText
             android:id="@+id/password_edit_text"
+            fontPath="fonts/Roboto-Regular.ttf"
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
             android:hint="@string/password"
             android:inputType="textPassword"
             android:textColor="#FFFFFF"
-            android:textColorHint="#FFFFFF"
-            fontPath="fonts/Roboto-Regular.ttf"/>
+            android:textColorHint="#FFFFFF" />
     </astar.smartfitness.widget.SmartTextInputLayout>
 
     <Button
         android:id="@+id/login_button"
+        fontPath="fonts/Roboto-Light.ttf"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:text="Login"
-        android:background="#5177b0"
-        fontPath="fonts/Roboto-Light.ttf"
-        android:layout_marginTop="15dp"
         android:layout_below="@+id/password_text_input_layout"
         android:layout_centerHorizontal="true"
+        android:layout_gravity="right"
+        android:layout_marginLeft="19dp"
         android:layout_marginRight="19dp"
-        android:layout_marginLeft="19dp" />
+        android:layout_marginTop="15dp"
+        android:background="@drawable/login_blue_button_bg"
+        android:text="@string/login" />
 
     <Button
         android:id="@+id/signup_button"
         style="?android:attr/borderlessButtonStyle"
+        fontPath="fonts/Roboto-Light.ttf"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="22dp"
         android:text="Not Registered? Sign up here"
         android:textAllCaps="false"
         android:textAppearance="@style/TextAppearance.AppCompat.Small"
-        android:textColor="#FFFFFF"
-        android:layout_marginBottom="22dp"
-        fontPath="fonts/Roboto-Light.ttf"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:textColor="#FFFFFF" />
 
 </RelativeLayout>
