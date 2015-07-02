@@ -17,6 +17,7 @@ import com.mobsandgeeks.saripaar.annotation.Password;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.List;
 
@@ -165,7 +166,16 @@ public class LoginFragment extends Fragment implements Validator.ValidationListe
                                         @Override
                                         public void onClick(View v) {
                                             user.setEmail(user.getEmail());
-                                            user.saveEventually();
+                                            user.saveInBackground(new SaveCallback() {
+                                                @Override
+                                                public void done(ParseException e) {
+                                                    if (e == null) {
+                                                        Timber.d("E-mail sent to %s", user.getEmail());
+                                                    } else {
+                                                        Timber.e(e.getCode() + " " + e.getMessage());
+                                                    }
+                                                }
+                                            });
                                         }
                                     })
                                     .show();
