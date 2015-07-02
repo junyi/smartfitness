@@ -185,6 +185,8 @@
         android:id="@+id/progress"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
         android:background="@color/semi_white"
         android:clickable="true"
         android:visibility="gone">
