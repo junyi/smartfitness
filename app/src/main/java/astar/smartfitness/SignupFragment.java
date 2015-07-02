@@ -6,7 +6,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
@@ -96,6 +98,12 @@ public class SignupFragment extends Fragment implements Validator.ValidationList
     @Bind(R.id.confirm_password_text_input_layout)
     TextInputLayout confirmPasswordTextInputLayout;
 
+    @Bind(R.id.progress)
+    FrameLayout progress;
+
+    @Bind(R.id.signup_button)
+    Button signUpButton;
+
     private Validator validator;
 
     public SignupFragment() {
@@ -159,6 +167,8 @@ public class SignupFragment extends Fragment implements Validator.ValidationList
 
     @OnClick(R.id.signup_button)
     public void clientValidate() {
+        signUpButton.setEnabled(false);
+
         firstNameTextInputLayout.setErrorEnabled(false);
         lastNameTextInputLayout.setErrorEnabled(false);
         nricTextInputLayout.setErrorEnabled(false);
@@ -174,11 +184,13 @@ public class SignupFragment extends Fragment implements Validator.ValidationList
     @Override
     public void onValidationSucceeded() {
         Timber.d("Validation succeeded");
+        showProgress();
         serverValidate();
     }
 
     @Override
     public void onValidationFailed(List<ValidationError> errors) {
+        signUpButton.setEnabled(true);
 
         int l = errors.size();
 
@@ -230,7 +242,10 @@ public class SignupFragment extends Fragment implements Validator.ValidationList
         }).continueWithTask(new Continuation<List<ParseUser>, Task<Void>>() {
             @Override
             public Task<Void> then(Task<List<ParseUser>> task) throws Exception {
-                if (task.isFaulted()) {
+                if (task.isCancelled()) {
+                    Timber.d("Task is cancelled");
+                    handleError(new Exception("Task is cancelled"));
+                } else if (task.isFaulted()) {
                     handleError(task.getError());
                 } else if (task.getResult().size() > 0) {
                     ParseException e = new ParseException(ParseException.DUPLICATE_VALUE, "NRIC already existed");
@@ -246,6 +261,7 @@ public class SignupFragment extends Fragment implements Validator.ValidationList
             public Task<Void> then(Task<Void> task) throws Exception {
                 if (task.isCancelled()) {
                     Timber.d("Task is cancelled");
+                    handleError(new Exception("Task is cancelled"));
                 } else if (task.isFaulted()) {
                     Timber.e("Error!");
                     handleError(task.getError());
@@ -261,6 +277,7 @@ public class SignupFragment extends Fragment implements Validator.ValidationList
             public Void then(Task<Void> task) throws Exception {
                 if (task.isCancelled()) {
                     Timber.d("Task is cancelled");
+                    handleError(new Exception("Task is cancelled"));
                 } else if (task.isFaulted()) {
                     handleError(task.getError());
                 } else {
@@ -273,10 +290,19 @@ public class SignupFragment extends Fragment implements Validator.ValidationList
     }
 
     private void signupSuccess() {
+        hideProgress();
         ((LaunchActivity) getActivity()).fromSignupSuccess();
     }
 
     private void handleError(final Exception e) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                hideProgress();
+                signUpButton.setEnabled(true);
+            }
+        });
+
         if (e instanceof ParseException) {
             final ParseException error = (ParseException) e;
             int errorCode = error.getCode();
@@ -308,5 +334,13 @@ public class SignupFragment extends Fragment implements Validator.ValidationList
         } else {
             e.printStackTrace();
         }
+    }
+
+    private void showProgress() {
+        progress.setVisibility(View.VISIBLE);
+    }
+
+    private void hideProgress() {
+        progress.setVisibility(View.GONE);
     }
 }

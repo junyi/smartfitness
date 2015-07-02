@@ -181,4 +181,19 @@
         android:layout_centerHorizontal="true"
         android:text="Tell us more about yourself" />
 
+    <FrameLayout
+        android:id="@+id/progress"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:background="@color/semi_white"
+        android:clickable="true"
+        android:visibility="gone">
+
+        <ProgressBar
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+    </FrameLayout>
+
 </RelativeLayout>
