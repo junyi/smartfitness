@@ -77,6 +77,7 @@ public class LoginFragment extends Fragment implements Validator.ValidationListe
         emailEditText.setTag(emailTextInputLayout);
         passwordEditText.setTag(passwordTextInputLayout);
 
+
     }
 
     @OnClick(R.id.login_button)
@@ -85,7 +86,6 @@ public class LoginFragment extends Fragment implements Validator.ValidationListe
         emailTextInputLayout.setErrorEnabled(false);
         passwordTextInputLayout.setErrorEnabled(false);
         validator.validate();
-        validator.validate(true);
     }
 
     @OnClick(R.id.signup_button)
