@@ -1,122 +1,162 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="@dimen/activity_horizontal_margin">
+        android:id="@+id/imageView3"
+        android:src="@mipmap/sfs_bg"
+        android:scaleType="centerCrop" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Fill up your details" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sign Up"
+        android:id="@+id/textView9"
+        android:textSize="40sp"
+        android:layout_gravity="center_horizontal"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="29dp"
+        fontPath="fonts/Roboto-BoldCondensedItalic.ttf"/>
 
-        <astar.smartfitness.widget.SmartTextInputLayout
-            android:id="@+id/first_name_text_input_layout"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:id="@+id/scrollView"
+        android:layout_below="@+id/textView10"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="28dp">
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_below="@+id/textView9"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:padding="@dimen/activity_horizontal_margin">
 
-            <EditText
-                android:id="@+id/first_name_edit_text"
-                android:layout_width="fill_parent"
-                android:layout_height="match_parent"
-                android:hint="@string/first_name" />
-        </astar.smartfitness.widget.SmartTextInputLayout>
+            <astar.smartfitness.widget.SmartTextInputLayout
+                android:id="@+id/first_name_text_input_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
 
-        <astar.smartfitness.widget.SmartTextInputLayout
-            android:id="@+id/last_name_text_input_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical">
+                <EditText
+                    android:id="@+id/first_name_edit_text"
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:hint="@string/first_name" />
+            </astar.smartfitness.widget.SmartTextInputLayout>
 
-            <EditText
-                android:id="@+id/last_name_edit_text"
-                android:layout_width="fill_parent"
-                android:layout_height="match_parent"
-                android:hint="@string/last_name" />
-        </astar.smartfitness.widget.SmartTextInputLayout>
+            <astar.smartfitness.widget.SmartTextInputLayout
+                android:id="@+id/last_name_text_input_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
 
-        <astar.smartfitness.widget.SmartTextInputLayout
-            android:id="@+id/phone_text_input_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical">
+                <EditText
+                    android:id="@+id/last_name_edit_text"
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:hint="@string/last_name" />
+            </astar.smartfitness.widget.SmartTextInputLayout>
 
-            <EditText
-                android:id="@+id/phone_edit_text"
-                android:layout_width="fill_parent"
-                android:layout_height="match_parent"
-                android:hint="@string/phone"
-                android:inputType="phone" />
-        </astar.smartfitness.widget.SmartTextInputLayout>
+            <astar.smartfitness.widget.SmartTextInputLayout
+                android:id="@+id/phone_text_input_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
 
-        <astar.smartfitness.widget.SmartTextInputLayout
-            android:id="@+id/postal_code_text_input_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical">
+                <EditText
+                    android:id="@+id/phone_edit_text"
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:hint="@string/phone"
+                    android:inputType="phone" />
+            </astar.smartfitness.widget.SmartTextInputLayout>
 
-            <EditText
-                android:id="@+id/postal_code_edit_text"
-                android:layout_width="fill_parent"
-                android:layout_height="match_parent"
-                android:hint="@string/postal_code"
-                android:inputType="number"
-                android:maxLength="6" />
-        </astar.smartfitness.widget.SmartTextInputLayout>
+            <astar.smartfitness.widget.SmartTextInputLayout
+                android:id="@+id/postal_code_text_input_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
 
-        <astar.smartfitness.widget.SmartTextInputLayout
-            android:id="@+id/email_text_input_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical">
+                <EditText
+                    android:id="@+id/postal_code_edit_text"
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:hint="@string/postal_code"
+                    android:inputType="number"
+                    android:maxLength="6" />
+            </astar.smartfitness.widget.SmartTextInputLayout>
 
-            <EditText
-                android:id="@+id/email_edit_text"
-                android:layout_width="fill_parent"
-                android:layout_height="match_parent"
-                android:hint="@string/email"
-                android:inputType="textEmailAddress" />
-        </astar.smartfitness.widget.SmartTextInputLayout>
+            <astar.smartfitness.widget.SmartTextInputLayout
+                android:id="@+id/email_text_input_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+
+                <EditText
+                    android:id="@+id/email_edit_text"
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:hint="@string/email"
+                    android:inputType="textEmailAddress" />
+            </astar.smartfitness.widget.SmartTextInputLayout>
 
 
-        <astar.smartfitness.widget.SmartTextInputLayout
-            android:id="@+id/password_text_input_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical">
+            <astar.smartfitness.widget.SmartTextInputLayout
+                android:id="@+id/password_text_input_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical">
 
-            <EditText
-                android:id="@+id/password_edit_text"
-                android:layout_width="fill_parent"
-                android:layout_height="match_parent"
-                android:hint="@string/password"
-                android:inputType="textPassword" />
-        </astar.smartfitness.widget.SmartTextInputLayout>
+                <EditText
+                    android:id="@+id/password_edit_text"
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:hint="@string/password"
+                    android:inputType="textPassword" />
+            </astar.smartfitness.widget.SmartTextInputLayout>
 
-        <astar.smartfitness.widget.SmartTextInputLayout
-            android:id="@+id/confirm_password_text_input_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical">
+            <astar.smartfitness.widget.SmartTextInputLayout
+                android:id="@+id/confirm_password_text_input_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical">
 
-            <EditText
-                android:id="@+id/confirm_password_edit_text"
-                android:layout_width="fill_parent"
-                android:layout_height="match_parent"
-                android:hint="@string/confirm_password"
-                android:inputType="textPassword" />
-        </astar.smartfitness.widget.SmartTextInputLayout>
+                <EditText
+                    android:id="@+id/confirm_password_edit_text"
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent"
+                    android:hint="@string/confirm_password"
+                    android:inputType="textPassword" />
+            </astar.smartfitness.widget.SmartTextInputLayout>
 
-        <Button
-            android:id="@+id/signup_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:text="@string/signup" />
-    </LinearLayout>
-</ScrollView>
+            <Button
+                android:id="@+id/signup_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:text="@string/signup"
+                android:background="#5177b0"
+                fontPath="fonts/Roboto-Light.ttf"
+                android:layout_marginTop="10dp" />
+        </LinearLayout>
+    </ScrollView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tell us more about yourself"
+        android:id="@+id/textView10"
+        android:layout_below="@+id/textView9"
+        android:layout_centerHorizontal="true"
+        fontPath="fonts/Roboto-Thin.ttf"/>
+
+</RelativeLayout>
