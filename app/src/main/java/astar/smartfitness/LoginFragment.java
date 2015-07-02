@@ -106,12 +106,12 @@ public class LoginFragment extends Fragment implements Validator.ValidationListe
                     if (!parseUser.getBoolean("emailVerified")) {
                         ParseUser.logOut();
                         ParseException error = new ParseException(ParseException.OTHER_CAUSE, "Please verify your e-mail");
-                        handleError(error);
+                        handleError(error, parseUser);
                     } else {
                         onLoginSucceeded();
                     }
                 } else {
-                    handleError(e);
+                    handleError(e, parseUser);
                 }
             }
         });
@@ -126,12 +126,12 @@ public class LoginFragment extends Fragment implements Validator.ValidationListe
         });
     }
 
-    private void handleError(final Exception e) {
+    private void handleError(final Exception e, final ParseUser user) {
         if (e instanceof ParseException) {
             ParseException error = (ParseException) e;
             int errorCode = error.getCode();
 
-            Timber.e(e.getMessage());
+            Timber.e(errorCode + ": " + e.getMessage());
 
             switch (errorCode) {
                 case ParseException.EMAIL_NOT_FOUND:
@@ -143,12 +143,32 @@ public class LoginFragment extends Fragment implements Validator.ValidationListe
                         }
                     });
                     break;
+                case ParseException.OBJECT_NOT_FOUND:
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            emailTextInputLayout.setErrorEnabled(true);
+                            emailTextInputLayout.setError("Invalid login credentials");
+                        }
+                    });
+                    break;
                 case ParseException.OTHER_CAUSE:
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             emailTextInputLayout.setErrorEnabled(true);
                             emailTextInputLayout.setError(e.getMessage());
+
+                            //TODO: Check if e-mail resend really working
+                            Snackbar.make(getView(), "Click here to resend verification e-mail", Snackbar.LENGTH_LONG)
+                                    .setAction("Resend", new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            user.setEmail(user.getEmail());
+                                            user.saveEventually();
+                                        }
+                                    })
+                                    .show();
                         }
                     });
                     break;
