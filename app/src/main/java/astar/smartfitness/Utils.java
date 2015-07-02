@@ -22,7 +22,7 @@ public class Utils {
     }
 
     public static boolean isValidNric(String nric) {
-        if (nric.length() != 9)
+        if (nric == null || nric.length() != 9)
             return false;
 
         nric = nric.toUpperCase();

@@ -14,5 +14,4 @@ public @interface Nric {
     public int messageResId() default -1;                     // Mandatory attribute
     public String message() default "Invalid NRIC";   // Mandatory attribute
     public int sequence() default -1;                     // Mandatory attribute
-
 }

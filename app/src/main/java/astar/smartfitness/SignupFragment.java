@@ -65,6 +65,7 @@ public class SignupFragment extends Fragment implements Validator.ValidationList
     @Bind(R.id.nric_text_input_layout)
     TextInputLayout nricTextInputLayout;
 
+    @NotEmpty
     @Bind(R.id.phone_edit_text)
     EditText phoneEditText;
 
@@ -133,6 +134,7 @@ public class SignupFragment extends Fragment implements Validator.ValidationList
 
         validator = new Validator(this);
         validator.setValidationListener(this);
+        Validator.registerAnnotation(Nric.class);
 
         firstNameEditText.setTag(firstNameTextInputLayout);
         lastNameEditText.setTag(lastNameTextInputLayout);

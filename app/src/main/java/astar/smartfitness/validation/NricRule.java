@@ -14,12 +14,12 @@ public class NricRule extends AnnotationRule<Nric, String> {
      * @param nric The rule {@link Annotation} instance to which
      *             this rule is paired.
      */
-    protected NricRule(Nric nric) {
+    protected NricRule(final Nric nric) {
         super(nric);
     }
 
     @Override
-    public boolean isValid(String s) {
+    public boolean isValid(final String s) {
         return Utils.isValidNric(s);
     }
 }
