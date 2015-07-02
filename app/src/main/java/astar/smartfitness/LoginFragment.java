@@ -97,11 +97,19 @@ public class LoginFragment extends Fragment implements Validator.ValidationListe
     public void onValidationSucceeded() {
         String email = emailEditText.getText().toString();
         String password = passwordEditText.getText().toString();
+
         ParseUser.logInInBackground(email, password, new LogInCallback() {
             @Override
             public void done(ParseUser parseUser, ParseException e) {
                 if (e == null) {
-                    onLoginSucceeded();
+                    // Check if e-mail is verified
+                    if (!parseUser.getBoolean("emailVerified")) {
+                        ParseUser.logOut();
+                        ParseException error = new ParseException(ParseException.OTHER_CAUSE, "Please verify your e-mail");
+                        handleError(error);
+                    } else {
+                        onLoginSucceeded();
+                    }
                 } else {
                     handleError(e);
                 }
@@ -118,7 +126,7 @@ public class LoginFragment extends Fragment implements Validator.ValidationListe
         });
     }
 
-    private void handleError(Exception e) {
+    private void handleError(final Exception e) {
         if (e instanceof ParseException) {
             ParseException error = (ParseException) e;
             int errorCode = error.getCode();
@@ -135,7 +143,15 @@ public class LoginFragment extends Fragment implements Validator.ValidationListe
                         }
                     });
                     break;
-
+                case ParseException.OTHER_CAUSE:
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            emailTextInputLayout.setErrorEnabled(true);
+                            emailTextInputLayout.setError(e.getMessage());
+                        }
+                    });
+                    break;
                 default:
 
             }
