@@ -41,6 +41,19 @@
         </astar.smartfitness.widget.SmartTextInputLayout>
 
         <astar.smartfitness.widget.SmartTextInputLayout
+            android:id="@+id/nric_text_input_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical">
+
+            <EditText
+                android:id="@+id/nric_edit_text"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:hint="@string/nric_fin" />
+        </astar.smartfitness.widget.SmartTextInputLayout>
+
+        <astar.smartfitness.widget.SmartTextInputLayout
             android:id="@+id/phone_text_input_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

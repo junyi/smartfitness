@@ -17,14 +17,17 @@ import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.mobsandgeeks.saripaar.annotation.Password;
 import com.mobsandgeeks.saripaar.annotation.Size;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseRole;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.SignUpCallback;
 
 import java.util.List;
 
 import astar.smartfitness.model.User;
+import astar.smartfitness.validation.Nric;
 import bolts.Capture;
 import bolts.Continuation;
 import bolts.Task;
@@ -55,6 +58,12 @@ public class SignupFragment extends Fragment implements Validator.ValidationList
     @Bind(R.id.last_name_text_input_layout)
     TextInputLayout lastNameTextInputLayout;
 
+    @Nric
+    @Bind(R.id.nric_edit_text)
+    EditText nricEditText;
+
+    @Bind(R.id.nric_text_input_layout)
+    TextInputLayout nricTextInputLayout;
 
     @Bind(R.id.phone_edit_text)
     EditText phoneEditText;
@@ -127,20 +136,20 @@ public class SignupFragment extends Fragment implements Validator.ValidationList
 
         firstNameEditText.setTag(firstNameTextInputLayout);
         lastNameEditText.setTag(lastNameTextInputLayout);
+        nricEditText.setTag(nricTextInputLayout);
         phoneEditText.setTag(phoneTextInputLayout);
         postalCodeEditText.setTag(postalCodeInputLayout);
         emailEditText.setTag(emailTextInputLayout);
         passwordEditText.setTag(passwordTextInputLayout);
         confirmPasswordEditText.setTag(confirmPasswordTextInputLayout);
 
-        if (firstNameEditText.requestFocus())
-            Utils.showKeyboard(getActivity());
     }
 
     @OnLongClick(R.id.signup_button)
     public boolean populateWithMockData() {
         firstNameEditText.setText("Jun Yi");
         lastNameEditText.setText("Hee");
+        nricEditText.setText("S2963740G");
         phoneEditText.setText("83876831");
         postalCodeEditText.setText("123456");
         emailEditText.setText("junyi.hjy@gmail.com");
@@ -154,6 +163,7 @@ public class SignupFragment extends Fragment implements Validator.ValidationList
     public void clientValidate() {
         firstNameTextInputLayout.setErrorEnabled(false);
         lastNameTextInputLayout.setErrorEnabled(false);
+        nricTextInputLayout.setErrorEnabled(false);
         phoneTextInputLayout.setErrorEnabled(false);
         postalCodeInputLayout.setErrorEnabled(false);
         emailTextInputLayout.setErrorEnabled(false);
@@ -165,7 +175,7 @@ public class SignupFragment extends Fragment implements Validator.ValidationList
 
     @Override
     public void onValidationSucceeded() {
-        Log.d("Smartfitness", "Validation succeeded");
+        Timber.d("Validation succeeded");
         serverValidate();
     }
 
@@ -184,6 +194,7 @@ public class SignupFragment extends Fragment implements Validator.ValidationList
 
     private void serverValidate() {
         String email = emailEditText.getText().toString();
+        String nric = nricEditText.getText().toString();
         String password = passwordEditText.getText().toString();
         String firstName = firstNameEditText.getText().toString();
         String lastName = lastNameEditText.getText().toString();
@@ -201,16 +212,32 @@ public class SignupFragment extends Fragment implements Validator.ValidationList
 
         final ParseQuery<ParseRole> roleQuery = ParseRole.getQuery().whereEqualTo("name", role);
 
+        final ParseQuery<ParseUser> uniqueNricQuery = ParseUser.getQuery().whereEqualTo("nric", nric);
+
         final Capture<ParseRole> capture = new Capture<>();
 
-        roleQuery.getFirstInBackground().continueWithTask(new Continuation<ParseRole, Task<Void>>() {
+        roleQuery.getFirstInBackground().continueWithTask(new Continuation<ParseRole, Task<List<ParseUser>>>() {
             @Override
-            public Task<Void> then(Task<ParseRole> task) throws Exception {
+            public Task<List<ParseUser>> then(Task<ParseRole> task) throws Exception {
                 if (task.isFaulted()) {
                     handleError(task.getError());
                 } else {
                     Timber.d(task.getResult().getName());
                     capture.set(task.getResult());
+                    return uniqueNricQuery.findInBackground();
+                }
+
+                return Task.cancelled();
+            }
+        }).continueWithTask(new Continuation<List<ParseUser>, Task<Void>>() {
+            @Override
+            public Task<Void> then(Task<List<ParseUser>> task) throws Exception {
+                if (task.isFaulted()) {
+                    handleError(task.getError());
+                } else if (task.getResult().size() > 0) {
+                    ParseException e = new ParseException(ParseException.DUPLICATE_VALUE, "NRIC already existed");
+                    handleError(e);
+                } else {
                     return user.signUpInBackground();
                 }
 
@@ -251,9 +278,9 @@ public class SignupFragment extends Fragment implements Validator.ValidationList
         ((LaunchActivity) getActivity()).fromSignupSuccess();
     }
 
-    private void handleError(Exception e) {
+    private void handleError(final Exception e) {
         if (e instanceof ParseException) {
-            ParseException error = (ParseException) e;
+            final ParseException error = (ParseException) e;
             int errorCode = error.getCode();
 
             Timber.e(e.getMessage());
@@ -267,7 +294,16 @@ public class SignupFragment extends Fragment implements Validator.ValidationList
                             emailTextInputLayout.setError("This e-mail has already been registered");
                         }
                     });
-
+                    break;
+                case ParseException.DUPLICATE_VALUE:
+                    getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            nricTextInputLayout.setErrorEnabled(true);
+                            nricTextInputLayout.setError(error.getMessage());
+                        }
+                    });
+                    break;
                 default:
 
             }
