@@ -1,25 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Choose an option" />
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/imageView2"
+        android:src="@mipmap/sfs_bg"
+        android:scaleType="centerCrop"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <Button
         android:id="@+id/patient_button"
-        android:padding="4dp"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:tag="Patient"
-        android:text="@string/presignup_patient_desc"
+        android:text="Patient"
         android:textAllCaps="false"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        fontPath="fonts/Roboto-Thin.ttf"
+        android:textSize="20sp"
+        android:layout_above="@+id/caregiver_button"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="34dp"
+        android:background="#AA5177b0"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp" />
 
     <Button
         android:id="@+id/caregiver_button"
@@ -27,8 +42,86 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:tag="Caregiver"
-        android:text="@string/presignup_caregiver_desc"
+        android:text="Caregiver"
         android:textAllCaps="false"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        fontPath="fonts/Roboto-Thin.ttf"
+        android:textSize="20sp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="138dp"
+        android:background="#AA5177b0"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp" />
 
-</LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_marginTop="50dp"
+        android:id="@+id/linearLayout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="WELCOME"
+            android:id="@+id/textView4"
+            android:textSize="60dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="-5dp"
+            fontPath="fonts/Roboto-BoldCondensed.ttf"
+            android:textColor="#DDFFFFFF" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Are you registering as"
+            android:id="@+id/textView5"
+            android:layout_below="@+id/textView4"
+            android:layout_centerHorizontal="true"
+            android:textSize="20dp"
+            android:layout_marginBottom="-5dp"
+            fontPath="fonts/Roboto-Light.ttf"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Patient"
+                android:id="@+id/textView6"
+                android:textSize="20dp"
+                fontPath="fonts/Roboto-BoldCondensedItalic.ttf" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="or"
+                android:id="@+id/textView7"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:textSize="20dp"
+                fontPath="fonts/Roboto-Light.ttf"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Caregiver?"
+                android:id="@+id/textView8"
+                android:textSize="20sp"
+                fontPath="fonts/Roboto-BoldCondensedItalic.ttf"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>
