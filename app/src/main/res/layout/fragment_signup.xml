@@ -24,7 +24,8 @@
                 android:id="@+id/first_name_edit_text"
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
-                android:hint="@string/first_name" />
+                android:hint="@string/first_name"
+                android:singleLine="true" />
         </astar.smartfitness.widget.SmartTextInputLayout>
 
         <astar.smartfitness.widget.SmartTextInputLayout
@@ -37,7 +38,8 @@
                 android:id="@+id/last_name_edit_text"
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
-                android:hint="@string/last_name" />
+                android:hint="@string/last_name"
+                android:singleLine="true" />
         </astar.smartfitness.widget.SmartTextInputLayout>
 
         <astar.smartfitness.widget.SmartTextInputLayout
@@ -50,7 +52,9 @@
                 android:id="@+id/nric_edit_text"
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
-                android:hint="@string/nric_fin" />
+                android:hint="@string/nric_fin"
+                android:maxLength="9"
+                android:singleLine="true" />
         </astar.smartfitness.widget.SmartTextInputLayout>
 
         <astar.smartfitness.widget.SmartTextInputLayout
@@ -64,7 +68,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/phone"
-                android:inputType="phone" />
+                android:inputType="phone"
+                android:singleLine="true" />
         </astar.smartfitness.widget.SmartTextInputLayout>
 
         <astar.smartfitness.widget.SmartTextInputLayout
@@ -79,7 +84,8 @@
                 android:layout_height="match_parent"
                 android:hint="@string/postal_code"
                 android:inputType="number"
-                android:maxLength="6" />
+                android:maxLength="6"
+                android:singleLine="true" />
         </astar.smartfitness.widget.SmartTextInputLayout>
 
         <astar.smartfitness.widget.SmartTextInputLayout
@@ -93,7 +99,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/email"
-                android:inputType="textEmailAddress" />
+                android:inputType="textEmailAddress"
+                android:singleLine="true" />
         </astar.smartfitness.widget.SmartTextInputLayout>
 
 
@@ -108,7 +115,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/password"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:singleLine="true" />
         </astar.smartfitness.widget.SmartTextInputLayout>
 
         <astar.smartfitness.widget.SmartTextInputLayout
@@ -122,7 +130,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="match_parent"
                 android:hint="@string/confirm_password"
-                android:inputType="textPassword" />
+                android:inputType="textPassword"
+                android:singleLine="true" />
         </astar.smartfitness.widget.SmartTextInputLayout>
 
         <Button

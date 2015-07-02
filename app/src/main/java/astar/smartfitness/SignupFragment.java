@@ -72,7 +72,7 @@ public class SignupFragment extends Fragment implements Validator.ValidationList
     @Bind(R.id.phone_text_input_layout)
     TextInputLayout phoneTextInputLayout;
 
-    @Size(min = 6, max = 6, message = "Postal code must be 6 digits long.")
+    @Size(min = 6, max = 6, message = "Postal code must be 6 digits long")
     @Bind(R.id.postal_code_edit_text)
     EditText postalCodeEditText;
 
@@ -86,7 +86,7 @@ public class SignupFragment extends Fragment implements Validator.ValidationList
     @Bind(R.id.email_text_input_layout)
     TextInputLayout emailTextInputLayout;
 
-    @Password(min = 6, message = "Enter at least 6 characters.")
+    @Password(min = 6, message = "Enter at least 6 characters")
     @Bind(R.id.password_edit_text)
     EditText passwordEditText;
 
