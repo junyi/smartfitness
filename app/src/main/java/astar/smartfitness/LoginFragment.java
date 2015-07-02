@@ -126,14 +126,15 @@ public class LoginFragment extends Fragment implements Validator.ValidationListe
             Timber.e(e.getMessage());
 
             switch (errorCode) {
-                case ParseException.USERNAME_TAKEN:
+                case ParseException.EMAIL_NOT_FOUND:
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             emailTextInputLayout.setErrorEnabled(true);
-                            emailTextInputLayout.setError("This e-mail has already been registered");
+                            emailTextInputLayout.setError("E-mail not found");
                         }
                     });
+                    break;
 
                 default:
 
