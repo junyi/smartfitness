@@ -1,100 +1,178 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/bg_dark_blue"
-    android:orientation="vertical"
-    android:padding="@dimen/activity_horizontal_margin">
+    android:layout_height="match_parent">
 
-    <TextView
-        style="@style/TextAppearance.AppCompat.Small"
+    <RelativeLayout
+        android:id="@+id/upload_photo_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Desired wage" />
+        android:layout_height="150dp"
+        android:layout_alignParentTop="true"
+        android:clickable="true">
 
-    <com.appyvet.rangebar.RangeBar
-        android:id="@+id/rangebar"
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/sfs_bg" />
+
+        <View
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/circle_selector"
+            android:duplicateParentState="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Upload Photo"
+            android:textColor="@color/chip_text_color" />
+    </RelativeLayout>
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="75dp"
-        app:tickColor="@android:color/transparent"
-        app:tickEnd="10"
-        app:tickInterval="1"
-        app:tickStart="1" />
+        android:layout_height="match_parent"
+        android:layout_below="@id/upload_photo_container"
+        android:background="@color/bg_dark_blue"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="@dimen/activity_horizontal_margin">
 
-    <TextView
-        android:id="@+id/text"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_marginLeft="-15dp"
-        android:background="@drawable/rounded_rect_selector"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center_vertical"
-        android:paddingLeft="20dp"
-        android:paddingRight="10dp"
-        android:text="This is some sample text"
-        android:textColor="@color/chip_text_color_selector" />
 
-    <TextView
-        style="@style/TextAppearance.AppCompat.Small"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Languages" />
-
-    <org.apmem.tools.layouts.FlowLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:orientation="horizontal">
-
-        <astar.smartfitness.widget.ChipView
+        <TextView
+            style="@style/TextAppearance.AppCompat.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="2dp"
-            android:text="Mandarin" />
+            android:text="Location" />
 
-        <astar.smartfitness.widget.ChipView
+        <FrameLayout
+            android:id="@+id/location_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp">
+
+            <Button
+                android:id="@+id/select_location_button"
+                style="?attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="Select location"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+
+            <TextView
+                android:id="@+id/selected_locations"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:clickable="true"
+                android:visibility="gone" />
+
+        </FrameLayout>
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="2dp"
-            android:text="English" />
+            android:text="Years of Experience" />
 
-        <astar.smartfitness.widget.ChipView
+        <EditText
+            android:id="@+id/experience_edit_text"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:gravity="center_horizontal"
+            android:hint="5"
+            android:inputType="number"
+            android:textColor="#FFFFFF" />
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="2dp"
-            android:text="Malay" />
+            android:text="Expected Wage Range" />
 
-        <astar.smartfitness.widget.ChipView
+        <com.appyvet.rangebar.RangeBar
+            android:id="@+id/rangebar"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="4dp"
+            app:barColor="@android:color/white"
+            app:connectingLineColor="@android:color/white"
+            app:pinColor="@android:color/white"
+            app:pinRadius="2dp"
+            app:selectorColor="@android:color/white"
+            app:selectorSize="2dp"
+            app:tickColor="@android:color/transparent"
+            app:tickEnd="10"
+            app:tickInterval="1"
+            app:tickStart="1" />
+
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="2dp"
-            android:text="Tamil" />
+            android:text="Languages" />
 
-        <astar.smartfitness.widget.ChipView
-            android:layout_width="wrap_content"
+        <org.apmem.tools.layouts.FlowLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="2dp"
-            android:text="Hokkien" />
+            android:layout_marginTop="4dp"
+            android:gravity="center"
+            android:orientation="horizontal">
 
-        <astar.smartfitness.widget.ChipView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="2dp"
-            android:text="Teochew" />
+            <astar.smartfitness.widget.ChipView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                android:text="Mandarin" />
 
-        <astar.smartfitness.widget.ChipView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="2dp"
-            android:text="Cantonese" />
+            <astar.smartfitness.widget.ChipView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                android:text="English" />
 
-        <astar.smartfitness.widget.ChipView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="2dp"
-            android:text="Hakka" />
-    </org.apmem.tools.layouts.FlowLayout>
+            <astar.smartfitness.widget.ChipView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                android:text="Malay" />
 
-</LinearLayout>
+            <astar.smartfitness.widget.ChipView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                android:text="Tamil" />
+
+            <astar.smartfitness.widget.ChipView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                android:text="Hokkien" />
+
+            <astar.smartfitness.widget.ChipView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                android:text="Teochew" />
+
+            <astar.smartfitness.widget.ChipView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                android:text="Cantonese" />
+
+            <astar.smartfitness.widget.ChipView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                android:text="Hakka" />
+        </org.apmem.tools.layouts.FlowLayout>
+
+    </LinearLayout>
+</RelativeLayout>

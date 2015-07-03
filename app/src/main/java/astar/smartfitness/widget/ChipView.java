@@ -31,6 +31,12 @@ public class ChipView extends RelativeLayout implements View.OnClickListener {
     private Animation popInAnim;
     private Animation popOutAnim;
 
+    public interface OnSelectedListener {
+        public void onSelected(ChipView chipView, boolean isSelected);
+    }
+
+    private OnSelectedListener mOnSelectedListener = null;
+
     public ChipView(Context context) {
         super(context);
         initView(context);
@@ -133,6 +139,10 @@ public class ChipView extends RelativeLayout implements View.OnClickListener {
     public void changeState() {
         mSelected = !mSelected;
         setSelected(mSelected);
+
+        if (mOnSelectedListener != null)
+            mOnSelectedListener.onSelected(this, mSelected);
+
         updateState();
     }
 

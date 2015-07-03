@@ -22,6 +22,8 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:22.2.0'
+    compile 'com.android.support:support-v4:22.2.0'
+
 
     compile 'com.parse.bolts:bolts-android:1.+'
     compile 'com.android.support:design:22.2.0'
@@ -31,4 +33,5 @@ dependencies {
     compile 'uk.co.chrisjenx:calligraphy:2.1.0'
     compile 'com.appyvet:materialrangebar:1.0'
     compile 'org.apmem.tools:layouts:1.9@aar'
+    compile 'com.afollestad:material-dialogs:0.7.6.0'
 }

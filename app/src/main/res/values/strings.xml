@@ -23,4 +23,12 @@
     <string name="nric_fin">NRIC/FIN</string>
     <string name="back">Back</string>
     <string name="next">Next</string>
+
+    <string-array name="location_list">
+        <item>North</item>
+        <item>South</item>
+        <item>East</item>
+        <item>West</item>
+        <item>Central</item>
+    </string-array>
 </resources>
