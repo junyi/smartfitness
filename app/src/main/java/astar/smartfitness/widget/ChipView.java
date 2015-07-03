@@ -6,10 +6,11 @@ import android.graphics.drawable.Drawable;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import astar.smartfitness.R;
 import butterknife.Bind;
@@ -19,12 +20,15 @@ public class ChipView extends RelativeLayout implements View.OnClickListener {
     @Bind(R.id.text)
     TextView textView;
 
-    @Bind(R.id.left)
+    @Bind(R.id.circle)
     ImageView doneView;
 
     private String mText;
     private boolean mSelected = false;
     private Drawable doneDrawable;
+
+    private Animation popInAnim;
+    private Animation popOutAnim;
 
     public ChipView(Context context) {
         super(context);
@@ -50,6 +54,43 @@ public class ChipView extends RelativeLayout implements View.OnClickListener {
 
         doneDrawable = getResources().getDrawable(R.mipmap.ic_done_black_24dp);
         DrawableCompat.setTint(doneDrawable, getResources().getColor(R.color.login_blue));
+
+        popInAnim = AnimationUtils.loadAnimation(getContext(), R.anim.pop_in);
+        popOutAnim = AnimationUtils.loadAnimation(getContext(), R.anim.pop_out);
+
+        popInAnim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                doneView.setImageDrawable(doneDrawable);
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+        popOutAnim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                doneView.setImageDrawable(null);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
     }
 
     private void initAttrs(Context context, AttributeSet attrs) {
@@ -97,11 +138,11 @@ public class ChipView extends RelativeLayout implements View.OnClickListener {
 
     private void updateState() {
         if (mSelected) {
-            doneView.setImageDrawable(doneDrawable);
+            doneView.startAnimation(popInAnim);
+
         } else {
-            doneView.setImageDrawable(null);
+            doneView.startAnimation(popOutAnim);
         }
-        invalidate();
     }
 
 

@@ -18,11 +18,19 @@
         android:textColor="@color/chip_text_color_selector"
         tools:text="This is some sample text" />
 
-    <ImageView
+    <FrameLayout
         android:id="@+id/left"
         android:layout_width="30dp"
         android:layout_height="match_parent"
         android:background="@drawable/circle_selector"
-        android:duplicateParentState="true"
-        android:padding="4dp" />
+        android:duplicateParentState="true">
+
+        <ImageView
+            android:id="@+id/circle"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:duplicateParentState="true"
+            android:padding="4dp" />
+    </FrameLayout>
+
 </RelativeLayout>

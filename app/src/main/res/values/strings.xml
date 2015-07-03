@@ -21,4 +21,6 @@
     <string name="patient">Patient</string>
     <string name="login">Login</string>
     <string name="nric_fin">NRIC/FIN</string>
+    <string name="back">Back</string>
+    <string name="next">Next</string>
 </resources>
