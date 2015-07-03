@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import astar.smartfitness.R;
+import astar.smartfitness.animation.AnimUtils;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -57,6 +58,9 @@ public class ChipView extends RelativeLayout implements View.OnClickListener {
 
         popInAnim = AnimationUtils.loadAnimation(getContext(), R.anim.pop_in);
         popOutAnim = AnimationUtils.loadAnimation(getContext(), R.anim.pop_out);
+
+        popInAnim.setInterpolator(AnimUtils.getEaseOutExpoInterpolator());
+        popOutAnim.setInterpolator(AnimUtils.getEaseOutExpoInterpolator());
 
         popInAnim.setAnimationListener(new Animation.AnimationListener() {
             @Override
