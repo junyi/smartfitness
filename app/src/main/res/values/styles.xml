@@ -6,6 +6,15 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="AppDarkTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="colorPrimary">@color/login_blue</item>
+        <item name="colorAccent">#FFFFFF</item>
+        <item name="android:windowBackground">@color/bg_dark_blue</item>
+        <!-- Customize your theme here. -->
+    </style>
+
     <style name="TextHintLogin" parent="@style/TextAppearance.AppCompat">
         <item name="android:textColor">#FFFFFF</item>
     </style>

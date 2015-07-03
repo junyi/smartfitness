@@ -37,8 +37,6 @@ import timber.log.Timber;
 
 public class SignupFragment extends Fragment implements Validator.ValidationListener {
     public final static String ARG_ROLE = "role";
-    public final static String ROLE_PATIENT = "Patient";
-    public final static String ROLE_CAREGIVER = "Caregiver";
 
     private String role;
 
@@ -124,7 +122,7 @@ public class SignupFragment extends Fragment implements Validator.ValidationList
                              Bundle savedInstanceState) {
         Bundle args = getArguments();
         if (args != null) {
-            role = args.getString(ARG_ROLE, ROLE_PATIENT);
+            role = args.getString(ARG_ROLE, User.ROLE_PATIENT);
         }
 
         View view = inflater.inflate(R.layout.fragment_signup, container, false);
@@ -219,6 +217,7 @@ public class SignupFragment extends Fragment implements Validator.ValidationList
         user.setLastName(lastName);
         user.setPhone(phone);
         user.setPostalCode(postalCode);
+        user.addRole(role);
 
         final ParseQuery<ParseRole> roleQuery = ParseRole.getQuery().whereEqualTo("name", role);
 

@@ -6,6 +6,10 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 
+import com.parse.ParseUser;
+
+import astar.smartfitness.model.User;
+
 public class Utils {
 
     public static void hideKeyboard(Activity activity) {
@@ -55,5 +59,9 @@ public class Utils {
         }
 
         return (last == theAlpha);
+    }
+
+    public static User getCurrentUser() {
+        return (User) ParseUser.getCurrentUser();
     }
 }

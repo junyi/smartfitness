@@ -109,7 +109,7 @@ public class LoginFragment extends Fragment implements Validator.ValidationListe
                         ParseException error = new ParseException(ParseException.OTHER_CAUSE, "Please verify your e-mail");
                         handleError(error, parseUser);
                     } else {
-                        onLoginSucceeded();
+                        onLoginSucceeded(parseUser);
                     }
                 } else {
                     handleError(e, parseUser);
@@ -118,13 +118,8 @@ public class LoginFragment extends Fragment implements Validator.ValidationListe
         });
     }
 
-    private void onLoginSucceeded() {
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Snackbar.make(getView(), "Yay! Login success!", Snackbar.LENGTH_SHORT).show();
-            }
-        });
+    private void onLoginSucceeded(ParseUser user) {
+        ((LaunchActivity) getActivity()).onLoginSuccess();
     }
 
     private void handleError(final Exception e, final ParseUser user) {
