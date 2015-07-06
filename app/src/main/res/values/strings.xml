@@ -33,4 +33,16 @@
         <item>West</item>
         <item>Central</item>
     </string-array>
+    
+    <string-array name="service_list">
+        <item>Senior Care</item>
+        <item>Junior Care</item>
+        <item>Companionship</item>
+        <item>Rehabilitation</item>
+        <item>Household Prep</item>
+        <item>Professional Health Care</item>
+        <item>Meal Preparation</item>
+        <item>Speech Therapy</item>
+        <item>Wheelchair Bound Care</item>
+    </string-array>
 </resources>

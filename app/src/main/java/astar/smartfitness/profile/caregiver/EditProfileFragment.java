@@ -3,6 +3,7 @@ package astar.smartfitness.profile.caregiver;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,12 +43,12 @@ public class EditProfileFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
         ((MainActivity) getActivity()).getSupportActionBar().hide();
         checkButtonStates();
 
         showBasicSection();
     }
+
 
     private void showBasicSection() {
         replaceFragment(new BasicSectionFragment());
@@ -69,11 +70,11 @@ public class EditProfileFragment extends Fragment {
                 break;
             case SERVICES:
                 backButton.setEnabled(true);
-                nextButton.setEnabled(true);
-                break;
-            case SKILLS:
-                backButton.setEnabled(true);
                 nextButton.setEnabled(false);
+                break;
+            default:
+                backButton.setEnabled(true);
+                nextButton.setEnabled(true);
                 break;
         }
     }
@@ -106,9 +107,9 @@ public class EditProfileFragment extends Fragment {
     @OnClick(R.id.next_button)
     public void onNextButtonClicked() {
         int stateOrdinal = currentState.ordinal();
-        if (stateOrdinal == PageState.SKILLS.ordinal()) {
+        if (stateOrdinal == PageState.SERVICES.ordinal()) {
             throw new RuntimeException("This should never happen!");
-        } else if (stateOrdinal < PageState.SKILLS.ordinal()) {
+        } else if (stateOrdinal < PageState.SERVICES.ordinal()) {
             currentState = PageState.values()[stateOrdinal + 1];
             replaceFragment(getFragment(currentState));
         }
@@ -142,4 +143,5 @@ public class EditProfileFragment extends Fragment {
             ft.addToBackStack(null);
         ft.commit();
     }
+
 }

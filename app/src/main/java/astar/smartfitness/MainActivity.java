@@ -2,12 +2,15 @@ package astar.smartfitness;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
+
+import java.util.List;
 
 import astar.smartfitness.model.User;
 import astar.smartfitness.profile.caregiver.EditProfileFragment;
@@ -35,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
         //TODO: Open the correct fragment based on role
 
-        replaceFragment(new EditProfileFragment());
+        replaceFragment(new EditProfileFragment(), false);
     }
 
     private void replaceFragment(Fragment f) {
@@ -76,5 +79,43 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private boolean onBackPressed(FragmentManager fm) {
+        if (fm != null) {
+            if (fm.getBackStackEntryCount() > 0) {
+                fm.popBackStack();
+                return true;
+            }
+
+            List<Fragment> fragList = fm.getFragments();
+            int size = fragList.size();
+            if (fragList != null && fragList.size() > 0) {
+                for (int i = 0; i < size; i++) {
+                    Fragment frag = fragList.get(i);
+                    if (frag == null) {
+                        continue;
+                    }
+                    if (frag.isVisible()) {
+                        if (frag instanceof EditProfileFragment) {
+                            ((EditProfileFragment) frag).onBackButtonClicked();
+                            return true;
+                        } else if (onBackPressed(frag.getChildFragmentManager())) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        FragmentManager fm = getSupportFragmentManager();
+        if (onBackPressed(fm)) {
+            return;
+        }
+        super.onBackPressed();
     }
 }
