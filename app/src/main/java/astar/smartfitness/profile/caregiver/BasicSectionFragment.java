@@ -9,11 +9,13 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.appyvet.rangebar.RangeBar;
 
 import astar.smartfitness.R;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import timber.log.Timber;
 
 public class BasicSectionFragment extends Fragment {
 
@@ -22,6 +24,9 @@ public class BasicSectionFragment extends Fragment {
 
     @Bind(R.id.selected_locations)
     TextView selectedLocationsTextView;
+
+    @Bind(R.id.rangebar)
+    RangeBar rangeBar;
 
     public BasicSectionFragment() {
     }
@@ -40,6 +45,12 @@ public class BasicSectionFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
     }
+
+    @OnClick(R.id.location_textview)
+    public void showTextSize() {
+//        Timber.d("Bounds width: " + rangeBar.getLeftPin().mBounds.width());
+    }
+
 
     @OnClick({R.id.select_location_button, R.id.selected_locations})
     public void onSelectLocation() {

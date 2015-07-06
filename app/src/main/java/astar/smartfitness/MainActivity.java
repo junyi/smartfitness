@@ -46,12 +46,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void replaceFragment(Fragment f, boolean addToBackStack) {
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right, R.anim.slide_in_right, R.anim.slide_out_left);
         FrameLayout container = (FrameLayout) findViewById(R.id.container);
         if (container.getChildCount() == 0)
             ft.add(R.id.container, f);
-        else
+        else {
+            ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right, R.anim.slide_in_right, R.anim.slide_out_left);
             ft.replace(R.id.container, f);
+        }
         if (addToBackStack)
             ft.addToBackStack(null);
         ft.commit();

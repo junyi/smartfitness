@@ -5,6 +5,7 @@ import android.app.Application;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
+import astar.smartfitness.model.Skill;
 import astar.smartfitness.model.User;
 import timber.log.Timber;
 
@@ -19,6 +20,7 @@ public class SmartFitnessApp extends Application {
         Parse.initialize(this, "aOyWlaIJ3RWHQsScSG2maPda9pLd380xhE3SR5KP", "8VLwTAUhEWdUIAbhyaMPgcB0THae8hEnnbilKs7F");
 
         ParseObject.registerSubclass(User.class);
+        ParseObject.registerSubclass(Skill.class);
 
         Timber.plant(new Timber.DebugTree());
     }

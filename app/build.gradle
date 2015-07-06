@@ -32,6 +32,8 @@ dependencies {
     compile 'com.jakewharton.timber:timber:3.1.0'
     compile 'uk.co.chrisjenx:calligraphy:2.1.0'
     compile 'com.appyvet:materialrangebar:1.0'
+//    compile 'com.github.junyihjy:material-range-bar:4b54c73eae'
+//    compile project(':rangebar')
     compile 'org.apmem.tools:layouts:1.9@aar'
     compile 'com.afollestad:material-dialogs:0.7.6.0'
 }
