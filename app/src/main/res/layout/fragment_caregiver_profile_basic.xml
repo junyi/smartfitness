@@ -7,7 +7,7 @@
     <RelativeLayout
         android:id="@+id/upload_photo_container"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="250dp"
         android:layout_alignParentTop="true"
         android:clickable="true">
 
@@ -18,8 +18,8 @@
             android:src="@mipmap/sfs_bg" />
 
         <View
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
             android:layout_centerInParent="true"
             android:background="@drawable/circle_selector"
             android:duplicateParentState="true" />
@@ -43,26 +43,37 @@
 
 
         <TextView
-            android:id="@+id/location_textview"
             style="@style/TextAppearance.AppCompat.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Location" />
+            android:text="Location"
+            fontPath="fonts/Roboto-Light.ttf"
+            android:textSize="20sp"
+            android:layout_marginBottom="-10dp"
+            android:layout_marginTop="15dp"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:textColor="#FFFFFF" />
 
-        <FrameLayout
+        <RelativeLayout
             android:id="@+id/location_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp">
+            android:layout_height="50dp"
+            android:layout_marginBottom="30dp">
 
             <Button
                 android:id="@+id/select_location_button"
                 style="?attr/borderlessButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="Select location"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+                android:layout_gravity="center_horizontal|bottom"
+                android:text="_______"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                fontPath="fonts/Roboto-Light.ttf"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:textColor="#88FFFFFF"
+                android:gravity="center_vertical|center_horizontal" />
 
             <TextView
                 android:id="@+id/selected_locations"
@@ -70,63 +81,67 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:clickable="true"
-                android:visibility="gone" />
+                android:visibility="gone"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                fontPath="fonts/Roboto-Light.ttf"/>
 
-        </FrameLayout>
+        </RelativeLayout>
 
         <TextView
             style="@style/TextAppearance.AppCompat.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Years of Experience" />
+            android:text="Years of Experience"
+            fontPath="fonts/Roboto-Light.ttf"
+            android:textSize="20sp"
+            android:textColor="#FFFFFF" />
 
         <EditText
             android:id="@+id/experience_edit_text"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="4dp"
-            android:gravity="center_horizontal"
-            android:hint="5"
+            android:layout_marginBottom="40dp"
             android:inputType="number"
-            android:textColor="#FFFFFF" />
-
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <TextView
-                style="@style/TextAppearance.AppCompat.Small"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:clickable="true"
-                android:text="Expected Wage Range" />
-
-            <com.appyvet.rangebar.RangeBar
-                android:id="@+id/rangebar"
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:layout_marginBottom="4dp"
-                app:barColor="@android:color/white"
-                app:barPaddingBottom="8dp"
-                app:connectingLineColor="@android:color/white"
-                app:pinColor="@android:color/white"
-                app:pinRadius="6dp"
-                app:selectorColor="@android:color/white"
-                app:selectorSize="2dp"
-                app:textColor="@android:color/black"
-                app:tickColor="@android:color/transparent"
-                app:tickEnd="10"
-                app:tickInterval="1"
-                app:tickStart="1" />
-
-        </FrameLayout>
+            android:textColor="#99FFFFFF"
+            fontPath="fonts/Roboto-Light.ttf"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal" />
 
         <TextView
             style="@style/TextAppearance.AppCompat.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Languages" />
+            android:text="Expected Wage Range"
+            android:textSize="20sp"
+            fontPath="fonts/Roboto-Light.ttf"
+            android:textColor="#FFFFFF" />
+
+        <com.appyvet.rangebar.RangeBar
+            android:id="@+id/rangebar"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="20dp"
+            app:barColor="@android:color/white"
+            app:connectingLineColor="@android:color/white"
+            app:pinColor="@android:color/white"
+            app:pinRadius="2dp"
+            app:selectorColor="@android:color/white"
+            app:selectorSize="2dp"
+            app:tickColor="@android:color/transparent"
+            app:tickEnd="10"
+            app:tickInterval="1"
+            app:tickStart="1" />
+
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Small"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Languages"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            fontPath="fonts/Roboto-Light.ttf" />
 
         <org.apmem.tools.layouts.FlowLayout
             android:layout_width="match_parent"
