@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
         }
         super.onBackPressed();
     }
-    
+
     @Override
     protected void attachBaseContext(Context newBase) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));

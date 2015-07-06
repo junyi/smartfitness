@@ -46,12 +46,6 @@ public class BasicSectionFragment extends Fragment {
 
     }
 
-    @OnClick(R.id.location_textview)
-    public void showTextSize() {
-//        Timber.d("Bounds width: " + rangeBar.getLeftPin().mBounds.width());
-    }
-
-
     @OnClick({R.id.select_location_button, R.id.selected_locations})
     public void onSelectLocation() {
         new MaterialDialog.Builder(getActivity())
