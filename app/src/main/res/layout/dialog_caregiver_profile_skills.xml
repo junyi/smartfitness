@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <astar.smartfitness.widget.SmartTextInputLayout
+        android:id="@+id/title_text_input_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        app:hintTextAppearance="@style/TextHintLogin">
+
+        <EditText
+            android:id="@+id/title_edit_text"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/title"
+            android:inputType="text"
+            android:singleLine="true"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFFFFF" />
+    </astar.smartfitness.widget.SmartTextInputLayout>
+
+    <astar.smartfitness.widget.SmartTextInputLayout
+        android:id="@+id/description_text_input_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        app:hintTextAppearance="@style/TextHintLogin">
+
+        <EditText
+            android:id="@+id/description_edit_text"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/description"
+            android:inputType="textMultiLine"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFFFFF" />
+    </astar.smartfitness.widget.SmartTextInputLayout>
+</LinearLayout>

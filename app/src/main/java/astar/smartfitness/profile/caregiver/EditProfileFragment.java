@@ -17,7 +17,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class EditProfileFragment extends Fragment {
-    enum PageState {BASIC, SERVICES, SKILLS}
+    enum PageState {BASIC, SKILLS, SERVICES}
 
     @Bind(R.id.back_button)
     Button backButton;
@@ -42,7 +42,8 @@ public class EditProfileFragment extends Fragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        ((MainActivity) getActivity()).getSupportActionBar().setTitle("Create Profile");
+
+        ((MainActivity) getActivity()).getSupportActionBar().hide();
         checkButtonStates();
 
         showBasicSection();

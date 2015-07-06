@@ -1,5 +1,6 @@
 package astar.smartfitness.model;
 
+import com.parse.ParseClassName;
 import com.parse.ParseUser;
 
 import org.json.JSONArray;

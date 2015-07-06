@@ -43,6 +43,7 @@
 
 
         <TextView
+            android:id="@+id/location_textview"
             style="@style/TextAppearance.AppCompat.Small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -89,28 +90,37 @@
             android:inputType="number"
             android:textColor="#FFFFFF" />
 
-        <TextView
-            style="@style/TextAppearance.AppCompat.Small"
+        <FrameLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Expected Wage Range" />
+            android:layout_height="wrap_content">
 
-        <com.appyvet.rangebar.RangeBar
-            android:id="@+id/rangebar"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginBottom="4dp"
-            app:barColor="@android:color/white"
-            app:connectingLineColor="@android:color/white"
-            app:pinColor="@android:color/white"
-            app:pinRadius="2dp"
-            app:selectorColor="@android:color/white"
-            app:selectorSize="2dp"
-            app:tickColor="@android:color/transparent"
-            app:tickEnd="10"
-            app:tickInterval="1"
-            app:tickStart="1" />
+            <TextView
+                style="@style/TextAppearance.AppCompat.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:clickable="true"
+                android:text="Expected Wage Range" />
 
+            <com.appyvet.rangebar.RangeBar
+                android:id="@+id/rangebar"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginBottom="4dp"
+                app:barColor="@android:color/white"
+                app:barPaddingBottom="8dp"
+                app:connectingLineColor="@android:color/white"
+                app:pinColor="@android:color/white"
+                app:pinRadius="6dp"
+                app:selectorColor="@android:color/white"
+                app:selectorSize="2dp"
+                app:textColor="@android:color/black"
+                app:tickColor="@android:color/transparent"
+                app:tickEnd="10"
+                app:tickInterval="1"
+                app:tickStart="1" />
+
+        </FrameLayout>
 
         <TextView
             style="@style/TextAppearance.AppCompat.Small"
