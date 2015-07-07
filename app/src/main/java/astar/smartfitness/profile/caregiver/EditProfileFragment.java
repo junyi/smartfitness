@@ -22,7 +22,7 @@ import butterknife.OnClick;
 public class EditProfileFragment extends Fragment implements OnSectionChangedListener {
     @Override
     public void onSectionChanged() {
-        checkButtonStates();
+        notifyToValidate();
     }
 
     public enum PageState {BASIC, SKILLS, SERVICES}
@@ -85,7 +85,7 @@ public class EditProfileFragment extends Fragment implements OnSectionChangedLis
         }
     }
 
-    private void checkButtonStates() {
+    protected void checkButtonStates() {
         nextButton.setEnabled(false);
 
         switch (currentState) {
@@ -108,18 +108,16 @@ public class EditProfileFragment extends Fragment implements OnSectionChangedLis
         String currentPage = String.format("%s [%d/%d]", getTitle(currentState), pageNum, totalPage);
         currentPageTextView.setText(currentPage);
 
+
+    }
+
+    protected void notifyToValidate() {
+        checkButtonStates();
+
         final SectionFragment f = getFragment(currentState);
-        if (f.isVisible()) {
-            boolean isValid = f.validateSection();
-            nextButton.setEnabled(isValid);
-        } else
-            f.setOnViewCreatedListener(new OnViewCreatedListener() {
-                @Override
-                public void onViewCreated() {
-                    boolean isValid = f.validateSection();
-                    nextButton.setEnabled(isValid);
-                }
-            });
+
+        boolean isValid = f.validateSection();
+        nextButton.setEnabled(isValid);
     }
 
     private SectionFragment getFragment(PageState state) {
@@ -128,18 +126,21 @@ public class EditProfileFragment extends Fragment implements OnSectionChangedLis
         if (f != null)
             return f;
 
+        Bundle data = dataMap.get(state);
+
         switch (state) {
             default:
             case BASIC:
-                f = new BasicSectionFragment();
+                f = BasicSectionFragment.newInstance(data);
                 break;
             case SERVICES:
-                f = new ServicesSectionFragment();
+                f = ServicesSectionFragment.newInstance(data);
                 break;
             case SKILLS:
-                f = new SkillsSectionFragment();
+                f = SkillsSectionFragment.newInstance(data);
                 break;
         }
+
 
         return f;
     }
@@ -150,6 +151,8 @@ public class EditProfileFragment extends Fragment implements OnSectionChangedLis
 
     @OnClick(R.id.back_button)
     public void onBackButtonClicked() {
+        saveData();
+
         int stateOrdinal = currentState.ordinal();
         if (stateOrdinal == PageState.BASIC.ordinal()) {
 //            throw new RuntimeException("This should never happen!");
@@ -163,6 +166,8 @@ public class EditProfileFragment extends Fragment implements OnSectionChangedLis
 
     @OnClick(R.id.next_button)
     public void onNextButtonClicked() {
+        saveData();
+
         int stateOrdinal = currentState.ordinal();
         if (stateOrdinal == PageState.SERVICES.ordinal()) {
             throw new RuntimeException("This should never happen!");
@@ -172,6 +177,13 @@ public class EditProfileFragment extends Fragment implements OnSectionChangedLis
         }
 
         checkButtonStates();
+    }
+
+    private void saveData() {
+        SectionFragment f = getFragment(currentState);
+        Bundle data = new Bundle();
+        f.saveSection(data);
+        dataMap.put(currentState, data);
     }
 
 

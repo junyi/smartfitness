@@ -28,6 +28,12 @@ public class ServicesSectionFragment extends SectionFragment {
     public ServicesSectionFragment() {
     }
 
+    public static ServicesSectionFragment newInstance(Bundle data) {
+        ServicesSectionFragment fragment = new ServicesSectionFragment();
+        fragment.setArguments(data);
+        return fragment;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -40,23 +46,25 @@ public class ServicesSectionFragment extends SectionFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        if (getArguments() != null) {
+            restoreSection(getArguments());
+        }
+
         final String[] serviceList = getResources().getStringArray(R.array.service_list);
         listAdapter = new ArrayAdapter<>(getActivity(), R.layout.item_caregiver_profile_services, serviceList);
         listView.setAdapter(listAdapter);
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        listView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (((Checkable) view).isChecked()) {
                     servicesResult.add((Integer) position);
                 } else {
                     servicesResult.remove((Integer) position);
                 }
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
+                // Notify section changed
+                notifySectionChanged();
             }
         });
 
@@ -64,6 +72,8 @@ public class ServicesSectionFragment extends SectionFragment {
         for (int i = 0; i < l; i++) {
             listView.setItemChecked(servicesResult.get(i), true);
         }
+
+        notifyToValidate();
     }
 
     @Override

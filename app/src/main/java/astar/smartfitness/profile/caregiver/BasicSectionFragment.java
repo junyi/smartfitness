@@ -75,6 +75,12 @@ public class BasicSectionFragment extends SectionFragment {
     public BasicSectionFragment() {
     }
 
+    public static BasicSectionFragment newInstance(Bundle data) {
+        BasicSectionFragment fragment = new BasicSectionFragment();
+        fragment.setArguments(data);
+        return fragment;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -87,6 +93,10 @@ public class BasicSectionFragment extends SectionFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        if (getArguments() != null) {
+            restoreSection(getArguments());
+        }
 
         setupLocation();
         setupYearOfExp();
@@ -320,13 +330,5 @@ public class BasicSectionFragment extends SectionFragment {
         yearOfExpResult = data.getInt(ARG_YEAR_OF_EXP);
         wageRangeResult = data.getIntArray(ARG_WAGE_RANGE);
         languagesResult = data.getIntegerArrayList(ARG_LANGUAGES);
-
-
-        data.putIntegerArrayList(ARG_LOCATION, locationResult);
-        data.putInt(ARG_YEAR_OF_EXP, yearOfExpResult);
-        data.putIntArray(ARG_WAGE_RANGE, wageRangeResult);
-
-        processTempLanguageResult();
-        data.putIntegerArrayList(ARG_LANGUAGES, languagesResult);
     }
 }

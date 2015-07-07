@@ -2,12 +2,10 @@ package astar.smartfitness.profile.caregiver;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.View;
 
 public abstract class SectionFragment extends Fragment {
 
     protected OnSectionChangedListener mOnSectionChangedListenerListener;
-    protected OnViewCreatedListener mOnViewCreatedListener;
 
     public abstract boolean validateSection();
 
@@ -26,13 +24,6 @@ public abstract class SectionFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        if (mOnViewCreatedListener != null)
-            mOnViewCreatedListener.onViewCreated();
-    }
-
     public abstract void saveSection(Bundle data);
 
     public abstract void restoreSection(Bundle data);
@@ -43,8 +34,8 @@ public abstract class SectionFragment extends Fragment {
         }
     }
 
-    public void setOnViewCreatedListener(OnViewCreatedListener onViewCreatedListener) {
-        this.mOnViewCreatedListener = onViewCreatedListener;
+    public void notifyToValidate() {
+        ((EditProfileFragment) getParentFragment()).notifyToValidate();
     }
 
     @Override

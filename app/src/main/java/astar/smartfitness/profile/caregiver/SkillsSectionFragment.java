@@ -29,7 +29,6 @@ import astar.smartfitness.model.Skill;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import timber.log.Timber;
 
 public class SkillsSectionFragment extends SectionFragment implements Validator.ValidationListener {
     public static final String ARG_SKILL_LIST = "skill_list";
@@ -87,12 +86,28 @@ public class SkillsSectionFragment extends SectionFragment implements Validator.
     public SkillsSectionFragment() {
     }
 
+    public static SkillsSectionFragment newInstance(Bundle data) {
+        SkillsSectionFragment fragment = new SkillsSectionFragment();
+        fragment.setArguments(data);
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_caregiver_profile_skills, container, false);
         ButterKnife.bind(this, view);
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        if (getArguments() != null) {
+            restoreSection(getArguments());
+        }
 
         recyclerViewAdapter = new SkillsRecyclerViewAdapter(skillList);
         recyclerView.setAdapter(recyclerViewAdapter);
@@ -118,7 +133,6 @@ public class SkillsSectionFragment extends SectionFragment implements Validator.
             public void onItemRangeChanged(int positionStart, int itemCount) {
                 super.onItemRangeChanged(positionStart, itemCount);
                 skillList = recyclerViewAdapter.getSkillList();
-                Timber.d("Data changed!");
                 // Notify changed section
                 notifySectionChanged();
             }
@@ -127,7 +141,6 @@ public class SkillsSectionFragment extends SectionFragment implements Validator.
             public void onItemRangeInserted(int positionStart, int itemCount) {
                 super.onItemRangeInserted(positionStart, itemCount);
                 skillList = recyclerViewAdapter.getSkillList();
-                Timber.d("Data changed!");
                 // Notify changed section
                 notifySectionChanged();
             }
@@ -136,7 +149,6 @@ public class SkillsSectionFragment extends SectionFragment implements Validator.
             public void onItemRangeRemoved(int positionStart, int itemCount) {
                 super.onItemRangeRemoved(positionStart, itemCount);
                 skillList = recyclerViewAdapter.getSkillList();
-                Timber.d("Data changed!");
                 // Notify changed section
                 notifySectionChanged();
             }
@@ -147,14 +159,7 @@ public class SkillsSectionFragment extends SectionFragment implements Validator.
             }
         });
 
-        return view;
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-//        populateWithMockSkills();
+        notifyToValidate();
     }
 
     @OnClick(R.id.add_button)
