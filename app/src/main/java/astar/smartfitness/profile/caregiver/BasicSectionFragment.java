@@ -1,7 +1,6 @@
 package astar.smartfitness.profile.caregiver;
 
 import android.os.Bundle;
-import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -252,6 +251,14 @@ public class BasicSectionFragment extends SectionFragment {
             }
         });
 
+        if (wageRangeResult[0] == 0 && wageRangeResult[0] == wageRangeResult[1]) {
+            wageRangeResult[0] = (int) rangeBar.getTickStart();
+            wageRangeResult[1] = (int) rangeBar.getTickEnd();
+        } else {
+            rangeBar.setRangePinsByValue(wageRangeResult[0], wageRangeResult[1]);
+        }
+
+        wageRangeTextView.setText(String.format(getResources().getString(R.string.wage_range_formatted_text), wageRangeResult[0], wageRangeResult[1]));
     }
 
     private void processTempLanguageResult() {

@@ -15,6 +15,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class SkillsRecyclerViewAdapter extends RecyclerView.Adapter<SkillsRecyclerViewAdapter.ViewHolder> {
+    private static final int EMPTY_VIEW = 99;
+
     private ArrayList<Skill> skillList;
     private Context context;
     private RecyclerView recyclerView;
@@ -34,7 +36,7 @@ public class SkillsRecyclerViewAdapter extends RecyclerView.Adapter<SkillsRecycl
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public SkillsRecyclerViewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).
                 inflate(R.layout.item_caregiver_profile_skills, parent, false);
         // Return a new holder instance

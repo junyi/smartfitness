@@ -8,11 +8,22 @@
     android:background="@color/bg_dark_blue"
     tools:context="astar.smartfitness.profile.caregiver.SkillsSectionFragment">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:listitem="@layout/item_caregiver_profile_skills" />
+        android:layout_height="match_parent">
+
+        <astar.smartfitness.widget.EmptyRecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:listitem="@layout/item_caregiver_profile_skills" />
+
+        <include
+            android:id="@+id/empty_view"
+            layout="@layout/caregiver_skill_empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/add_button"

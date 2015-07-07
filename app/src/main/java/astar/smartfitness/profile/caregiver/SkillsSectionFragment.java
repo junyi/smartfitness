@@ -26,6 +26,7 @@ import astar.smartfitness.DividerItemDecoration;
 import astar.smartfitness.R;
 import astar.smartfitness.RecyclerItemClickListener;
 import astar.smartfitness.model.Skill;
+import astar.smartfitness.widget.EmptyRecyclerView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -34,7 +35,10 @@ public class SkillsSectionFragment extends SectionFragment implements Validator.
     public static final String ARG_SKILL_LIST = "skill_list";
 
     @Bind(R.id.recycler_view)
-    RecyclerView recyclerView;
+    EmptyRecyclerView recyclerView;
+
+    @Bind(R.id.empty_view)
+    View emptyView;
 
     private ArrayList<Skill> skillList = new ArrayList<>();
     private MaterialDialog dialogInstance = null;
@@ -115,6 +119,8 @@ public class SkillsSectionFragment extends SectionFragment implements Validator.
         RecyclerView.ItemDecoration itemDecoration = new
                 DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL_LIST);
         recyclerView.addItemDecoration(itemDecoration);
+
+        recyclerView.setEmptyView(emptyView);
 
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
             @Override
