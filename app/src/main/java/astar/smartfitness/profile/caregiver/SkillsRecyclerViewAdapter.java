@@ -19,9 +19,18 @@ public class SkillsRecyclerViewAdapter extends RecyclerView.Adapter<SkillsRecycl
     private Context context;
     private RecyclerView recyclerView;
 
-    public SkillsRecyclerViewAdapter(RecyclerView recyclerView) {
-        this.recyclerView = recyclerView;
+    public SkillsRecyclerViewAdapter() {
         this.skillList = new ArrayList<>();
+    }
+
+    public SkillsRecyclerViewAdapter(ArrayList<Skill> skillList) {
+        this.skillList = skillList;
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        this.recyclerView = recyclerView;
     }
 
     @Override
@@ -73,7 +82,9 @@ public class SkillsRecyclerViewAdapter extends RecyclerView.Adapter<SkillsRecycl
         skillList.add(skill);
 
         notifyItemInserted(getItemCount());
-        recyclerView.smoothScrollToPosition(getItemCount());
+
+        if (recyclerView != null)
+            recyclerView.smoothScrollToPosition(getItemCount());
     }
 
     public void deleteSkill(int position) {
@@ -90,5 +101,9 @@ public class SkillsRecyclerViewAdapter extends RecyclerView.Adapter<SkillsRecycl
         skillList.set(position, skill);
 
         notifyItemChanged(position);
+    }
+
+    public ArrayList<Skill> getSkillList() {
+        return skillList;
     }
 }

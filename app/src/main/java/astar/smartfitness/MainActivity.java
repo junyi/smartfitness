@@ -100,8 +100,12 @@ public class MainActivity extends AppCompatActivity {
                     }
                     if (frag.isVisible()) {
                         if (frag instanceof EditProfileFragment) {
-                            ((EditProfileFragment) frag).onBackButtonClicked();
-                            return true;
+                            EditProfileFragment f = ((EditProfileFragment) frag);
+                            f.onBackButtonClicked();
+                            if (f.getCurrentState() == EditProfileFragment.PageState.BASIC)
+                                return false;
+                            else
+                                return true;
                         } else if (onBackPressed(frag.getChildFragmentManager())) {
                             return true;
                         }

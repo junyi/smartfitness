@@ -26,6 +26,17 @@
     <string name="description">Description</string>
     <string name="title">Title</string>
 
+    <string-array name="language_list">
+        <item>Mandarin</item>
+        <item>English</item>
+        <item>Malay</item>
+        <item>Tamil</item>
+        <item>Hokkien</item>
+        <item>Teochew</item>
+        <item>Cantonese</item>
+        <item>Hakka</item>
+    </string-array>
+
     <string-array name="location_list">
         <item>North</item>
         <item>South</item>
@@ -33,7 +44,7 @@
         <item>West</item>
         <item>Central</item>
     </string-array>
-    
+
     <string-array name="service_list">
         <item>Senior Care</item>
         <item>Junior Care</item>
@@ -45,4 +56,6 @@
         <item>Speech Therapy</item>
         <item>Wheelchair Bound Care</item>
     </string-array>
+
+    <string name="wage_range_formatted_text">$ %1$s &#8212; %2$s</string>
 </resources>

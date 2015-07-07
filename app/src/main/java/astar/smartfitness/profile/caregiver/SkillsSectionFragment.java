@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -20,6 +19,7 @@ import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import astar.smartfitness.DividerItemDecoration;
@@ -29,10 +29,39 @@ import astar.smartfitness.model.Skill;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import timber.log.Timber;
 
-public class SkillsSectionFragment extends Fragment implements Validator.ValidationListener {
+public class SkillsSectionFragment extends SectionFragment implements Validator.ValidationListener {
+    public static final String ARG_SKILL_LIST = "skill_list";
+
     @Bind(R.id.recycler_view)
     RecyclerView recyclerView;
+
+    private ArrayList<Skill> skillList = new ArrayList<>();
+    private MaterialDialog dialogInstance = null;
+    final DialogViewHolder dialogViewHolder = new DialogViewHolder();
+
+    private SkillsRecyclerViewAdapter recyclerViewAdapter;
+    private Validator validator;
+
+    @Override
+    public boolean validateSection() {
+        if (skillList.size() > 0)
+            return true;
+
+        return false;
+    }
+
+    @Override
+    public void saveSection(Bundle data) {
+        skillList = recyclerViewAdapter.getSkillList();
+        data.putParcelableArrayList(ARG_SKILL_LIST, skillList);
+    }
+
+    @Override
+    public void restoreSection(Bundle data) {
+        skillList = data.getParcelableArrayList(ARG_SKILL_LIST);
+    }
 
     static class DialogViewHolder {
         @NotEmpty
@@ -54,28 +83,18 @@ public class SkillsSectionFragment extends Fragment implements Validator.Validat
         TextInputLayout descriptionTextInputLayout;
     }
 
-    private MaterialDialog dialogInstance = null;
-    final DialogViewHolder dialogViewHolder = new DialogViewHolder();
-
-    private SkillsRecyclerViewAdapter recyclerViewAdapter;
-    private Validator validator;
 
     public SkillsSectionFragment() {
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_caregiver_profile_skills, container, false);
         ButterKnife.bind(this, view);
-        return view;
-    }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        recyclerViewAdapter = new SkillsRecyclerViewAdapter(recyclerView);
+        recyclerViewAdapter = new SkillsRecyclerViewAdapter(skillList);
         recyclerView.setAdapter(recyclerViewAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         RecyclerView.ItemDecoration itemDecoration = new
@@ -89,7 +108,53 @@ public class SkillsSectionFragment extends Fragment implements Validator.Validat
             }
         }));
 
-        populateWithMockSkills();
+        recyclerViewAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onChanged() {
+                super.onChanged();
+            }
+
+            @Override
+            public void onItemRangeChanged(int positionStart, int itemCount) {
+                super.onItemRangeChanged(positionStart, itemCount);
+                skillList = recyclerViewAdapter.getSkillList();
+                Timber.d("Data changed!");
+                // Notify changed section
+                notifySectionChanged();
+            }
+
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                super.onItemRangeInserted(positionStart, itemCount);
+                skillList = recyclerViewAdapter.getSkillList();
+                Timber.d("Data changed!");
+                // Notify changed section
+                notifySectionChanged();
+            }
+
+            @Override
+            public void onItemRangeRemoved(int positionStart, int itemCount) {
+                super.onItemRangeRemoved(positionStart, itemCount);
+                skillList = recyclerViewAdapter.getSkillList();
+                Timber.d("Data changed!");
+                // Notify changed section
+                notifySectionChanged();
+            }
+
+            @Override
+            public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
+                super.onItemRangeMoved(fromPosition, toPosition, itemCount);
+            }
+        });
+
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+//        populateWithMockSkills();
     }
 
     @OnClick(R.id.add_button)

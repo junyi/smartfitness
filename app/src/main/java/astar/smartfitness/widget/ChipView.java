@@ -2,6 +2,7 @@ package astar.smartfitness.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.AttributeSet;
@@ -16,6 +17,7 @@ import astar.smartfitness.R;
 import astar.smartfitness.animation.AnimUtils;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import timber.log.Timber;
 
 public class ChipView extends RelativeLayout implements View.OnClickListener {
     @Bind(R.id.text)
@@ -25,14 +27,13 @@ public class ChipView extends RelativeLayout implements View.OnClickListener {
     ImageView doneView;
 
     private String mText;
-    private boolean mSelected = false;
     private Drawable doneDrawable;
 
     private Animation popInAnim;
     private Animation popOutAnim;
 
     public interface OnSelectedListener {
-        public void onSelected(ChipView chipView, boolean isSelected);
+        void onSelected(ChipView chipView, boolean isSelected);
     }
 
     private OnSelectedListener mOnSelectedListener = null;
@@ -54,8 +55,18 @@ public class ChipView extends RelativeLayout implements View.OnClickListener {
         initAttrs(context, attrs);
     }
 
+    public ChipView(Context context, AttributeSet attrs, int defStyleAttr, String text) {
+        this(context, attrs, defStyleAttr);
+        mText = text;
+        if (mText != null) {
+            drawText(mText);
+        }
+    }
+
     private void initView(Context context) {
         View.inflate(context, R.layout.chip_view, this);
+
+        ButterKnife.bind(this);
 
         setOnClickListener(this);
 
@@ -101,9 +112,14 @@ public class ChipView extends RelativeLayout implements View.OnClickListener {
 
             }
         });
+
+        drawSelected(isSelected());
     }
 
     private void initAttrs(Context context, AttributeSet attrs) {
+        if (attrs == null)
+            return;
+
         TypedArray a = context.getTheme().obtainStyledAttributes(
                 attrs,
                 R.styleable.ChipView,
@@ -116,42 +132,50 @@ public class ChipView extends RelativeLayout implements View.OnClickListener {
         }
     }
 
-    @Override
-    protected void onFinishInflate() {
-        super.onFinishInflate();
-
-        ButterKnife.bind(this);
-
-        if (mText != null)
-            setText(mText);
+    public void setText(String s) {
+        mText = s;
     }
 
-    public void setText(CharSequence s) {
-        textView.setText(s);
+    private void drawText(CharSequence s) {
+        textView.setText(mText);
+    }
+
+    private void drawSelected(boolean isSelected) {
+        if (isSelected) {
+            if (doneDrawable == null) {
+                doneDrawable = getResources().getDrawable(R.mipmap.ic_done_black_24dp);
+                DrawableCompat.setTint(doneDrawable, getResources().getColor(R.color.login_blue));
+            }
+            doneView.setImageDrawable(doneDrawable);
+        } else {
+            doneView.setImageDrawable(null);
+        }
     }
 
     @Override
     public void onClick(View v) {
         changeState();
-
     }
 
     public void changeState() {
-        mSelected = !mSelected;
-        setSelected(mSelected);
+        setSelected(!isSelected());
 
         if (mOnSelectedListener != null)
-            mOnSelectedListener.onSelected(this, mSelected);
+            mOnSelectedListener.onSelected(this, isSelected());
 
         updateState();
     }
 
-    public boolean isSelected() {
-        return mSelected;
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        Timber.d("onAttachedToWindow");
+
+        drawSelected(isSelected());
     }
 
     private void updateState() {
-        if (mSelected) {
+        if (isSelected()) {
             doneView.startAnimation(popInAnim);
 
         } else {
@@ -159,5 +183,12 @@ public class ChipView extends RelativeLayout implements View.OnClickListener {
         }
     }
 
+    public void setOnSelectedListener(OnSelectedListener onSelectedListener) {
+        this.mOnSelectedListener = onSelectedListener;
+    }
+
+    public String getText() {
+        return mText;
+    }
 
 }
