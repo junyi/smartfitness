@@ -214,14 +214,6 @@ public class BasicSectionFragment extends SectionFragment {
             }
         });
 
-        yearOfExpEditText.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                editTextWasTouched = true;
-                return false;
-            }
-        });
-
         if (yearOfExpResult != -1)
             yearOfExpEditText.setText(String.valueOf(yearOfExpResult));
     }
