@@ -13,4 +13,5 @@
     android:paddingTop="12dp"
     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
     android:textColor="@android:color/white"
+    fontPath="fonts/Roboto-Light.ttf"
     tools:text="Senior Care" />
