@@ -201,15 +201,6 @@ public class BasicSectionFragment extends SectionFragment {
 
         String[] languageList = getResources().getStringArray(R.array.language_list);
 
-
-        int size = languagesResult.size();
-        if (size > 0) {
-            tempLanguageResult.clear();
-            for (int i = 0; i < size; i++) {
-                tempLanguageResult.put(i, languageList[i]);
-            }
-        }
-
         int l = languageList.length;
         for (int i = 0; i < l; i++) {
             String language = languageList[i];
@@ -330,5 +321,15 @@ public class BasicSectionFragment extends SectionFragment {
         yearOfExpResult = data.getInt(ARG_YEAR_OF_EXP);
         wageRangeResult = data.getIntArray(ARG_WAGE_RANGE);
         languagesResult = data.getIntegerArrayList(ARG_LANGUAGES);
+
+        String[] languageList = getResources().getStringArray(R.array.language_list);
+
+        int size = languagesResult.size();
+        if (size > 0) {
+            tempLanguageResult.clear();
+            for (int i = 0; i < size; i++) {
+                tempLanguageResult.put(languagesResult.get(i), languageList[i]);
+            }
+        }
     }
 }
