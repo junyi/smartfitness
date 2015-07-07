@@ -57,9 +57,6 @@ public class BasicSectionFragment extends SectionFragment {
     @Bind(R.id.experience_edit_text)
     EditText yearOfExpEditText;
 
-    @Bind(R.id.experience_text_input_layout)
-    TextInputLayout yearOfExpTextInputLayout;
-
     @Bind(R.id.language_layout)
     FlowLayout languageLayout;
 
@@ -275,12 +272,8 @@ public class BasicSectionFragment extends SectionFragment {
 
         boolean isValid = validator.isInRange(yearOfExp, MIN_YEAR_OF_EXP, MAX_YEAR_OF_EXP);
         if (isValid) {
-            yearOfExpTextInputLayout.setErrorEnabled(false);
             // Save result for year of exp
             yearOfExpResult = yearOfExp;
-        } else {
-            yearOfExpTextInputLayout.setErrorEnabled(true);
-            yearOfExpTextInputLayout.setError("Enter a number between 0 and 99");
         }
 
         return isValid;

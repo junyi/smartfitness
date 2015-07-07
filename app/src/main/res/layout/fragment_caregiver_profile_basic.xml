@@ -108,26 +108,17 @@
                 android:textColor="#FFFFFF"
                 android:textSize="20sp" />
 
-            <astar.smartfitness.widget.SmartTextInputLayout
-                android:id="@+id/experience_text_input_layout"
+            <EditText
+                android:id="@+id/experience_edit_text"
+                fontPath="fonts/Roboto-Light.ttf"
                 android:layout_width="50dp"
-                android:layout_height="wrap_content"
                 android:layout_marginBottom="40dp"
-                android:textColor="#FFFFFF"
-                android:textColorHint="#FFFFFF"
-                app:hintTextAppearance="@style/TextHintLogin">
-
-                <EditText
-                    android:id="@+id/experience_edit_text"
-                    fontPath="fonts/Roboto-Light.ttf"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:gravity="center_horizontal"
-                    android:inputType="number"
-                    android:maxLength="2"
-                    android:textColor="#99FFFFFF" />
-            </astar.smartfitness.widget.SmartTextInputLayout>
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center_horizontal"
+                android:inputType="number"
+                android:maxLength="2"
+                android:textColor="#99FFFFFF" />
 
             <TextView
                 style="@style/TextAppearance.AppCompat.Small"
@@ -163,9 +154,9 @@
                     app:selectorColor="@android:color/white"
                     app:selectorSize="2dp"
                     app:tickColor="@android:color/transparent"
-                    app:tickEnd="10"
-                    app:tickInterval="1"
-                    app:tickStart="1" />
+                    app:tickEnd="1000"
+                    app:tickInterval="10"
+                    app:tickStart="0" />
             </FrameLayout>
 
             <TextView
