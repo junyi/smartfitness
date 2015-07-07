@@ -1,5 +1,6 @@
 package astar.smartfitness.profile.caregiver;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -7,6 +8,7 @@ import android.text.TextWatcher;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -99,12 +101,23 @@ public class BasicSectionFragment extends SectionFragment {
         setupWageRange();
         setupLanguages();
 
-        scrollView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        scrollView.setOnTouchListener(new View.OnTouchListener() {
+            float downX = 0;
+            float downY = 0;
+
             @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus) {
-                    Utils.hideKeyboard(getActivity());
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        downX = event.getX();
+                        downY = event.getY();
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        if (event.getX() - downX > 0 || event.getY() - downY > 0) {
+                            Utils.hideKeyboard(getActivity());
+                        }
                 }
+                return false;
             }
         });
     }
@@ -134,6 +147,12 @@ public class BasicSectionFragment extends SectionFragment {
                     }
                 })
                 .positiveText("Confirm")
+                .showListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(DialogInterface dialog) {
+                        Utils.hideKeyboard(getActivity());
+                    }
+                })
                 .show();
     }
 
@@ -183,6 +202,15 @@ public class BasicSectionFragment extends SectionFragment {
             @Override
             public void afterTextChanged(Editable s) {
 
+            }
+        });
+
+        yearOfExpEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    Utils.hideKeyboard(getActivity(), v);
+                }
             }
         });
 

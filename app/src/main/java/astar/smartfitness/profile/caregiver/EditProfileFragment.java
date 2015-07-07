@@ -1,7 +1,9 @@
 package astar.smartfitness.profile.caregiver;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -10,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.util.HashMap;
 
@@ -107,8 +111,6 @@ public class EditProfileFragment extends Fragment implements OnSectionChangedLis
 
         String currentPage = String.format("%s [%d/%d]", getTitle(currentState), pageNum, totalPage);
         currentPageTextView.setText(currentPage);
-
-
     }
 
     protected void notifyToValidate() {
@@ -170,7 +172,25 @@ public class EditProfileFragment extends Fragment implements OnSectionChangedLis
 
         int stateOrdinal = currentState.ordinal();
         if (stateOrdinal == PageState.SERVICES.ordinal()) {
-            throw new RuntimeException("This should never happen!");
+            //TODO: Change this dummy progress dialog
+            new MaterialDialog.Builder(getActivity())
+                    .title("Submitting...")
+                    .content("Please wait")
+                    .progress(true, 0)
+                    .showListener(new DialogInterface.OnShowListener() {
+                        @Override
+                        public void onShow(final DialogInterface dialog) {
+                            Runnable runnable = new Runnable() {
+                                @Override
+                                public void run() {
+                                    dialog.dismiss();
+                                }
+                            };
+                            Handler handler = new Handler();
+                            handler.postDelayed(runnable, 3000);
+                        }
+                    })
+                    .show();
         } else if (stateOrdinal < PageState.SERVICES.ordinal()) {
             currentState = PageState.values()[stateOrdinal + 1];
             replaceFragment(getFragment(currentState), currentState);
