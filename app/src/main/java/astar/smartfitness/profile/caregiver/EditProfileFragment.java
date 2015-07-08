@@ -3,9 +3,10 @@ package astar.smartfitness.profile.caregiver;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.os.Handler;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +15,23 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.parse.ParseObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import astar.smartfitness.MainActivity;
 import astar.smartfitness.R;
+import astar.smartfitness.Utils;
+import astar.smartfitness.model.CaregiverProfile;
+import astar.smartfitness.model.Skill;
+import astar.smartfitness.model.User;
+import bolts.Continuation;
+import bolts.Task;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import timber.log.Timber;
 
 public class EditProfileFragment extends Fragment implements OnSectionChangedListener {
     @Override
@@ -42,6 +52,7 @@ public class EditProfileFragment extends Fragment implements OnSectionChangedLis
 
     private PageState currentState = PageState.BASIC;
     private HashMap<PageState, Bundle> dataMap = new HashMap<>();
+    private MaterialDialog dialog = null;
 
     public EditProfileFragment() {
     }
@@ -173,23 +184,17 @@ public class EditProfileFragment extends Fragment implements OnSectionChangedLis
         int stateOrdinal = currentState.ordinal();
         if (stateOrdinal == PageState.SERVICES.ordinal()) {
             //TODO: Change this dummy progress dialog
-            new MaterialDialog.Builder(getActivity())
+            dialog = new MaterialDialog.Builder(getActivity())
                     .title("Submitting...")
                     .content("Please wait")
                     .progress(true, 0)
                     .showListener(new DialogInterface.OnShowListener() {
                         @Override
                         public void onShow(final DialogInterface dialog) {
-                            Runnable runnable = new Runnable() {
-                                @Override
-                                public void run() {
-                                    dialog.dismiss();
-                                }
-                            };
-                            Handler handler = new Handler();
-                            handler.postDelayed(runnable, 3000);
+                            submitData();
                         }
                     })
+                    .cancelable(false)
                     .show();
         } else if (stateOrdinal < PageState.SERVICES.ordinal()) {
             currentState = PageState.values()[stateOrdinal + 1];
@@ -207,7 +212,105 @@ public class EditProfileFragment extends Fragment implements OnSectionChangedLis
     }
 
     private void submitData() {
+        Bundle basicData = dataMap.get(PageState.BASIC);
+        Bundle skillsData = dataMap.get(PageState.SKILLS);
+        Bundle servicesData = dataMap.get(PageState.SERVICES);
 
+        int yearOfExp = basicData.getInt(BasicSectionFragment.ARG_YEAR_OF_EXP);
+        int[] wageRange = basicData.getIntArray(BasicSectionFragment.ARG_WAGE_RANGE);
+        ArrayList<Integer> languages = basicData.getIntegerArrayList(BasicSectionFragment.ARG_LANGUAGES);
+        final ArrayList<Skill> skills = skillsData.getParcelableArrayList(SkillsSectionFragment.ARG_SKILL_LIST);
+        ArrayList<Integer> services = servicesData.getIntegerArrayList(ServicesSectionFragment.ARG_SERVICE_LIST);
+
+        User user = Utils.getCurrentUser();
+
+        CaregiverProfile profile = new CaregiverProfile();
+        profile.setUserId(user);
+        profile.setYearOfExp(yearOfExp);
+        profile.setWageRangeMin(wageRange[0]);
+        profile.setWageRangeMax(wageRange[1]);
+        profile.setLanguages(languages);
+        profile.setServices(services);
+
+        int l = skills.size();
+        for (int i = 0; i < l; i++) {
+            skills.get(i).setUserId(user);
+        }
+
+        ArrayList<Task<Void>> tasks = new ArrayList<Task<Void>>();
+        tasks.add(profile.saveInBackground());
+        tasks.add(ParseObject.saveAllInBackground(skills));
+
+        Task.whenAll(tasks).continueWith(new Continuation<Void, Object>() {
+            @Override
+            public Object then(Task<Void> task) throws Exception {
+                if (task.isCancelled()) {
+                    Timber.d("Task is cancelled");
+                    handleError(new Exception("Task is cancelled"));
+                } else if (task.isFaulted()) {
+                    handleError(task.getError());
+                } else {
+                    onSubmitSuccess();
+                }
+                return null;
+            }
+        });
+
+    }
+
+    private void onSubmitSuccess() {
+        Timber.d("Submission success!");
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+                Snackbar.make(getView(), "Profile creation success!", Snackbar.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void handleError(final Exception e) {
+        if (dialog != null)
+            dialog.dismiss();
+
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Snackbar.make(getView(), "An error occured. Try again later.", Snackbar.LENGTH_SHORT).show();
+            }
+        });
+
+        Timber.e("Submission error", Log.getStackTraceString(e));
+
+//        if (e instanceof ParseException) {
+//            final ParseException error = (ParseException) e;
+//            int errorCode = error.getCode();
+//
+//            Timber.e(e.getMessage());
+//
+//            switch (errorCode) {
+//                case ParseException.USERNAME_TAKEN:
+//                    getActivity().runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                        }
+//                    });
+//                    break;
+//                case ParseException.DUPLICATE_VALUE:
+//                    getActivity().runOnUiThread(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                        }
+//                    });
+//                    break;
+//                default:
+//
+//            }
+//        } else {
+//            e.printStackTrace();
+//        }
     }
 
 

@@ -8,8 +8,13 @@ import com.parse.ParseObject;
 
 @ParseClassName("CaregiverSkills")
 public class Skill extends ParseObject implements Parcelable {
+    public final static String KEY_USER_ID = "userId";
     public final static String KEY_TITLE = "title";
     public final static String KEY_DESCRIPTION = "description";
+
+    public void setUserId(User user) {
+        put(KEY_USER_ID, user);
+    }
 
     public void setTitle(String title) {
         put(KEY_TITLE, title);
