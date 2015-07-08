@@ -63,11 +63,11 @@ public class BasicSectionFragment extends SectionFragment {
     @Bind(R.id.btn_photoUpload)
     View photoUploadButton;
 
-    @Bind(R.id.select_location_button)
-    Button selectLocationButton;
-
-    @Bind(R.id.selected_locations)
-    TextView selectedLocationsTextView;
+//    @Bind(R.id.select_location_button)
+//    Button selectLocationButton;
+//
+//    @Bind(R.id.selected_locations)
+//    TextView selectedLocationsTextView;
 
     @Bind(R.id.experience_edit_text)
     EditText yearOfExpEditText;
@@ -113,7 +113,7 @@ public class BasicSectionFragment extends SectionFragment {
             restoreSection(getArguments());
         }
 
-        setupLocation();
+//        setupLocation();
         setupYearOfExp();
         setupWageRange();
         setupLanguages();
@@ -139,67 +139,67 @@ public class BasicSectionFragment extends SectionFragment {
         });
     }
 
-    @OnClick({R.id.select_location_button, R.id.selected_locations})
-    public void onSelectLocation() {
-        Integer[] selectedIndices = new Integer[locationResult.size()];
-        locationResult.toArray(selectedIndices);
+//    @OnClick({R.id.select_location_button, R.id.selected_locations})
+//    public void onSelectLocation() {
+//        Integer[] selectedIndices = new Integer[locationResult.size()];
+//        locationResult.toArray(selectedIndices);
+//
+//        new MaterialDialog.Builder(getActivity())
+//                .backgroundColorRes(R.color.bg_dark_blue)
+//                .title("Select location")
+//                .items(R.array.location_list)
+//                .itemsCallbackMultiChoice(selectedIndices, new MaterialDialog.ListCallbackMultiChoice() {
+//                    @Override
+//                    public boolean onSelection(MaterialDialog materialDialog, Integer[] integers, CharSequence[] charSequences) {
+//
+//                        renderLocationView(integers);
+//
+//                        // Save location result
+//                        locationResult = new ArrayList<>(Arrays.asList(integers));
+//
+//                        // Notify change in section
+//                        notifySectionChanged();
+//
+//                        return false;
+//                    }
+//                })
+//                .positiveText("Confirm")
+//                .showListener(new DialogInterface.OnShowListener() {
+//                    @Override
+//                    public void onShow(DialogInterface dialog) {
+//                        Utils.hideKeyboard(getActivity());
+//                    }
+//                })
+//                .show();
+//    }
 
-        new MaterialDialog.Builder(getActivity())
-                .backgroundColorRes(R.color.bg_dark_blue)
-                .title("Select location")
-                .items(R.array.location_list)
-                .itemsCallbackMultiChoice(selectedIndices, new MaterialDialog.ListCallbackMultiChoice() {
-                    @Override
-                    public boolean onSelection(MaterialDialog materialDialog, Integer[] integers, CharSequence[] charSequences) {
+//    private void renderLocationView(Object[] locationIndexList) {
+//        String[] locations = getResources().getStringArray(R.array.location_list);
+//
+//        int length = locationIndexList.length;
+//
+//        if (length == 0) {
+//            selectedLocationsTextView.setVisibility(View.GONE);
+//            selectLocationButton.setVisibility(View.VISIBLE);
+//        } else {
+//            StringBuilder sb = new StringBuilder();
+//            for (int i = 0; i < length; i++) {
+//                sb.append(locations[((int) locationIndexList[i])]);
+//                if (length > 1 && i < length - 1)
+//                    sb.append(", ");
+//            }
+//
+//            selectedLocationsTextView.setText(sb.toString());
+//            selectedLocationsTextView.setVisibility(View.VISIBLE);
+//            selectLocationButton.setVisibility(View.GONE);
+//        }
+//    }
 
-                        renderLocationView(integers);
-
-                        // Save location result
-                        locationResult = new ArrayList<>(Arrays.asList(integers));
-
-                        // Notify change in section
-                        notifySectionChanged();
-
-                        return false;
-                    }
-                })
-                .positiveText("Confirm")
-                .showListener(new DialogInterface.OnShowListener() {
-                    @Override
-                    public void onShow(DialogInterface dialog) {
-                        Utils.hideKeyboard(getActivity());
-                    }
-                })
-                .show();
-    }
-
-    private void renderLocationView(Object[] locationIndexList) {
-        String[] locations = getResources().getStringArray(R.array.location_list);
-
-        int length = locationIndexList.length;
-
-        if (length == 0) {
-            selectedLocationsTextView.setVisibility(View.GONE);
-            selectLocationButton.setVisibility(View.VISIBLE);
-        } else {
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < length; i++) {
-                sb.append(locations[((int) locationIndexList[i])]);
-                if (length > 1 && i < length - 1)
-                    sb.append(", ");
-            }
-
-            selectedLocationsTextView.setText(sb.toString());
-            selectedLocationsTextView.setVisibility(View.VISIBLE);
-            selectLocationButton.setVisibility(View.GONE);
-        }
-    }
-
-    private void setupLocation() {
-        if (locationResult.size() > 0) {
-            renderLocationView(locationResult.toArray());
-        }
-    }
+//    private void setupLocation() {
+//        if (locationResult.size() > 0) {
+//            renderLocationView(locationResult.toArray());
+//        }
+//    }
 
     private void setupYearOfExp() {
         yearOfExpEditText.addTextChangedListener(new TextWatcher() {
@@ -333,8 +333,8 @@ public class BasicSectionFragment extends SectionFragment {
 
     @Override
     public boolean validateSection() {
-        if (locationResult.size() == 0)
-            return false;
+//        if (locationResult.size() == 0)
+//            return false;
 
         if (TextUtils.isEmpty(yearOfExpEditText.getText())) {
             return false;
@@ -352,7 +352,7 @@ public class BasicSectionFragment extends SectionFragment {
 
     @Override
     public void saveSection(Bundle data) {
-        data.putIntegerArrayList(ARG_LOCATION, locationResult);
+//        data.putIntegerArrayList(ARG_LOCATION, locationResult);
         data.putInt(ARG_YEAR_OF_EXP, yearOfExpResult);
         data.putIntArray(ARG_WAGE_RANGE, wageRangeResult);
 
@@ -362,7 +362,7 @@ public class BasicSectionFragment extends SectionFragment {
 
     @Override
     public void restoreSection(Bundle data) {
-        locationResult = data.getIntegerArrayList(ARG_LOCATION);
+//        locationResult = data.getIntegerArrayList(ARG_LOCATION);
         yearOfExpResult = data.getInt(ARG_YEAR_OF_EXP);
         wageRangeResult = data.getIntArray(ARG_WAGE_RANGE);
         languagesResult = data.getIntegerArrayList(ARG_LANGUAGES);
