@@ -419,6 +419,9 @@ public class BasicSectionFragment extends SectionFragment {
             if (data != null) {
                 ArrayList<String> photos = data.getStringArrayListExtra(PhotoPickerActivity.KEY_SELECTED_PHOTOS);
                 profileImageResult = photos.get(0);
+
+                // Notify data change
+                notifySectionChanged();
             }
 
             setupProfileImage();

@@ -175,7 +175,9 @@ public class EditProfileFragment extends Fragment implements OnSectionChangedLis
 //            throw new RuntimeException("This should never happen!");
         } else if (stateOrdinal > PageState.BASIC.ordinal()) {
             currentState = PageState.values()[stateOrdinal - 1];
-            getChildFragmentManager().popBackStack();
+            boolean leftToRight = false;
+            replaceFragment(getFragment(currentState), currentState, leftToRight);
+//            getChildFragmentManager().popBackStack();
         }
 
         checkButtonStates();
@@ -383,9 +385,17 @@ public class EditProfileFragment extends Fragment implements OnSectionChangedLis
         replaceFragment(f, state, true);
     }
 
-    private void replaceFragment(SectionFragment f, PageState state, boolean addToBackStack) {
+    private void replaceFragment(SectionFragment f, PageState state, boolean leftToRight) {
+        replaceFragment(f, state, true, leftToRight);
+    }
+
+    private void replaceFragment(SectionFragment f, PageState state, boolean addToBackStack, boolean leftToRight) {
         FragmentTransaction ft = getChildFragmentManager().beginTransaction();
-        ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right, R.anim.slide_in_right, R.anim.slide_out_left);
+        if (leftToRight)
+            ft.setCustomAnimations(R.anim.slide_in_left, R.anim.slide_out_right, R.anim.slide_in_right, R.anim.slide_out_left);
+        else
+            ft.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right);
+
         FrameLayout container = (FrameLayout) getView().findViewById(R.id.container);
 
         if (container.getChildCount() == 0)
