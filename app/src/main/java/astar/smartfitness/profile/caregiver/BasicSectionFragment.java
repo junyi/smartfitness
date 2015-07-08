@@ -1,10 +1,13 @@
 package astar.smartfitness.profile.caregiver;
 
+import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -18,19 +21,26 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.appyvet.rangebar.RangeBar;
+import com.squareup.picasso.Picasso;
 
 import org.apmem.tools.layouts.FlowLayout;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import astar.smartfitness.MainActivity;
 import astar.smartfitness.R;
 import astar.smartfitness.Utils;
+import astar.smartfitness.model.ProfileView;
 import astar.smartfitness.widget.ChipView;
+import astar.smartfitness.widget.CircleTransform;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import commons.validator.routines.IntegerValidator;
+import me.iwf.photopicker.PhotoPagerActivity;
+import me.iwf.photopicker.PhotoPickerActivity;
+import me.iwf.photopicker.utils.PhotoPickerIntent;
 
 public class BasicSectionFragment extends SectionFragment {
     public static final String ARG_LOCATION = "location";
@@ -48,6 +58,10 @@ public class BasicSectionFragment extends SectionFragment {
     private int[] wageRangeResult = new int[2];
     private ArrayList<Integer> languagesResult = new ArrayList<>();
     private SparseArray<String> tempLanguageResult = new SparseArray<>();
+    ProfileView profileTarget;
+
+    @Bind(R.id.btn_photoUpload)
+    View photoUploadButton;
 
     @Bind(R.id.select_location_button)
     Button selectLocationButton;
@@ -69,6 +83,9 @@ public class BasicSectionFragment extends SectionFragment {
 
     @Bind(R.id.scroll_view)
     ScrollView scrollView;
+
+    @Bind(R.id.textview_uploadPhoto)
+    TextView textview_uploadPhoto;
 
     public BasicSectionFragment() {
     }
@@ -357,6 +374,32 @@ public class BasicSectionFragment extends SectionFragment {
             tempLanguageResult.clear();
             for (int i = 0; i < size; i++) {
                 tempLanguageResult.put(languagesResult.get(i), languageList[i]);
+            }
+        }
+    }
+
+    @OnClick(R.id.btn_photoUpload)
+    public void uploadPhoto() {
+        testUpload();
+    }
+
+    public void testUpload() {
+        PhotoPickerIntent intent = new PhotoPickerIntent(getActivity());
+        intent.setPhotoCount(1);
+        intent.setShowCamera(true);
+        startActivityForResult(intent, 1010);
+        profileTarget = new ProfileView(photoUploadButton);
+    }
+
+    @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == Activity.RESULT_OK && requestCode == 1010) {
+            if (data != null) {
+                ArrayList<String> photos = data.getStringArrayListExtra(PhotoPickerActivity.KEY_SELECTED_PHOTOS);
+                Log.d("OMG", photos.get(0).toString());
+                Picasso.with(getActivity().getApplicationContext()).load("file:///" + photos.get(0).toString()).transform(new CircleTransform()).into(profileTarget);
+                textview_uploadPhoto.setVisibility(View.INVISIBLE);
             }
         }
     }

@@ -2,10 +2,12 @@ package astar.smartfitness.profile.caregiver;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +16,18 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import astar.smartfitness.MainActivity;
 import astar.smartfitness.R;
+import astar.smartfitness.widget.CircleTransform;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import me.iwf.photopicker.PhotoPickerActivity;
 
 public class EditProfileFragment extends Fragment implements OnSectionChangedListener {
     @Override
@@ -232,6 +238,16 @@ public class EditProfileFragment extends Fragment implements OnSectionChangedLis
         if (addToBackStack)
             ft.addToBackStack(null);
         ft.commit();
+    }
+
+
+    @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        SectionFragment f = getFragment(currentState);
+        if (f != null) {
+            f.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
 }

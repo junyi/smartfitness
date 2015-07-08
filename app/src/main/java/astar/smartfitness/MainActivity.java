@@ -1,25 +1,43 @@
 package astar.smartfitness;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
+
+import java.util.ArrayList;
 import java.util.List;
 
+import astar.smartfitness.model.ProfileView;
 import astar.smartfitness.model.User;
 import astar.smartfitness.profile.caregiver.EditProfileFragment;
+import astar.smartfitness.widget.CircleTransform;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import me.iwf.photopicker.PhotoPickerActivity;
+import me.iwf.photopicker.utils.PhotoPickerIntent;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MainActivity extends AppCompatActivity {
+
     @Bind(R.id.toolbar)
     Toolbar toolbar;
 
