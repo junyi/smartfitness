@@ -140,8 +140,12 @@ public class BasicSectionFragment extends SectionFragment {
 
     private void setupProfileImage() {
         if (profileImageResult != null) {
+            int sizeInDp = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 230, getResources().getDisplayMetrics());
+
             Picasso.with(getActivity().getApplicationContext())
                     .load("file:///" + profileImageResult)
+                    .resize(sizeInDp, sizeInDp)
+                    .centerCrop()
                     .transform(new CircleTransform())
                     .into(profileTarget);
             textview_uploadPhoto.setVisibility(View.INVISIBLE);
