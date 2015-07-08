@@ -119,7 +119,8 @@
                 android:gravity="center_horizontal"
                 android:inputType="number"
                 android:maxLength="2"
-                android:textColor="#99FFFFFF" />
+                android:textColor="#99FFFFFF"
+                android:layout_marginTop="-3dp" />
 
             <TextView
                 style="@style/TextAppearance.AppCompat.Small"
