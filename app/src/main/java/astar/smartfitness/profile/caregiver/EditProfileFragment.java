@@ -206,6 +206,10 @@ public class EditProfileFragment extends Fragment implements OnSectionChangedLis
         dataMap.put(currentState, data);
     }
 
+    private void submitData() {
+
+    }
+
 
     @Override
     public void onAttach(Activity activity) {
