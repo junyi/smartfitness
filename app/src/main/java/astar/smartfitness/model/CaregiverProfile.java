@@ -1,6 +1,7 @@
 package astar.smartfitness.model;
 
 import com.parse.ParseClassName;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ public class CaregiverProfile extends ParseObject {
     public final static String KEY_WAGE_RANGE_MAX = "wageRangeMax";
     public final static String KEY_LANGUAGES = "languages";
     public final static String KEY_SERVICES = "services";
+    public final static String KEY_PROFILE_IMAGE = "profileImage";
 
     public void setUserId(User user) {
         put(KEY_USER_ID, user);
@@ -38,5 +40,8 @@ public class CaregiverProfile extends ParseObject {
         put(KEY_SERVICES, services);
     }
 
+    public void setProfileImage(String image) {
+        put(KEY_PROFILE_IMAGE, image);
+    }
 
 }

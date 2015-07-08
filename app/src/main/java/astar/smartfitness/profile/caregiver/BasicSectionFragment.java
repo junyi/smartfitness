@@ -1,34 +1,28 @@
 package astar.smartfitness.profile.caregiver;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.appyvet.rangebar.RangeBar;
 import com.squareup.picasso.Picasso;
 
 import org.apmem.tools.layouts.FlowLayout;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
-import astar.smartfitness.MainActivity;
 import astar.smartfitness.R;
 import astar.smartfitness.Utils;
 import astar.smartfitness.model.ProfileView;
@@ -38,7 +32,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import commons.validator.routines.IntegerValidator;
-import me.iwf.photopicker.PhotoPagerActivity;
 import me.iwf.photopicker.PhotoPickerActivity;
 import me.iwf.photopicker.utils.PhotoPickerIntent;
 
@@ -47,6 +40,7 @@ public class BasicSectionFragment extends SectionFragment {
     public static final String ARG_YEAR_OF_EXP = "year_of_exp";
     public static final String ARG_WAGE_RANGE = "wage_range";
     public static final String ARG_LANGUAGES = "languages";
+    public static final String ARG_PROFILE_IMAGE = "profile_image";
 
     private static final int MIN_YEAR_OF_EXP = 0;
     private static final int MAX_YEAR_OF_EXP = 99;
@@ -58,6 +52,8 @@ public class BasicSectionFragment extends SectionFragment {
     private int[] wageRangeResult = new int[2];
     private ArrayList<Integer> languagesResult = new ArrayList<>();
     private SparseArray<String> tempLanguageResult = new SparseArray<>();
+    private String profileImageResult;
+
     ProfileView profileTarget;
 
     @Bind(R.id.btn_photoUpload)
@@ -102,6 +98,8 @@ public class BasicSectionFragment extends SectionFragment {
         View view = inflater.inflate(R.layout.fragment_caregiver_profile_basic, container, false);
         ButterKnife.bind(this, view);
 
+        profileTarget = new ProfileView(photoUploadButton);
+
         return view;
     }
 
@@ -117,6 +115,7 @@ public class BasicSectionFragment extends SectionFragment {
         setupYearOfExp();
         setupWageRange();
         setupLanguages();
+        setupProfileImage();
 
         scrollView.setOnTouchListener(new View.OnTouchListener() {
             float downX = 0;
@@ -137,6 +136,18 @@ public class BasicSectionFragment extends SectionFragment {
                 return false;
             }
         });
+    }
+
+    private void setupProfileImage() {
+        if (profileImageResult != null) {
+            Picasso.with(getActivity().getApplicationContext())
+                    .load("file:///" + profileImageResult)
+                    .transform(new CircleTransform())
+                    .into(profileTarget);
+            textview_uploadPhoto.setVisibility(View.INVISIBLE);
+        } else {
+            textview_uploadPhoto.setVisibility(View.VISIBLE);
+        }
     }
 
 //    @OnClick({R.id.select_location_button, R.id.selected_locations})
@@ -336,6 +347,9 @@ public class BasicSectionFragment extends SectionFragment {
 //        if (locationResult.size() == 0)
 //            return false;
 
+        if (profileImageResult == null)
+            return false;
+
         if (TextUtils.isEmpty(yearOfExpEditText.getText())) {
             return false;
         }
@@ -358,6 +372,8 @@ public class BasicSectionFragment extends SectionFragment {
 
         processTempLanguageResult();
         data.putIntegerArrayList(ARG_LANGUAGES, languagesResult);
+
+        data.putString(ARG_PROFILE_IMAGE, profileImageResult);
     }
 
     @Override
@@ -366,6 +382,7 @@ public class BasicSectionFragment extends SectionFragment {
         yearOfExpResult = data.getInt(ARG_YEAR_OF_EXP);
         wageRangeResult = data.getIntArray(ARG_WAGE_RANGE);
         languagesResult = data.getIntegerArrayList(ARG_LANGUAGES);
+        profileImageResult = data.getString(ARG_PROFILE_IMAGE);
 
         String[] languageList = getResources().getStringArray(R.array.language_list);
 
@@ -388,19 +405,20 @@ public class BasicSectionFragment extends SectionFragment {
         intent.setPhotoCount(1);
         intent.setShowCamera(true);
         startActivityForResult(intent, 1010);
-        profileTarget = new ProfileView(photoUploadButton);
     }
 
-    @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == Activity.RESULT_OK && requestCode == 1010) {
             if (data != null) {
                 ArrayList<String> photos = data.getStringArrayListExtra(PhotoPickerActivity.KEY_SELECTED_PHOTOS);
-                Log.d("OMG", photos.get(0).toString());
-                Picasso.with(getActivity().getApplicationContext()).load("file:///" + photos.get(0).toString()).transform(new CircleTransform()).into(profileTarget);
-                textview_uploadPhoto.setVisibility(View.INVISIBLE);
+                profileImageResult = photos.get(0);
             }
+
+            setupProfileImage();
+
         }
     }
 }

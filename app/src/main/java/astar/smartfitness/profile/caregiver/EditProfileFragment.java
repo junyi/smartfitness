@@ -3,6 +3,8 @@ package astar.smartfitness.profile.caregiver;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -16,15 +18,15 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.squareup.picasso.Picasso;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import astar.smartfitness.MainActivity;
 import astar.smartfitness.R;
-import astar.smartfitness.widget.CircleTransform;
 import astar.smartfitness.Utils;
 import astar.smartfitness.model.CaregiverProfile;
 import astar.smartfitness.model.Skill;
@@ -34,7 +36,6 @@ import bolts.Task;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import me.iwf.photopicker.PhotoPickerActivity;
 import timber.log.Timber;
 
 public class EditProfileFragment extends Fragment implements OnSectionChangedListener {
@@ -78,7 +79,6 @@ public class EditProfileFragment extends Fragment implements OnSectionChangedLis
 
         showBasicSection();
     }
-
 
     private void showBasicSection() {
         replaceFragment(new BasicSectionFragment(), PageState.BASIC);
@@ -220,6 +220,7 @@ public class EditProfileFragment extends Fragment implements OnSectionChangedLis
         Bundle skillsData = dataMap.get(PageState.SKILLS);
         Bundle servicesData = dataMap.get(PageState.SERVICES);
 
+        String profileImagePath = basicData.getString(BasicSectionFragment.ARG_PROFILE_IMAGE);
         int yearOfExp = basicData.getInt(BasicSectionFragment.ARG_YEAR_OF_EXP);
         int[] wageRange = basicData.getIntArray(BasicSectionFragment.ARG_WAGE_RANGE);
         ArrayList<Integer> languages = basicData.getIntegerArrayList(BasicSectionFragment.ARG_LANGUAGES);
@@ -228,7 +229,8 @@ public class EditProfileFragment extends Fragment implements OnSectionChangedLis
 
         User user = Utils.getCurrentUser();
 
-        CaregiverProfile profile = new CaregiverProfile();
+
+        final CaregiverProfile profile = new CaregiverProfile();
         profile.setUserId(user);
         profile.setYearOfExp(yearOfExp);
         profile.setWageRangeMin(wageRange[0]);
@@ -241,11 +243,37 @@ public class EditProfileFragment extends Fragment implements OnSectionChangedLis
             skills.get(i).setUserId(user);
         }
 
-        ArrayList<Task<Void>> tasks = new ArrayList<Task<Void>>();
-        tasks.add(profile.saveInBackground());
-        tasks.add(ParseObject.saveAllInBackground(skills));
+        final ArrayList<Task<Void>> tasks = new ArrayList<>();
 
-        Task.whenAll(tasks).continueWith(new Continuation<Void, Object>() {
+        final ParseFile imageFile = convertToParseFile(profileImagePath);
+
+        if (imageFile == null) {
+            handleError(new Exception("Cannot convert path to ParseFile"));
+            return;
+        }
+
+        imageFile
+                .saveInBackground()
+                .continueWithTask(new Continuation<Void, Task<Void>>() {
+                    @Override
+                    public Task<Void> then(Task<Void> task) throws Exception {
+                        if (task.isCancelled()) {
+                            Timber.d("Task is cancelled");
+                            handleError(new Exception("Task is cancelled"));
+                        } else if (task.isFaulted()) {
+                            handleError(task.getError());
+                        } else {
+                            profile.setProfileImage(imageFile.getUrl());
+
+                            tasks.add(profile.saveInBackground());
+                            tasks.add(ParseObject.saveAllInBackground(skills));
+
+                            return Task.whenAll(tasks);
+                        }
+
+                        return Task.cancelled();
+                    }
+                }).continueWith(new Continuation<Void, Object>() {
             @Override
             public Object then(Task<Void> task) throws Exception {
                 if (task.isCancelled()) {
@@ -262,6 +290,28 @@ public class EditProfileFragment extends Fragment implements OnSectionChangedLis
 
     }
 
+    private ParseFile convertToParseFile(String image) {
+        Bitmap bitmap = BitmapFactory.decodeFile(image);
+
+        if (bitmap != null) {
+            // Convert it to byte
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            // Compress image to lower quality scale 1 - 100
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
+            byte[] imageBytes = stream.toByteArray();
+
+            Long tsLong = System.currentTimeMillis() / 1000;
+            String timestamp = tsLong.toString();
+            String fileName = Utils.getCurrentUser().getObjectId() + "_" + timestamp + ".jpg";
+            // Create the ParseFile
+            ParseFile file = new ParseFile(fileName, imageBytes);
+
+            return file;
+        }
+
+        return null;
+    }
+
     private void onSubmitSuccess() {
         Timber.d("Submission success!");
         getActivity().runOnUiThread(new Runnable() {
@@ -270,7 +320,9 @@ public class EditProfileFragment extends Fragment implements OnSectionChangedLis
                 if (dialog != null) {
                     dialog.dismiss();
                 }
-                Snackbar.make(getView(), "Profile creation success!", Snackbar.LENGTH_SHORT).show();
+
+                Snackbar.make(getActivity().getWindow().getDecorView().findViewById(android.R.id.content),
+                        "Profile creation success!", Snackbar.LENGTH_SHORT).show();
             }
         });
     }
@@ -286,7 +338,7 @@ public class EditProfileFragment extends Fragment implements OnSectionChangedLis
             }
         });
 
-        Timber.e("Submission error", Log.getStackTraceString(e));
+        Timber.e("Submission error: %s", Log.getStackTraceString(e));
 
 //        if (e instanceof ParseException) {
 //            final ParseException error = (ParseException) e;
@@ -346,7 +398,8 @@ public class EditProfileFragment extends Fragment implements OnSectionChangedLis
     }
 
 
-    @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         SectionFragment f = getFragment(currentState);
