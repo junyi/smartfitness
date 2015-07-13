@@ -25,8 +25,8 @@ import com.parse.ParseUser;
 import java.util.List;
 
 import astar.smartfitness.R;
-import astar.smartfitness.util.Utils;
 import astar.smartfitness.model.User;
+import astar.smartfitness.util.Utils;
 import astar.smartfitness.validation.Nric;
 import bolts.Capture;
 import bolts.Continuation;
@@ -214,6 +214,7 @@ public class SignupFragment extends Fragment implements Validator.ValidationList
         final User user = new User();
         user.setUsername(email);
         user.setEmail(email);
+        user.setNric(nric);
         user.setPassword(password);
         user.setFirstName(firstName);
         user.setLastName(lastName);

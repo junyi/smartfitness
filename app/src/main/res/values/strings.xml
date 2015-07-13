@@ -57,5 +57,18 @@
         <item>Wheelchair Bound Care</item>
     </string-array>
 
+    <string-array name="gender_list">
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+
+    <string-array name="rating_list">
+        <item>1 star</item>
+        <item>2 stars</item>
+        <item>3 stars</item>
+        <item>4 stars</item>
+        <item>5 stars</item>
+    </string-array>
+
     <string name="wage_range_formatted_text">$ %1$s &#8212; %2$s</string>
 </resources>

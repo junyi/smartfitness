@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/bg_dark_blue"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingTop="?attr/actionBarSize">
+
+        <TextView
+            fontPath="fonts/Roboto-Light.ttf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="Gender"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/gender"
+            style="@style/TextAppearance.AppCompat.Medium"
+            fontPath="fonts/Roboto-Light.ttf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:background="@color/login_blue"
+            android:clickable="true"
+            android:padding="8dp"
+            android:text="No Preference"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Small"
+            fontPath="fonts/Roboto-Light.ttf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="Services"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/services"
+            style="@style/TextAppearance.AppCompat.Medium"
+            fontPath="fonts/Roboto-Light.ttf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:background="@color/login_blue"
+            android:clickable="true"
+            android:padding="8dp"
+            android:text="No Preference"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Small"
+            fontPath="fonts/Roboto-Light.ttf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:text="Year of Experience"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/year_of_exp"
+            style="@style/TextAppearance.AppCompat.Medium"
+            fontPath="fonts/Roboto-Light.ttf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:background="@color/login_blue"
+            android:clickable="true"
+            android:padding="8dp"
+            android:text="No Preference"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Small"
+            fontPath="fonts/Roboto-Light.ttf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Budget"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/budget_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|center_horizontal"
+                android:paddingTop="8dp"
+                android:textColor="@android:color/white"
+                tools:text="$ 50 &#8212; 100" />
+
+            <com.appyvet.rangebar.RangeBar
+                android:id="@+id/rangebar"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                app:barColor="@android:color/white"
+                app:connectingLineColor="@android:color/white"
+                app:pinColor="@android:color/white"
+                app:pinRadius="2dp"
+                app:selectorColor="@android:color/white"
+                app:selectorSize="2dp"
+                app:tickColor="@android:color/transparent"
+                app:tickEnd="1000"
+                app:tickInterval="10"
+                app:tickStart="0" />
+        </FrameLayout>
+
+        <TextView
+            style="@style/TextAppearance.AppCompat.Small"
+            fontPath="fonts/Roboto-Light.ttf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Languages"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp" />
+
+        <org.apmem.tools.layouts.FlowLayout
+            android:id="@+id/language_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginTop="4dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+        </org.apmem.tools.layouts.FlowLayout>
+
+        <Button
+            android:id="@+id/search_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Search"
+            app:backgroundTint="@color/login_blue" />
+
+    </LinearLayout>
+</ScrollView>

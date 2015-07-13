@@ -16,6 +16,8 @@ import java.util.List;
 import astar.smartfitness.R;
 import astar.smartfitness.model.User;
 import astar.smartfitness.screen.profile.caregiver.EditProfileFragment;
+import astar.smartfitness.screen.search.SearchContainerFragment;
+import astar.smartfitness.util.OnBackPressedListener;
 import astar.smartfitness.util.Utils;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -34,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
 
-        showCreateProfileFragment();
+//        showCreateProfileFragment();
+        showSearchFragment();
     }
 
     private void showCreateProfileFragment() {
@@ -44,6 +47,15 @@ public class MainActivity extends AppCompatActivity {
         //TODO: Open the correct fragment based on role
 
         replaceFragment(new EditProfileFragment(), false);
+    }
+
+    private void showSearchFragment() {
+        User user = Utils.getCurrentUser();
+        String role = user.getRoles().get(0);
+
+        //TODO: Check if user is patient
+
+        replaceFragment(new SearchContainerFragment(), false);
     }
 
     private void replaceFragment(Fragment f) {
@@ -102,13 +114,9 @@ public class MainActivity extends AppCompatActivity {
                         continue;
                     }
                     if (frag.isVisible()) {
-                        if (frag instanceof EditProfileFragment) {
-                            EditProfileFragment f = ((EditProfileFragment) frag);
-                            f.onBackButtonClicked();
-                            if (f.getCurrentState() == EditProfileFragment.PageState.BASIC)
-                                return false;
-                            else
-                                return true;
+                        if (frag instanceof OnBackPressedListener) {
+                            ((OnBackPressedListener) frag).onBackPressed();
+                            return true;
                         } else if (onBackPressed(frag.getChildFragmentManager())) {
                             return true;
                         }

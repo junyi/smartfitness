@@ -25,12 +25,13 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import astar.smartfitness.screen.MainActivity;
 import astar.smartfitness.R;
-import astar.smartfitness.util.Utils;
 import astar.smartfitness.model.CaregiverProfile;
 import astar.smartfitness.model.Skill;
 import astar.smartfitness.model.User;
+import astar.smartfitness.screen.MainActivity;
+import astar.smartfitness.util.OnBackPressedListener;
+import astar.smartfitness.util.Utils;
 import bolts.Continuation;
 import bolts.Task;
 import butterknife.Bind;
@@ -38,10 +39,20 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import timber.log.Timber;
 
-public class EditProfileFragment extends Fragment implements OnSectionChangedListener {
+public class EditProfileFragment extends Fragment implements OnSectionChangedListener, OnBackPressedListener {
     @Override
     public void onSectionChanged() {
         notifyToValidate();
+    }
+
+    @Override
+    public boolean onBackPressed() {
+        onBackButtonClicked();
+
+        if (getCurrentState() == PageState.BASIC)
+            return false;
+        else
+            return true;
     }
 
     public enum PageState {BASIC, SKILLS, SERVICES}
