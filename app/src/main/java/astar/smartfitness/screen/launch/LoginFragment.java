@@ -1,4 +1,4 @@
-package astar.smartfitness;
+package astar.smartfitness.screen.launch;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -21,6 +21,8 @@ import com.parse.SaveCallback;
 
 import java.util.List;
 
+import astar.smartfitness.R;
+import astar.smartfitness.util.Utils;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;

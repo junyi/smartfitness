@@ -14,10 +14,10 @@
         android:label="@string/app_name"
         android:theme="@style/AppDarkTheme">
         <activity
-            android:name=".MainActivity"
+            android:name=".screen.MainActivity"
             android:label="@string/app_name" />
         <activity
-            android:name=".LaunchActivity"
+            android:name=".screen.launch.LaunchActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

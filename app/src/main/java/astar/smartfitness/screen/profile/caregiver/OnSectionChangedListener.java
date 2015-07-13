@@ -1,4 +1,4 @@
-package astar.smartfitness.profile.caregiver;
+package astar.smartfitness.screen.profile.caregiver;
 
 public interface OnSectionChangedListener {
     void onSectionChanged();

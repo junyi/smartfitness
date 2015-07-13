@@ -30,21 +30,21 @@
                 android:src="@mipmap/sfs_bg" />
 
             <View
+                android:id="@+id/btn_photoUpload"
                 android:layout_width="230dp"
                 android:layout_height="230dp"
                 android:layout_centerInParent="true"
                 android:background="@drawable/circle_selector"
-                android:duplicateParentState="true"
                 android:clickable="true"
-                android:id="@+id/btn_photoUpload" />
+                android:duplicateParentState="true" />
 
             <TextView
+                android:id="@+id/textview_uploadPhoto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="Upload Photo"
-                android:textColor="@color/chip_text_color"
-                android:id="@+id/textview_uploadPhoto" />
+                android:textColor="@color/chip_text_color" />
         </RelativeLayout>
 
         <LinearLayout
@@ -58,48 +58,48 @@
 
 
             <!--<TextView-->
-                <!--style="@style/TextAppearance.AppCompat.Small"-->
-                <!--fontPath="fonts/Roboto-Light.ttf"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_gravity="center_horizontal"-->
-                <!--android:layout_marginBottom="-10dp"-->
-                <!--android:layout_marginTop="15dp"-->
-                <!--android:gravity="center"-->
-                <!--android:text="Location"-->
-                <!--android:textColor="#FFFFFF"-->
-                <!--android:textSize="20sp" />-->
+            <!--style="@style/TextAppearance.AppCompat.Small"-->
+            <!--fontPath="fonts/Roboto-Light.ttf"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center_horizontal"-->
+            <!--android:layout_marginBottom="-10dp"-->
+            <!--android:layout_marginTop="15dp"-->
+            <!--android:gravity="center"-->
+            <!--android:text="Location"-->
+            <!--android:textColor="#FFFFFF"-->
+            <!--android:textSize="20sp" />-->
 
             <!--<RelativeLayout-->
-                <!--android:id="@+id/location_container"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="50dp"-->
-                <!--android:layout_marginBottom="30dp">-->
+            <!--android:id="@+id/location_container"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:layout_marginBottom="30dp">-->
 
-                <!--<Button-->
-                    <!--android:id="@+id/select_location_button"-->
-                    <!--style="?attr/borderlessButtonStyle"-->
-                    <!--fontPath="fonts/Roboto-Light.ttf"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_alignParentBottom="true"-->
-                    <!--android:layout_centerHorizontal="true"-->
-                    <!--android:layout_gravity="center_horizontal|bottom"-->
-                    <!--android:gravity="center_vertical|center_horizontal"-->
-                    <!--android:text="_______"-->
-                    <!--android:textAppearance="@style/TextAppearance.AppCompat.Small"-->
-                    <!--android:textColor="#88FFFFFF" />-->
+            <!--<Button-->
+            <!--android:id="@+id/select_location_button"-->
+            <!--style="?attr/borderlessButtonStyle"-->
+            <!--fontPath="fonts/Roboto-Light.ttf"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:layout_gravity="center_horizontal|bottom"-->
+            <!--android:gravity="center_vertical|center_horizontal"-->
+            <!--android:text="_______"-->
+            <!--android:textAppearance="@style/TextAppearance.AppCompat.Small"-->
+            <!--android:textColor="#88FFFFFF" />-->
 
-                <!--<TextView-->
-                    <!--android:id="@+id/selected_locations"-->
-                    <!--fontPath="fonts/Roboto-Light.ttf"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_centerHorizontal="true"-->
-                    <!--android:layout_centerVertical="true"-->
-                    <!--android:layout_gravity="center_horizontal"-->
-                    <!--android:clickable="true"-->
-                    <!--android:visibility="gone" />-->
+            <!--<TextView-->
+            <!--android:id="@+id/selected_locations"-->
+            <!--fontPath="fonts/Roboto-Light.ttf"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_gravity="center_horizontal"-->
+            <!--android:clickable="true"-->
+            <!--android:visibility="gone" />-->
 
             <!--</RelativeLayout>-->
 
@@ -119,11 +119,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginBottom="40dp"
+                android:layout_marginTop="-3dp"
                 android:gravity="center_horizontal"
                 android:inputType="number"
                 android:maxLength="2"
-                android:textColor="#99FFFFFF"
-                android:layout_marginTop="-3dp" />
+                android:textColor="#99FFFFFF" />
 
             <TextView
                 style="@style/TextAppearance.AppCompat.Small"

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="fill_parent"
     android:background="@color/bg_dark_blue"
-    tools:context="astar.smartfitness.profile.caregiver.SkillsSectionFragment">
+    tools:context="astar.smartfitness.screen.profile.caregiver.SkillsSectionFragment">
 
     <FrameLayout
         android:layout_width="match_parent"

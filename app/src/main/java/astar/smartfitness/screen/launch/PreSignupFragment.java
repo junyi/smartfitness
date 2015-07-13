@@ -1,4 +1,4 @@
-package astar.smartfitness;
+package astar.smartfitness.screen.launch;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import astar.smartfitness.R;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 

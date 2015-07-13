@@ -1,4 +1,4 @@
-package astar.smartfitness.profile.caregiver;
+package astar.smartfitness.screen.profile.caregiver;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -22,9 +22,9 @@ import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
 
-import astar.smartfitness.DividerItemDecoration;
+import astar.smartfitness.util.DividerItemDecoration;
 import astar.smartfitness.R;
-import astar.smartfitness.RecyclerItemClickListener;
+import astar.smartfitness.util.RecyclerItemClickListener;
 import astar.smartfitness.model.Skill;
 import astar.smartfitness.widget.EmptyRecyclerView;
 import butterknife.Bind;

@@ -1,4 +1,4 @@
-package astar.smartfitness.profile.caregiver;
+package astar.smartfitness.screen.profile.caregiver;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

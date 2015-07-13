@@ -4,7 +4,7 @@ import com.mobsandgeeks.saripaar.AnnotationRule;
 
 import java.lang.annotation.Annotation;
 
-import astar.smartfitness.Utils;
+import astar.smartfitness.util.Utils;
 
 public class NricRule extends AnnotationRule<Nric, String> {
     /**

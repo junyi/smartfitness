@@ -1,4 +1,4 @@
-package astar.smartfitness;
+package astar.smartfitness.screen.launch;
 
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
@@ -24,6 +24,8 @@ import com.parse.ParseUser;
 
 import java.util.List;
 
+import astar.smartfitness.R;
+import astar.smartfitness.util.Utils;
 import astar.smartfitness.model.User;
 import astar.smartfitness.validation.Nric;
 import bolts.Capture;

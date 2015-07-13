@@ -1,4 +1,4 @@
-package astar.smartfitness;
+package astar.smartfitness.util;
 
 import android.app.Activity;
 import android.content.Context;

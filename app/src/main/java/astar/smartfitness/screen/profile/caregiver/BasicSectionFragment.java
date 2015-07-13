@@ -1,4 +1,4 @@
-package astar.smartfitness.profile.caregiver;
+package astar.smartfitness.screen.profile.caregiver;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -24,7 +24,7 @@ import org.apmem.tools.layouts.FlowLayout;
 import java.util.ArrayList;
 
 import astar.smartfitness.R;
-import astar.smartfitness.Utils;
+import astar.smartfitness.util.Utils;
 import astar.smartfitness.model.ProfileView;
 import astar.smartfitness.widget.ChipView;
 import astar.smartfitness.widget.CircleTransform;

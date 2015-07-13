@@ -1,4 +1,4 @@
-package astar.smartfitness;
+package astar.smartfitness.screen.launch;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +11,8 @@ import android.widget.FrameLayout;
 
 import com.parse.ParseUser;
 
+import astar.smartfitness.screen.MainActivity;
+import astar.smartfitness.R;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class LaunchActivity extends AppCompatActivity {

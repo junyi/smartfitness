@@ -1,4 +1,4 @@
-package astar.smartfitness.profile.caregiver;
+package astar.smartfitness.screen.profile.caregiver;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -25,9 +25,9 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import astar.smartfitness.MainActivity;
+import astar.smartfitness.screen.MainActivity;
 import astar.smartfitness.R;
-import astar.smartfitness.Utils;
+import astar.smartfitness.util.Utils;
 import astar.smartfitness.model.CaregiverProfile;
 import astar.smartfitness.model.Skill;
 import astar.smartfitness.model.User;
