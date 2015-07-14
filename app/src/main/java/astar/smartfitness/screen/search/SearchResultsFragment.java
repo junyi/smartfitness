@@ -79,11 +79,6 @@ public class SearchResultsFragment extends BaseSearchFragment {
         int[] budgetResult = data.getIntArray(FilterFragment.ARG_BUDGET);
         ArrayList<Integer> languagesResult = data.getIntegerArrayList(FilterFragment.ARG_LANGUAGES);
 
-        String[] ratings = getResources().getStringArray(R.array.rating_list);
-        String[] genders = getResources().getStringArray(R.array.gender_list);
-        String[] languages = getResources().getStringArray(R.array.language_list);
-        String[] services = getResources().getStringArray(R.array.service_list);
-
         ParseQuery<CaregiverProfile> query = ParseQuery.getQuery(CaregiverProfile.class);
         query.include(CaregiverProfile.KEY_USER_ID);
 
@@ -92,28 +87,28 @@ public class SearchResultsFragment extends BaseSearchFragment {
 
         query.addDescendingOrder(CaregiverProfile.KEY_RATING);
 
-//        if (genderResult != null) {
-//            ParseQuery<User> genderQuery = ParseQuery.getQuery(User.class);
-//            genderQuery.whereEqualTo(User.KEY_GENDER, genderResult);
-//            query.whereMatchesQuery(CaregiverProfile.KEY_USER_ID, genderQuery);
-//        }
-//
-//        if (budgetResult != null) {
-//            query.whereGreaterThanOrEqualTo(CaregiverProfile.KEY_WAGE_RANGE_MIN, budgetResult[0]);
-//            query.whereLessThanOrEqualTo(CaregiverProfile.KEY_WAGE_RANGE_MAX, budgetResult[1]);
-//        }
-//
-//        if (yearOfExpResult != -1) {
-//            query.whereGreaterThanOrEqualTo(CaregiverProfile.KEY_YEAR_OF_EXP, yearOfExpResult);
-//        }
-//
-//        if (servicesResult != null) {
-//            query.whereContainedIn(CaregiverProfile.KEY_SERVICES, servicesResult);
-//        }
-//
-//        if (languagesResult != null) {
-//            query.whereContainedIn(CaregiverProfile.KEY_LANGUAGES, languagesResult);
-//        }
+        if (genderResult != null) {
+            ParseQuery<User> genderQuery = ParseQuery.getQuery(User.class);
+            genderQuery.whereEqualTo(User.KEY_GENDER, genderResult);
+            query.whereMatchesQuery(CaregiverProfile.KEY_USER_ID, genderQuery);
+        }
+
+        if (budgetResult != null) {
+            query.whereGreaterThanOrEqualTo(CaregiverProfile.KEY_WAGE_RANGE_MIN, budgetResult[0]);
+            query.whereLessThanOrEqualTo(CaregiverProfile.KEY_WAGE_RANGE_MAX, budgetResult[1]);
+        }
+
+        if (yearOfExpResult != -1) {
+            query.whereGreaterThanOrEqualTo(CaregiverProfile.KEY_YEAR_OF_EXP, yearOfExpResult);
+        }
+
+        if (servicesResult != null && servicesResult.size() > 0) {
+            query.whereContainedIn(CaregiverProfile.KEY_SERVICES, servicesResult);
+        }
+
+        if (languagesResult != null && languagesResult.size() > 0) {
+            query.whereContainedIn(CaregiverProfile.KEY_LANGUAGES, languagesResult);
+        }
 
         query.findInBackground().continueWithTask(new Continuation<List<CaregiverProfile>, Task<Void>>() {
             @Override

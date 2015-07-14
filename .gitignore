@@ -39,3 +39,9 @@ build
 *.ipr
 *~
 *.swp
+
+# API key for Parse for mock data
+*/settings_local.py
+
+# Python compiled files
+*.pyc
