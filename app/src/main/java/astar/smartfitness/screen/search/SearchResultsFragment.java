@@ -1,8 +1,8 @@
 package astar.smartfitness.screen.search;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +18,7 @@ import astar.smartfitness.R;
 import astar.smartfitness.model.CaregiverProfile;
 import astar.smartfitness.model.User;
 import astar.smartfitness.util.MarginDecoration;
+import astar.smartfitness.widget.EmptyRecyclerView;
 import bolts.Continuation;
 import bolts.Task;
 import butterknife.Bind;
@@ -26,8 +27,16 @@ import timber.log.Timber;
 
 public class SearchResultsFragment extends BaseSearchFragment {
 
+    private Bundle searchBundle = null;
+
+    @Bind(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout swipeRefreshLayout;
+
     @Bind(R.id.recycler_view)
-    RecyclerView recyclerView;
+    EmptyRecyclerView recyclerView;
+
+    @Bind(R.id.empty_view)
+    View emptyView;
 
     private SearchResultsRecyclerViewAdapter adapter;
 
@@ -51,6 +60,7 @@ public class SearchResultsFragment extends BaseSearchFragment {
         super.onViewCreated(view, savedInstanceState);
 
         if (getArguments() != null) {
+            searchBundle = getArguments();
             executeSearch(getArguments());
         }
 
@@ -58,8 +68,20 @@ public class SearchResultsFragment extends BaseSearchFragment {
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new MarginDecoration(getActivity()));
+        recyclerView.setEmptyView(emptyView);
         recyclerView.setAdapter(adapter);
 
+        swipeRefreshLayout.setColorSchemeResources(R.color.login_blue);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if (searchBundle != null) {
+                    executeSearch(searchBundle);
+                } else {
+                    swipeRefreshLayout.setRefreshing(false);
+                }
+            }
+        });
     }
 
     @Override
@@ -69,15 +91,14 @@ public class SearchResultsFragment extends BaseSearchFragment {
 
     @Override
     public void restoreSection(Bundle data) {
-
+        if (data != null) {
+            executeSearch(data);
+        }
     }
 
     private void executeSearch(Bundle data) {
         ArrayList<Integer> servicesResult = data.getIntegerArrayList(FilterFragment.ARG_SERVICES);
-        String genderResult = data.getString(FilterFragment.ARG_GENDER);
-        int yearOfExpResult = data.getInt(FilterFragment.ARG_YEAR_OF_EXP);
         int[] budgetResult = data.getIntArray(FilterFragment.ARG_BUDGET);
-        ArrayList<Integer> languagesResult = data.getIntegerArrayList(FilterFragment.ARG_LANGUAGES);
 
         ParseQuery<CaregiverProfile> query = ParseQuery.getQuery(CaregiverProfile.class);
         query.include(CaregiverProfile.KEY_USER_ID);
@@ -87,28 +108,28 @@ public class SearchResultsFragment extends BaseSearchFragment {
 
         query.addDescendingOrder(CaregiverProfile.KEY_RATING);
 
-        if (genderResult != null) {
-            ParseQuery<User> genderQuery = ParseQuery.getQuery(User.class);
-            genderQuery.whereEqualTo(User.KEY_GENDER, genderResult);
-            query.whereMatchesQuery(CaregiverProfile.KEY_USER_ID, genderQuery);
-        }
-
+//        if (genderResult != null) {
+//            ParseQuery<User> genderQuery = ParseQuery.getQuery(User.class);
+//            genderQuery.whereEqualTo(User.KEY_GENDER, genderResult);
+//            query.whereMatchesQuery(CaregiverProfile.KEY_USER_ID, genderQuery);
+//        }
+//
         if (budgetResult != null) {
             query.whereGreaterThanOrEqualTo(CaregiverProfile.KEY_WAGE_RANGE_MIN, budgetResult[0]);
             query.whereLessThanOrEqualTo(CaregiverProfile.KEY_WAGE_RANGE_MAX, budgetResult[1]);
         }
-
-        if (yearOfExpResult != -1) {
-            query.whereGreaterThanOrEqualTo(CaregiverProfile.KEY_YEAR_OF_EXP, yearOfExpResult);
-        }
-
+//
+//        if (yearOfExpResult != -1) {
+//            query.whereGreaterThanOrEqualTo(CaregiverProfile.KEY_YEAR_OF_EXP, yearOfExpResult);
+//        }
+//
         if (servicesResult != null && servicesResult.size() > 0) {
             query.whereContainedIn(CaregiverProfile.KEY_SERVICES, servicesResult);
         }
-
-        if (languagesResult != null && languagesResult.size() > 0) {
-            query.whereContainedIn(CaregiverProfile.KEY_LANGUAGES, languagesResult);
-        }
+//
+//        if (languagesResult != null && languagesResult.size() > 0) {
+//            query.whereContainedIn(CaregiverProfile.KEY_LANGUAGES, languagesResult);
+//        }
 
         query.findInBackground().continueWithTask(new Continuation<List<CaregiverProfile>, Task<Void>>() {
             @Override
@@ -125,10 +146,19 @@ public class SearchResultsFragment extends BaseSearchFragment {
                 return Task.cancelled();
             }
         });
+
     }
 
-    private void onSearchSuccess(List<CaregiverProfile> result) {
-        adapter.setCaregiverList(result);
+    private void onSearchSuccess(final List<CaregiverProfile> result) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (swipeRefreshLayout.isRefreshing())
+                    swipeRefreshLayout.setRefreshing(false);
+
+                adapter.setCaregiverList(result);
+            }
+        });
     }
 
     private void handleError(final Exception e) {

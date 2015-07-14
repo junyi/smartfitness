@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         showSearchFragment();
     }
 
-    private void showCreateProfileFragment() {
+    public void showCreateProfileFragment() {
         User user = Utils.getCurrentUser();
         String role = user.getRoles().get(0);
 
@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         replaceFragment(new EditProfileFragment(), false);
     }
 
-    private void showSearchFragment() {
+    public void showSearchFragment() {
         User user = Utils.getCurrentUser();
         String role = user.getRoles().get(0);
 

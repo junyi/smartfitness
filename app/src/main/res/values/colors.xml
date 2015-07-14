@@ -7,4 +7,5 @@
     <color name="chip_text_color_selected">#FFFFFF</color>
     <color name="circle_color">#DADADA</color>
     <color name="language_select">#5177b0</color>
+    <color name="semi_black">#66000000</color>
 </resources>

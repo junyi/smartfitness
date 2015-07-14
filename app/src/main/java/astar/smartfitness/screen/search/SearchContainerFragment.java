@@ -37,17 +37,19 @@ public class SearchContainerFragment extends Fragment implements OnBackPressedLi
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        ((MainActivity) getActivity()).getSupportActionBar().hide();
         replaceFragment(PageType.FILTER);
     }
 
     private BaseSearchFragment getFragment(PageType type) {
         BaseSearchFragment f = (BaseSearchFragment) getChildFragmentManager().findFragmentByTag(String.valueOf(type.ordinal()));
 
-        if (f != null)
-            return f;
-
         Bundle data = dataMap.get(type);
+
+        if (f != null) {
+            return f;
+        }
+
 
         switch (type) {
             default:
@@ -102,6 +104,8 @@ public class SearchContainerFragment extends Fragment implements OnBackPressedLi
             ft.add(R.id.container, f, String.valueOf(type.ordinal()));
         else
             ft.replace(R.id.container, f, String.valueOf(type.ordinal()));
+
+        ft.addToBackStack(null);
 
         currentType = type;
 
