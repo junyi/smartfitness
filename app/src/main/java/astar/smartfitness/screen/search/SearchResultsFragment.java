@@ -206,10 +206,10 @@ public class SearchResultsFragment extends BaseSearchFragment {
         if (servicesResult != null && servicesResult.size() > 0) {
             query.whereContainedIn(CaregiverProfile.KEY_SERVICES, servicesResult);
         }
-//
-//        if (languagesResult != null && languagesResult.size() > 0) {
-//            query.whereContainedIn(CaregiverProfile.KEY_LANGUAGES, languagesResult);
-//        }
+
+        if (languageResult != null && languageResult.size() > 0) {
+            query.whereContainedIn(CaregiverProfile.KEY_LANGUAGES, languageResult);
+        }
 
         query.findInBackground().continueWithTask(new Continuation<List<CaregiverProfile>, Task<Void>>() {
             @Override
