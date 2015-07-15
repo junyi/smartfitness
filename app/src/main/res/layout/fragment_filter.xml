@@ -47,6 +47,18 @@
                 android:gravity="center_horizontal"
                 android:text="Let's get you a caregiver\nTell us more"
                 android:textSize="20dp" />
+
+            <android.support.design.widget.CoordinatorLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:layout_marginTop="16dp">
+
+                <astar.smartfitness.widget.EmptyRecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </android.support.design.widget.CoordinatorLayout>
         </LinearLayout>
 
         <android.support.design.widget.FloatingActionButton

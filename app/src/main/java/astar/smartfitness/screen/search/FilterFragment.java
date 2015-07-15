@@ -1,6 +1,8 @@
 package astar.smartfitness.screen.search;
 
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,14 +10,24 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.appyvet.rangebar.RangeBar;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import astar.smartfitness.R;
+import astar.smartfitness.model.CaregiverProfile;
+import astar.smartfitness.model.User;
 import astar.smartfitness.screen.MainActivity;
+import astar.smartfitness.util.MarginDecoration;
+import astar.smartfitness.widget.EmptyRecyclerView;
+import bolts.Continuation;
+import bolts.Task;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import timber.log.Timber;
 
 public class FilterFragment extends BaseSearchFragment {
     public static final String ARG_SERVICES = "services";
@@ -25,6 +37,7 @@ public class FilterFragment extends BaseSearchFragment {
     private int[] budgetResult = new int[]{0, 1000};
 
     private Bundle result = new Bundle();
+    private SearchResultsRecyclerViewAdapter adapter;
 
     @Bind(R.id.services_text)
     TextView servicesTextView;
@@ -34,6 +47,9 @@ public class FilterFragment extends BaseSearchFragment {
 
     @Bind(R.id.rangebar)
     RangeBar rangeBar;
+
+    @Bind(R.id.recycler_view)
+    EmptyRecyclerView recyclerView;
 
     public static FilterFragment newInstance(Bundle data) {
         FilterFragment fragment = new FilterFragment();
@@ -47,6 +63,15 @@ public class FilterFragment extends BaseSearchFragment {
 
         setupBudget();
         setupServices();
+
+        adapter = new SearchResultsRecyclerViewAdapter(getActivity());
+        recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.addItemDecoration(new MarginDecoration(getActivity()));
+//        recyclerView.setEmptyView(emptyView);
+        recyclerView.setAdapter(adapter);
+
+        executeSearch();
     }
 
     @Override
@@ -140,6 +165,80 @@ public class FilterFragment extends BaseSearchFragment {
 
     private void notifySectionChanged() {
 
+    }
+
+    private void executeSearch() {
+        ParseQuery<CaregiverProfile> query = ParseQuery.getQuery(CaregiverProfile.class);
+        query.include(CaregiverProfile.KEY_USER_ID);
+        query.setLimit(3);
+
+        ParseQuery<User> innerQuery = ParseQuery.getQuery(User.class);
+        innerQuery.whereEqualTo(User.KEY_ROLES, User.ROLE_CAREGIVER);
+
+        query.addDescendingOrder(CaregiverProfile.KEY_RATING);
+
+//        if (genderResult != null) {
+//            ParseQuery<User> genderQuery = ParseQuery.getQuery(User.class);
+//            genderQuery.whereEqualTo(User.KEY_GENDER, genderResult);
+//            query.whereMatchesQuery(CaregiverProfile.KEY_USER_ID, genderQuery);
+//        }
+//
+//        if (budgetResult != null) {
+//            query.whereGreaterThanOrEqualTo(CaregiverProfile.KEY_WAGE_RANGE_MIN, budgetResult[0]);
+//            query.whereLessThanOrEqualTo(CaregiverProfile.KEY_WAGE_RANGE_MAX, budgetResult[1]);
+//        }
+//
+//        if (yearOfExpResult != -1) {
+//            query.whereGreaterThanOrEqualTo(CaregiverProfile.KEY_YEAR_OF_EXP, yearOfExpResult);
+//        }
+//
+//        if (servicesResult != null && servicesResult.size() > 0) {
+//            query.whereContainedIn(CaregiverProfile.KEY_SERVICES, servicesResult);
+//        }
+//
+//        if (languagesResult != null && languagesResult.size() > 0) {
+//            query.whereContainedIn(CaregiverProfile.KEY_LANGUAGES, languagesResult);
+//        }
+
+        query.findInBackground().continueWithTask(new Continuation<List<CaregiverProfile>, Task<Void>>() {
+            @Override
+            public Task<Void> then(Task<List<CaregiverProfile>> task) throws Exception {
+                if (task.isCancelled()) {
+                    Timber.d("Task is cancelled");
+                    handleError(new Exception("Task is cancelled"));
+                } else if (task.isFaulted()) {
+                    handleError(task.getError());
+                } else {
+                    onSearchSuccess(task.getResult());
+                }
+
+                return Task.cancelled();
+            }
+        });
+
+    }
+
+    private void onSearchSuccess(final List<CaregiverProfile> result) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                adapter.setCaregiverList(result);
+            }
+        });
+    }
+
+    private void handleError(final Exception e) {
+        Timber.e("Error: " + Log.getStackTraceString(e));
+
+        if (e instanceof ParseException) {
+            ParseException error = (ParseException) e;
+            int errorCode = error.getCode();
+
+            Timber.e(errorCode + ": " + e.getMessage());
+
+        } else {
+            e.printStackTrace();
+        }
     }
 
     @Override

@@ -26,28 +26,33 @@
                 android:id="@+id/reset_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
                 android:background="@drawable/reset_full_rounded_rect"
                 android:clickable="true"
                 android:gravity="center"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
                 android:text="Reset"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_alignParentTop="true"
+                android:layout_toLeftOf="@+id/apply_button"
+                android:layout_toStartOf="@+id/apply_button" />
 
             <TextView
                 android:id="@+id/apply_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="8dp"
-                android:layout_toLeftOf="@id/reset_button"
                 android:background="@drawable/full_rounded_rect_selector"
                 android:clickable="true"
                 android:gravity="center"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
                 android:text="Apply"
-                android:textColor="@android:color/black" />
+                android:textColor="@android:color/black"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
         </RelativeLayout>
 
         <astar.smartfitness.widget.SingleOptionView
@@ -172,7 +177,7 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="20dp"
                     android:text="Location"
                     android:textAppearance="@style/TextAppearance.AppCompat.Medium"
                     android:textColor="?attr/colorAccent" />
