@@ -227,6 +227,9 @@ public class SearchResultsFragment extends BaseSearchFragment {
             }
         });
 
+        if (bottomSheet.isSheetShowing())
+            bottomSheet.dismissSheet();
+
     }
 
     private void onSearchSuccess(final List<CaregiverProfile> result) {
@@ -235,9 +238,6 @@ public class SearchResultsFragment extends BaseSearchFragment {
             public void run() {
                 if (swipeRefreshLayout.isRefreshing())
                     swipeRefreshLayout.setRefreshing(false);
-
-                if (bottomSheet.isSheetShowing())
-                    bottomSheet.dismissSheet();
 
                 adapter.setCaregiverList(result);
 
@@ -361,8 +361,8 @@ public class SearchResultsFragment extends BaseSearchFragment {
         });
 
         if (budgetResult[0] == 0 && budgetResult[0] == budgetResult[1]) {
-            budgetResult[0] = (int) bottomSheetViewHolder.rangeBar.getTickStart();
-            budgetResult[1] = (int) bottomSheetViewHolder.rangeBar.getTickEnd();
+            budgetResult[0] = Math.max(0, (int) bottomSheetViewHolder.rangeBar.getTickStart());
+            budgetResult[1] = Math.min(1000, (int) bottomSheetViewHolder.rangeBar.getTickEnd());
         } else {
             bottomSheetViewHolder.rangeBar.setRangePinsByValue(budgetResult[0], budgetResult[1]);
         }
