@@ -138,7 +138,23 @@ public class MultiOptionView extends GridLayout {
         int index;
         for (int i = 0; i < l; i++) {
             index = selectedIndices.get(i);
-            ((ChipView) getChildAt(index)).setState(false);
+            setSelection(index, false);
+        }
+    }
+
+    public void setSelection(int index, boolean state) {
+        int total = getChildCount();
+        if (index >= 0 && index < total) {
+            ((ChipView) getChildAt(index)).setState(state);
+        }
+    }
+
+    public void setSelection(ArrayList<Integer> items, boolean state) {
+        int l = items.size();
+
+        for (int i = 0; i < l; i++) {
+            int index = items.get(i);
+            setSelection(index, state);
         }
     }
 

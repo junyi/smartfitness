@@ -35,10 +35,18 @@ import butterknife.OnClick;
 import timber.log.Timber;
 
 public class SearchResultsFragment extends BaseSearchFragment {
+    enum SortType {RATING, YEARS_OF_EXP, PRICE}
+
+    enum FilterCategory {RATING, YEARS_OF_EXP, PRICE}
+
     public static final String ARG_SEARCH_DATA = "search_data";
     private Bundle searchBundle = null;
 
+    private ArrayList<Integer> languageResult = new ArrayList<>();
+    private ArrayList<Integer> locationResult = new ArrayList<>();
+
     private int[] budgetResult = new int[]{0, 1000};
+    private SortType sortType = SortType.RATING;
 
     @Bind(R.id.bottomsheet)
     BottomSheetLayout bottomSheet;
@@ -74,6 +82,12 @@ public class SearchResultsFragment extends BaseSearchFragment {
 
         @Bind(R.id.filter_container)
         LinearLayout filterContainer;
+
+        @Bind(R.id.apply_button)
+        View applyButton;
+
+        @Bind(R.id.reset_button)
+        View resetButton;
 
         @OnClick(R.id.language_clear_filter_button)
         public void clearFilterForLanguage() {
@@ -137,18 +151,17 @@ public class SearchResultsFragment extends BaseSearchFragment {
 
     }
 
-    public void setSearchBundle(Bundle searchBundle) {
-        this.searchBundle = searchBundle;
-    }
-
     @Override
     public void saveSection(Bundle data) {
+        data.putIntArray(FilterFragment.ARG_BUDGET, budgetResult);
     }
 
     @Override
     public void restoreSection(Bundle data) {
         if (data != null) {
             searchBundle = data;
+
+            budgetResult = searchBundle.getIntArray(FilterFragment.ARG_BUDGET);
         }
     }
 
@@ -162,7 +175,17 @@ public class SearchResultsFragment extends BaseSearchFragment {
         ParseQuery<User> innerQuery = ParseQuery.getQuery(User.class);
         innerQuery.whereEqualTo(User.KEY_ROLES, User.ROLE_CAREGIVER);
 
-        query.addDescendingOrder(CaregiverProfile.KEY_RATING);
+        switch (sortType) {
+            case RATING:
+                query.addDescendingOrder(CaregiverProfile.KEY_RATING);
+                break;
+            case YEARS_OF_EXP:
+                query.addDescendingOrder(CaregiverProfile.KEY_YEAR_OF_EXP);
+                break;
+            case PRICE:
+                query.addAscendingOrder(CaregiverProfile.KEY_WAGE_RANGE_MIN);
+                break;
+        }
 
 //        if (genderResult != null) {
 //            ParseQuery<User> genderQuery = ParseQuery.getQuery(User.class);
@@ -212,7 +235,12 @@ public class SearchResultsFragment extends BaseSearchFragment {
                 if (swipeRefreshLayout.isRefreshing())
                     swipeRefreshLayout.setRefreshing(false);
 
+                if (bottomSheet.isSheetShowing())
+                    bottomSheet.dismissSheet();
+
                 adapter.setCaregiverList(result);
+
+                recyclerView.scrollToPosition(0);
             }
         });
     }
@@ -264,7 +292,10 @@ public class SearchResultsFragment extends BaseSearchFragment {
 
         setupSortView();
         setupBudget();
+        setupLanguages();
         setupShimmer();
+        setupApplyButton();
+        setupResetButton();
     }
 
     private void setupShimmer() {
@@ -279,7 +310,13 @@ public class SearchResultsFragment extends BaseSearchFragment {
     }
 
     private void setupSortView() {
-        bottomSheetViewHolder.sortView.setCurrentSelectedPosition(0);
+        bottomSheetViewHolder.sortView.setCurrentSelectedPosition(sortType.ordinal());
+        bottomSheetViewHolder.sortView.setOnItemSelectedListener(new SingleOptionView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(int position, CharSequence item) {
+                sortType = SortType.values()[position];
+            }
+        });
     }
 
     private void setupBudget() {
@@ -292,7 +329,8 @@ public class SearchResultsFragment extends BaseSearchFragment {
                 int budgetEnd = Integer.parseInt(end);
 
                 // Save wage range result
-                budgetResult = new int[]{budgetStart, budgetEnd};
+                budgetResult[0] = budgetStart;
+                budgetResult[1] = budgetEnd;
             }
         });
 
@@ -304,5 +342,45 @@ public class SearchResultsFragment extends BaseSearchFragment {
         }
 
         bottomSheetViewHolder.budgetTextView.setText(String.format(getResources().getString(R.string.wage_range_formatted_text), budgetResult[0], budgetResult[1]));
+    }
+
+    private void setupApplyButton() {
+        bottomSheetViewHolder.applyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                swipeRefreshLayout.setRefreshing(true);
+
+                searchBundle.putIntArray(FilterFragment.ARG_BUDGET, budgetResult);
+
+                executeSearch(searchBundle);
+            }
+        });
+    }
+
+    private void setupResetButton() {
+        bottomSheetViewHolder.resetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (bottomSheet.getState()) {
+                    case PEEKED:
+
+                        break;
+                    case EXPANDED:
+                        break;
+                    default:
+                }
+            }
+        });
+    }
+
+    private void setupLanguages() {
+        bottomSheetViewHolder.languageMultiOptionView.setSelection(languageResult, true);
+        bottomSheetViewHolder.languageMultiOptionView.setOnItemSelectedListener(new MultiOptionView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(boolean selected, int position, String item) {
+                languageResult.clear();
+                languageResult.addAll(bottomSheetViewHolder.languageMultiOptionView.getSelectedIndices());
+            }
+        });
     }
 }

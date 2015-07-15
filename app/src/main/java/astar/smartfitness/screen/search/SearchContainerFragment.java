@@ -68,14 +68,25 @@ public class SearchContainerFragment extends Fragment implements OnBackPressedLi
     }
 
     public void passSearchResults() {
-        if (currentType == PageType.FILTER) {
-            Bundle data = new Bundle();
-            getFragment(PageType.FILTER).saveSection(data);
-            getFragment(PageType.RESULTS).restoreSection(data);
-            dataMap.put(PageType.FILTER, data);
-            dataMap.put(PageType.RESULTS, data);
+        Bundle data = new Bundle();
 
-            replaceFragment(PageType.RESULTS);
+        switch (currentType) {
+            case FILTER:
+                getFragment(PageType.FILTER).saveSection(data);
+                getFragment(PageType.RESULTS).restoreSection(data);
+                dataMap.put(PageType.FILTER, data);
+                dataMap.put(PageType.RESULTS, data);
+
+                replaceFragment(PageType.RESULTS);
+                break;
+            case RESULTS:
+                getFragment(PageType.RESULTS).saveSection(data);
+                getFragment(PageType.FILTER).restoreSection(data);
+                dataMap.put(PageType.FILTER, data);
+                dataMap.put(PageType.RESULTS, data);
+
+                replaceFragment(PageType.FILTER);
+                break;
         }
     }
 
