@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.appyvet.rangebar.RangeBar;
 import com.flipboard.bottomsheet.BottomSheetLayout;
@@ -34,6 +35,8 @@ public class SearchResultsFragment extends BaseSearchFragment {
     public static final String ARG_SEARCH_DATA = "search_data";
     private Bundle searchBundle = null;
 
+    private int[] budgetResult = new int[]{0, 1000};
+
     @Bind(R.id.bottomsheet)
     BottomSheetLayout bottomSheet;
 
@@ -48,6 +51,9 @@ public class SearchResultsFragment extends BaseSearchFragment {
 
 
     static class BottomSheetViewHolder {
+        @Bind(R.id.budget_text_view)
+        TextView budgetTextView;
+
         @Bind(R.id.rangebar)
         RangeBar rangeBar;
 
@@ -59,10 +65,6 @@ public class SearchResultsFragment extends BaseSearchFragment {
 
         @Bind(R.id.sort_view)
         SingleOptionView sortView;
-
-        public void setupSortView() {
-            sortView.setCurrentSelectedPosition(0);
-        }
 
         @OnClick(R.id.language_clear_filter_button)
         public void clearFilterForLanguage() {
@@ -228,6 +230,35 @@ public class SearchResultsFragment extends BaseSearchFragment {
 
         ButterKnife.bind(bottomSheetViewHolder, view);
 
-        bottomSheetViewHolder.setupSortView();
+        setupSortView();
+        setupBudget();
+    }
+
+    public void setupSortView() {
+        bottomSheetViewHolder.sortView.setCurrentSelectedPosition(0);
+    }
+
+    private void setupBudget() {
+        bottomSheetViewHolder.rangeBar.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
+            @Override
+            public void onRangeChangeListener(RangeBar rangeBar, int startIndex, int endIndex, String start, String end) {
+                bottomSheetViewHolder.budgetTextView.setText(String.format(getResources().getString(R.string.wage_range_formatted_text), start, end));
+
+                int budgetStart = Integer.parseInt(start);
+                int budgetEnd = Integer.parseInt(end);
+
+                // Save wage range result
+                budgetResult = new int[]{budgetStart, budgetEnd};
+            }
+        });
+
+        if (budgetResult[0] == 0 && budgetResult[0] == budgetResult[1]) {
+            budgetResult[0] = (int) bottomSheetViewHolder.rangeBar.getTickStart();
+            budgetResult[1] = (int) bottomSheetViewHolder.rangeBar.getTickEnd();
+        } else {
+            bottomSheetViewHolder.rangeBar.setRangePinsByValue(budgetResult[0], budgetResult[1]);
+        }
+
+        bottomSheetViewHolder.budgetTextView.setText(String.format(getResources().getString(R.string.wage_range_formatted_text), budgetResult[0], budgetResult[1]));
     }
 }

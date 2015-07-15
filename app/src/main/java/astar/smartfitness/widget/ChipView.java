@@ -167,6 +167,15 @@ public class ChipView extends RelativeLayout implements View.OnClickListener {
         updateState();
     }
 
+    public void setState(boolean state){
+        setSelected(state);
+
+        if (mOnSelectedListener != null)
+            mOnSelectedListener.onSelected(this, isSelected());
+
+        updateState();
+    }
+
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();

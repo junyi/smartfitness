@@ -79,10 +79,11 @@ public class MultiOptionView extends GridLayout {
             ChipView chipView = new ChipView(context, items.get(i));
 
             final int position = i;
+            final String item = items.get(i);
             chipView.setOnSelectedListener(new ChipView.OnSelectedListener() {
                 @Override
                 public void onSelected(ChipView chipView, boolean isSelected) {
-                    internalListener.onItemSelected(isSelected, position, items.get(position));
+                    internalListener.onItemSelected(isSelected, position, item);
                 }
             });
 
@@ -137,7 +138,7 @@ public class MultiOptionView extends GridLayout {
         int index;
         for (int i = 0; i < l; i++) {
             index = selectedIndices.get(i);
-            getChildAt(index).setSelected(false);
+            ((ChipView) getChildAt(index)).setState(false);
         }
     }
 
