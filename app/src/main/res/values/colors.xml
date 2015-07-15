@@ -8,4 +8,6 @@
     <color name="circle_color">#DADADA</color>
     <color name="language_select">#5177b0</color>
     <color name="semi_black">#66000000</color>
+    <color name="semi_dark_black">#99000000</color>
+
 </resources>

@@ -7,9 +7,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.appyvet.rangebar.RangeBar;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.flipboard.bottomsheet.BottomSheetLayout;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -20,6 +22,7 @@ import java.util.List;
 import astar.smartfitness.R;
 import astar.smartfitness.model.CaregiverProfile;
 import astar.smartfitness.model.User;
+import astar.smartfitness.util.InsetViewTransformer;
 import astar.smartfitness.util.MarginDecoration;
 import astar.smartfitness.widget.EmptyRecyclerView;
 import astar.smartfitness.widget.MultiOptionView;
@@ -65,6 +68,12 @@ public class SearchResultsFragment extends BaseSearchFragment {
 
         @Bind(R.id.sort_view)
         SingleOptionView sortView;
+
+        @Bind(R.id.shimmer_view_container)
+        ShimmerFrameLayout shimmer;
+
+        @Bind(R.id.filter_container)
+        LinearLayout filterContainer;
 
         @OnClick(R.id.language_clear_filter_button)
         public void clearFilterForLanguage() {
@@ -226,15 +235,42 @@ public class SearchResultsFragment extends BaseSearchFragment {
     @OnClick(R.id.filter_button)
     public void onFilterButtonClicked() {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.bottom_sheet_search_filter, bottomSheet, false);
+        bottomSheet.setDefaultViewTransformer(new InsetViewTransformer());
         bottomSheet.showWithSheetView(view);
+        bottomSheet.setOnSheetStateChangeListener(new BottomSheetLayout.OnSheetStateChangeListener() {
+            @Override
+            public void onSheetStateChanged(BottomSheetLayout.State state) {
+                switch (state) {
+                    case PEEKED:
+                        bottomSheetViewHolder.filterContainer.setVisibility(View.INVISIBLE);
+                        bottomSheetViewHolder.shimmer.setVisibility(View.VISIBLE);
+                        bottomSheetViewHolder.shimmer.startShimmerAnimation();
+                        break;
+                    case EXPANDED:
+                        bottomSheetViewHolder.shimmer.stopShimmerAnimation();
+                        bottomSheetViewHolder.shimmer.setVisibility(View.GONE);
+                        bottomSheetViewHolder.filterContainer.setVisibility(View.VISIBLE);
+                        break;
+                    case HIDDEN:
+                        bottomSheetViewHolder.shimmer.stopShimmerAnimation();
+                }
+            }
+        });
 
         ButterKnife.bind(bottomSheetViewHolder, view);
 
+
         setupSortView();
         setupBudget();
+        setupShimmer();
     }
 
-    public void setupSortView() {
+    private void setupShimmer() {
+        bottomSheetViewHolder.shimmer.setRepeatDelay(1000);
+        bottomSheetViewHolder.shimmer.setBaseAlpha(0.7f);
+    }
+
+    private void setupSortView() {
         bottomSheetViewHolder.sortView.setCurrentSelectedPosition(0);
     }
 

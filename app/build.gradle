@@ -43,4 +43,5 @@ dependencies {
     compile 'com.flipboard:bottomsheet-core:1.1.0'
 //    compile 'com.flipboard:bottomsheet-commons:1.1.0' // optional
     compile 'me.grantland:autofittextview:0.2.1'
+    compile 'com.facebook.shimmer:shimmer:0.1.0@aar'
 }
