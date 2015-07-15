@@ -5,9 +5,14 @@ import android.view.View;
 import com.flipboard.bottomsheet.BaseViewTransformer;
 import com.flipboard.bottomsheet.BottomSheetLayout;
 
-import astar.smartfitness.R;
-
 public class InsetViewTransformer extends BaseViewTransformer {
+
+    public interface ViewTransformedListener {
+        void viewTransformed(float translation, float maxTranslation, float peekedTranslation, BottomSheetLayout parent, View view);
+    }
+
+    private ViewTransformedListener mListener = null;
+
     @Override
     public void transformView(float translation, float maxTranslation, float peekedTranslation, BottomSheetLayout parent, View view) {
         float progress = Math.min(translation / peekedTranslation, 1);
@@ -25,11 +30,18 @@ public class InsetViewTransformer extends BaseViewTransformer {
 
         float translationToTop = -(view.getHeight() * (1 - scale)) / 2;
         view.setTranslationY(translationToTop + progress * 20 * view.getContext().getResources().getDisplayMetrics().density);
+
+        if (mListener != null)
+            mListener.viewTransformed(translation, maxTranslation, peekedTranslation, parent, view);
     }
 
     private void ensureLayer(View view, int layerType) {
         if (view.getLayerType() != layerType) {
             view.setLayerType(layerType, null);
         }
+    }
+
+    public void setViewTransformedListener(ViewTransformedListener listener) {
+        this.mListener = listener;
     }
 }

@@ -24,6 +24,7 @@ import astar.smartfitness.model.CaregiverProfile;
 import astar.smartfitness.model.User;
 import astar.smartfitness.util.InsetViewTransformer;
 import astar.smartfitness.util.MarginDecoration;
+import astar.smartfitness.util.Utils;
 import astar.smartfitness.widget.EmptyRecyclerView;
 import astar.smartfitness.widget.MultiOptionView;
 import astar.smartfitness.widget.SingleOptionView;
@@ -266,20 +267,45 @@ public class SearchResultsFragment extends BaseSearchFragment {
 
     private void expandBottomSheet() {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.bottom_sheet_search_filter, bottomSheet, false);
-        bottomSheet.setDefaultViewTransformer(new InsetViewTransformer());
+
+        InsetViewTransformer transformer = new InsetViewTransformer();
+        transformer.setViewTransformedListener(new InsetViewTransformer.ViewTransformedListener() {
+            float height = 0f;
+            float y = Utils.dpToPx(getActivity(), 24);
+
+            @Override
+            public void viewTransformed(float translation, float maxTranslation, float peekedTranslation, BottomSheetLayout parent, View view) {
+                if (height == 0f) {
+                    height = bottomSheetViewHolder.shimmer.getMeasuredHeight() + Utils.dpToPx(getActivity(), 16);
+                }
+
+                double shimmerClampedTranslation = Utils.clamp(translation, peekedTranslation, maxTranslation);
+                float shimmerTranslationAmount = (float) Utils.mapValueFromRangeToRange(shimmerClampedTranslation, peekedTranslation, maxTranslation, 0, -height);
+                bottomSheetViewHolder.shimmer.setTranslationY(shimmerTranslationAmount);
+
+                float filterTranslationAmount = (float) Utils.mapValueFromRangeToRange(shimmerClampedTranslation, peekedTranslation, maxTranslation, y, 0);
+                bottomSheetViewHolder.filterContainer.setTranslationY(height + shimmerTranslationAmount + filterTranslationAmount);
+
+                double fromRangeSize = maxTranslation - peekedTranslation;
+                double valueScale = (shimmerClampedTranslation - peekedTranslation) / fromRangeSize;
+                bottomSheetViewHolder.shimmer.setAlpha(1 - (float) valueScale);
+                bottomSheetViewHolder.filterContainer.setAlpha((float)` valueScale);
+            }
+        });
+        bottomSheet.setDefaultViewTransformer(transformer);
         bottomSheet.showWithSheetView(view);
         bottomSheet.setOnSheetStateChangeListener(new BottomSheetLayout.OnSheetStateChangeListener() {
             @Override
             public void onSheetStateChanged(BottomSheetLayout.State state) {
                 switch (state) {
                     case PEEKED:
-                        bottomSheetViewHolder.filterContainer.setVisibility(View.INVISIBLE);
+                        bottomSheetViewHolder.filterContainer.setVisibility(View.VISIBLE);
                         bottomSheetViewHolder.shimmer.setVisibility(View.VISIBLE);
                         bottomSheetViewHolder.shimmer.startShimmerAnimation();
                         break;
                     case EXPANDED:
                         bottomSheetViewHolder.shimmer.stopShimmerAnimation();
-                        bottomSheetViewHolder.shimmer.setVisibility(View.GONE);
+//                        bottomSheetViewHolder.shimmer.setVisibility(View.GONE);
                         bottomSheetViewHolder.filterContainer.setVisibility(View.VISIBLE);
                         break;
                     case HIDDEN:
