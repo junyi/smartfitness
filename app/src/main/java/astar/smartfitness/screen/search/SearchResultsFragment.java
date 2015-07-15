@@ -288,7 +288,7 @@ public class SearchResultsFragment extends BaseSearchFragment {
 
                 double fromRangeSize = maxTranslation - peekedTranslation;
                 double valueScale = (shimmerClampedTranslation - peekedTranslation) / fromRangeSize;
-                bottomSheetViewHolder.shimmer.setAlpha(1 - (float) valueScale);
+                bottomSheetViewHolder.shimmer.setAlpha((float) (1 - Utils.clamp(2.0 * valueScale, 0, 1)));
                 bottomSheetViewHolder.filterContainer.setAlpha((float) valueScale);
             }
         });
