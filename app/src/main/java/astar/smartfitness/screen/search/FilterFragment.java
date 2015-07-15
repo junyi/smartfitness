@@ -26,7 +26,7 @@ public class FilterFragment extends BaseSearchFragment {
 
     private Bundle result = new Bundle();
 
-    @Bind(R.id.services)
+    @Bind(R.id.services_text)
     TextView servicesTextView;
 
     @Bind(R.id.budget_text_view)
@@ -46,6 +46,7 @@ public class FilterFragment extends BaseSearchFragment {
         super.onViewCreated(view, savedInstanceState);
 
         setupBudget();
+        setupServices();
     }
 
     @Override
@@ -55,11 +56,6 @@ public class FilterFragment extends BaseSearchFragment {
         ButterKnife.bind(this, view);
 
         return view;
-    }
-
-    @OnClick(R.id.container)
-    public void showCreateProfileFragment(){
-        ((MainActivity)getActivity()).showCreateProfileFragment();
     }
 
     private void setupBudget() {
@@ -89,6 +85,16 @@ public class FilterFragment extends BaseSearchFragment {
         budgetTextView.setText(String.format(getResources().getString(R.string.wage_range_formatted_text), budgetResult[0], budgetResult[1]));
     }
 
+    private void setupServices() {
+        if (servicesResult.size() > 0) {
+            int selectedIndex = servicesResult.get(0);
+
+            String[] services = getResources().getStringArray(R.array.service_list);
+            servicesTextView.setText(services[selectedIndex]);
+        } else {
+            servicesTextView.setText("No Preference");
+        }
+    }
 
     @OnClick(R.id.services)
     public void showServicesDialog() {
@@ -101,6 +107,8 @@ public class FilterFragment extends BaseSearchFragment {
                 .itemsCallbackSingleChoice(selectedIndex, new MaterialDialog.ListCallbackSingleChoice() {
                     @Override
                     public boolean onSelection(MaterialDialog materialDialog, View view, int i, CharSequence charSequence) {
+                        servicesResult.clear();
+                        servicesResult.add(i);
                         servicesTextView.setText(charSequence);
                         return false;
                     }
@@ -123,11 +131,24 @@ public class FilterFragment extends BaseSearchFragment {
 
     @Override
     public void restoreSection(Bundle data) {
+        servicesResult = data.getIntegerArrayList(ARG_SERVICES);
+        budgetResult = data.getIntArray(ARG_BUDGET);
 
-
+//        setupBudget();
+//        setupServices();
     }
 
     private void notifySectionChanged() {
 
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 }

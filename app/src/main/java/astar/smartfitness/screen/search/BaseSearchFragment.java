@@ -17,6 +17,11 @@ public abstract class BaseSearchFragment extends Fragment {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         saveSection(outState);
@@ -25,7 +30,6 @@ public abstract class BaseSearchFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         onAttachFragment(getParentFragment());
     }
 

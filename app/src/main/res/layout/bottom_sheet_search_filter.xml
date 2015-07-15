@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/semi_black"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sort by"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+    <astar.smartfitness.widget.SingleOptionView
+        android:id="@+id/sort_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:array="@array/sort_by_option_list" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Filter"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:text="Price"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="?attr/colorAccent" />
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/budget_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|center_horizontal"
+                android:paddingTop="8dp"
+                android:text="$ 0 &#8212; 1000"
+                android:textColor="@android:color/white" />
+
+            <com.appyvet.rangebar.RangeBar
+                android:id="@+id/rangebar"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                app:barColor="@android:color/white"
+                app:connectingLineColor="@android:color/white"
+                app:connectingLineWeight="1dp"
+                app:pinColor="@android:color/white"
+                app:pinRadius="2dp"
+                app:selectorColor="@android:color/white"
+                app:selectorSize="2dp"
+                app:tickColor="@android:color/transparent"
+                app:tickEnd="1000"
+                app:tickInterval="10"
+                app:tickStart="0" />
+        </FrameLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="Language"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="?attr/colorAccent" />
+
+        <astar.smartfitness.widget.MultiOptionView
+            android:id="@+id/language_multi_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:array="@array/language_list" />
+
+        <TextView
+            android:id="@+id/language_clear_filter_button"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/full_rounded_rect_selector"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="Clear Filter"
+            android:textColor="@color/login_blue"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="16dp"
+            android:text="Location"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textColor="?attr/colorAccent" />
+
+        <astar.smartfitness.widget.MultiOptionView
+            android:id="@+id/location_multi_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:array="@array/location_list" />
+
+        <TextView
+            android:id="@+id/location_clear_filter_button"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/full_rounded_rect_selector"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="Clear Filter"
+            android:textColor="@color/login_blue"
+            android:textStyle="bold" />
+
+    </LinearLayout>
+</LinearLayout>

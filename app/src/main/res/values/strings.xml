@@ -70,5 +70,11 @@
         <item>5 stars</item>
     </string-array>
 
+    <string-array name="sort_by_option_list">
+        <item>Highest rating</item>
+        <item>Years of Experience</item>
+        <item>Lowest Price</item>
+    </string-array>
+
     <string name="wage_range_formatted_text">$ %1$s &#8212; %2$s</string>
 </resources>

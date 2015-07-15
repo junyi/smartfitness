@@ -101,4 +101,8 @@ public class CaregiverProfile extends ParseObject {
         return getString(KEY_PROFILE_IMAGE);
     }
 
+    public float getRating() {
+        return getNumber(KEY_RATING).floatValue();
+    }
+
 }

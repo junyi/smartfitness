@@ -82,6 +82,7 @@
 
 
             <RelativeLayout
+                android:id="@+id/services"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
@@ -89,22 +90,21 @@
                 android:clickable="true">
 
                 <TextView
-                    android:id="@+id/services"
+                    android:id="@+id/services_text"
                     style="@style/TextAppearance.AppCompat.Small"
                     fontPath="fonts/Roboto-Light.ttf"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:layout_marginBottom="16dp"
-                    android:clickable="true"
                     android:text="No Preference"
                     android:textColor="#FFFFFF"
                     android:textSize="16sp" />
 
                 <View
-                    android:layout_width="150dp"
+                    android:layout_width="180dp"
                     android:layout_height="1dp"
-                    android:layout_below="@id/services"
+                    android:layout_below="@id/services_text"
                     android:layout_centerHorizontal="true"
                     android:background="@android:color/white"
                     android:paddingLeft="50dp"

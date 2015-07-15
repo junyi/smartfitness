@@ -2,7 +2,6 @@ package astar.smartfitness.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.AttributeSet;
@@ -45,22 +44,20 @@ public class ChipView extends RelativeLayout implements View.OnClickListener {
 
     public ChipView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        initView(context);
         initAttrs(context, attrs);
+        initView(context);
     }
 
     public ChipView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        initView(context);
         initAttrs(context, attrs);
+        initView(context);
     }
 
-    public ChipView(Context context, AttributeSet attrs, int defStyleAttr, String text) {
-        this(context, attrs, defStyleAttr);
+    public ChipView(Context context, String text) {
+        super(context);
         mText = text;
-        if (mText != null) {
-            drawText(mText);
-        }
+        initView(context);
     }
 
     private void initView(Context context) {
@@ -114,6 +111,10 @@ public class ChipView extends RelativeLayout implements View.OnClickListener {
         });
 
         drawSelected(isSelected());
+
+        if (mText != null) {
+            drawText(mText);
+        }
     }
 
     private void initAttrs(Context context, AttributeSet attrs) {
@@ -172,6 +173,7 @@ public class ChipView extends RelativeLayout implements View.OnClickListener {
         Timber.d("onAttachedToWindow");
 
         drawSelected(isSelected());
+        drawText(mText);
     }
 
     private void updateState() {

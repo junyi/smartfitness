@@ -25,9 +25,11 @@ public class SearchContainerFragment extends Fragment implements OnBackPressedLi
     public SearchContainerFragment() {
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        setRetainInstance(true);
         View view = inflater.inflate(R.layout.fragment_search_container, container, false);
         ButterKnife.bind(this, view);
 
@@ -68,7 +70,8 @@ public class SearchContainerFragment extends Fragment implements OnBackPressedLi
     public void passSearchResults() {
         if (currentType == PageType.FILTER) {
             Bundle data = new Bundle();
-            getFragment(currentType).saveSection(data);
+            getFragment(PageType.FILTER).saveSection(data);
+            getFragment(PageType.RESULTS).restoreSection(data);
             dataMap.put(PageType.FILTER, data);
             dataMap.put(PageType.RESULTS, data);
 

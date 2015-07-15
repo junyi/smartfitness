@@ -1,6 +1,7 @@
 package astar.smartfitness.screen.search;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import java.util.List;
 
 import astar.smartfitness.R;
 import astar.smartfitness.model.CaregiverProfile;
+import astar.smartfitness.util.Utils;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -53,10 +55,16 @@ public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<Searc
     public void onBindViewHolder(ViewHolder holder, int position) {
         CaregiverProfile caregiver = caregiverList.get(position);
 
+        float sizeInDp = context.getResources().getDimension(R.dimen.avatar_size);
+        int avatarSize = Utils.dpToPx(context, sizeInDp);
+        Drawable placeholder = context.getResources().getDrawable(R.drawable.avatar_placeholder);
         Picasso.with(context)
                 .load(caregiver.getProfileImage())
+                .resize(avatarSize, avatarSize)
+                .placeholder(placeholder)
                 .into(holder.avatar);
         holder.titleTextView.setText(caregiver.getUser().getFirstName() + " " + caregiver.getUser().getLastName());
+        holder.ratingTextView.setText(String.format("%.1f", caregiver.getRating()));
     }
 
     @Override
@@ -71,7 +79,10 @@ public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<Searc
         ImageView avatar;
 
         @Bind(R.id.title)
-        public TextView titleTextView;
+        TextView titleTextView;
+
+        @Bind(R.id.rating)
+        TextView ratingTextView;
 
         // We also create a constructor that accepts the entire item row
         // and does the view lookups to find each subview

@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.flipboard.bottomsheet.BottomSheetLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/bottomsheet"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/bg_dark_blue"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <FrameLayout
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/bg_dark_blue">
 
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipe_refresh_layout"
@@ -20,11 +21,24 @@
                 android:layout_height="match_parent" />
         </android.support.v4.widget.SwipeRefreshLayout>
 
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/filter_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|bottom"
+            android:layout_margin="16dp"
+            android:src="@mipmap/ic_filter_list_white_24dp"
+            app:backgroundTint="@color/login_blue"
+            app:fabSize="normal"
+            app:layout_anchor="@id/swipe_refresh_layout"
+            app:layout_anchorGravity="bottom|right|end"
+            app:layout_behavior="astar.smartfitness.util.ScrollAwareFabBehavior" />
+
         <include
             android:id="@+id/empty_view"
             layout="@layout/search_results_empty_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone" />
-    </FrameLayout>
-</LinearLayout>
+    </android.support.design.widget.CoordinatorLayout>
+</com.flipboard.bottomsheet.BottomSheetLayout>

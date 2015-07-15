@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <attr name="array" format="reference" />
+
     <declare-styleable name="ChipView">
         <attr name="android:text" />
+    </declare-styleable>
+
+    <declare-styleable name="SingleOptionView">
+        <attr name="array" />
+    </declare-styleable>
+
+    <declare-styleable name="MultiOptionView">
+        <attr name="array" />
     </declare-styleable>
 </resources>

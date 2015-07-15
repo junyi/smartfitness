@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.appyvet.rangebar.RangeBar;
+import com.flipboard.bottomsheet.BottomSheetLayout;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 
@@ -19,15 +21,21 @@ import astar.smartfitness.model.CaregiverProfile;
 import astar.smartfitness.model.User;
 import astar.smartfitness.util.MarginDecoration;
 import astar.smartfitness.widget.EmptyRecyclerView;
+import astar.smartfitness.widget.MultiOptionView;
+import astar.smartfitness.widget.SingleOptionView;
 import bolts.Continuation;
 import bolts.Task;
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import timber.log.Timber;
 
 public class SearchResultsFragment extends BaseSearchFragment {
-
+    public static final String ARG_SEARCH_DATA = "search_data";
     private Bundle searchBundle = null;
+
+    @Bind(R.id.bottomsheet)
+    BottomSheetLayout bottomSheet;
 
     @Bind(R.id.swipe_refresh_layout)
     SwipeRefreshLayout swipeRefreshLayout;
@@ -37,6 +45,38 @@ public class SearchResultsFragment extends BaseSearchFragment {
 
     @Bind(R.id.empty_view)
     View emptyView;
+
+
+    static class BottomSheetViewHolder {
+        @Bind(R.id.rangebar)
+        RangeBar rangeBar;
+
+        @Bind(R.id.location_multi_view)
+        MultiOptionView locationMultiOptionView;
+
+        @Bind(R.id.language_multi_view)
+        MultiOptionView languageMultiOptionView;
+
+        @Bind(R.id.sort_view)
+        SingleOptionView sortView;
+
+        public void setupSortView() {
+            sortView.setCurrentSelectedPosition(0);
+        }
+
+        @OnClick(R.id.language_clear_filter_button)
+        public void clearFilterForLanguage() {
+            languageMultiOptionView.clearSelection();
+        }
+
+        @OnClick(R.id.location_clear_filter_button)
+        public void clearFilterForLocation() {
+            locationMultiOptionView.clearSelection();
+        }
+
+    }
+
+    final BottomSheetViewHolder bottomSheetViewHolder = new BottomSheetViewHolder();
 
     private SearchResultsRecyclerViewAdapter adapter;
 
@@ -59,7 +99,9 @@ public class SearchResultsFragment extends BaseSearchFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        if (getArguments() != null) {
+        if (searchBundle != null) {
+            executeSearch(searchBundle);
+        } else if (getArguments() != null) {
             searchBundle = getArguments();
             executeSearch(getArguments());
         }
@@ -82,17 +124,21 @@ public class SearchResultsFragment extends BaseSearchFragment {
                 }
             }
         });
+
+    }
+
+    public void setSearchBundle(Bundle searchBundle) {
+        this.searchBundle = searchBundle;
     }
 
     @Override
     public void saveSection(Bundle data) {
-
     }
 
     @Override
     public void restoreSection(Bundle data) {
         if (data != null) {
-            executeSearch(data);
+            searchBundle = data;
         }
     }
 
@@ -173,5 +219,15 @@ public class SearchResultsFragment extends BaseSearchFragment {
         } else {
             e.printStackTrace();
         }
+    }
+
+    @OnClick(R.id.filter_button)
+    public void onFilterButtonClicked() {
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.bottom_sheet_search_filter, bottomSheet, false);
+        bottomSheet.showWithSheetView(view);
+
+        ButterKnife.bind(bottomSheetViewHolder, view);
+
+        bottomSheetViewHolder.setupSortView();
     }
 }

@@ -261,7 +261,7 @@ public class BasicSectionFragment extends SectionFragment {
         for (int i = 0; i < l; i++) {
             String language = languageList[i];
 
-            ChipView chipView = new ChipView(getActivity(), null, R.style.ChipViewStyle, language);
+            ChipView chipView = new ChipView(getActivity(), language);
             chipView.setTag(i);
 
             if (tempLanguageResult.get(i) != null) {

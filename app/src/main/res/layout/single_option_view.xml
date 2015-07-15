@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:columnCount="3">
+
+        <include
+            layout="@layout/chip_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill_horizontal" />
+
+        <include
+            layout="@layout/chip_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill_horizontal" />
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_columnWeight="1"
+            android:layout_gravity="fill_horizontal">
+
+            <TextView
+                android:id="@+id/text"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginLeft="-15dp"
+                android:layout_toRightOf="@id/left"
+                android:background="@drawable/rounded_rect_selector"
+                android:duplicateParentState="true"
+                android:gravity="center"
+                android:paddingLeft="20dp"
+                android:paddingRight="10dp"
+                android:textColor="@color/chip_text_color_selector"
+                tools:text="Chinese" />
+
+            <FrameLayout
+                android:id="@+id/left"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/circle_selector"
+                android:duplicateParentState="true">
+
+                <ImageView
+                    android:id="@+id/circle"
+                    android:layout_width="30dp"
+                    android:layout_height="match_parent"
+                    android:duplicateParentState="true"
+                    android:padding="4dp" />
+            </FrameLayout>
+
+        </RelativeLayout>
+    </GridLayout>
+
+
+</LinearLayout>

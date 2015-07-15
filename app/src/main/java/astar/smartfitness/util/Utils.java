@@ -2,6 +2,7 @@ package astar.smartfitness.util;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -68,5 +69,9 @@ public class Utils {
 
     public static User getCurrentUser() {
         return (User) ParseUser.getCurrentUser();
+    }
+
+    public static int dpToPx(Context context, float sizeInDp) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, sizeInDp, context.getResources().getDisplayMetrics());
     }
 }
