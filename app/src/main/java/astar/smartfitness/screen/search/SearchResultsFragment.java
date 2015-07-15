@@ -84,7 +84,6 @@ public class SearchResultsFragment extends BaseSearchFragment {
         public void clearFilterForLocation() {
             locationMultiOptionView.clearSelection();
         }
-
     }
 
     final BottomSheetViewHolder bottomSheetViewHolder = new BottomSheetViewHolder();
@@ -234,6 +233,10 @@ public class SearchResultsFragment extends BaseSearchFragment {
 
     @OnClick(R.id.filter_button)
     public void onFilterButtonClicked() {
+        expandBottomSheet();
+    }
+
+    private void expandBottomSheet() {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.bottom_sheet_search_filter, bottomSheet, false);
         bottomSheet.setDefaultViewTransformer(new InsetViewTransformer());
         bottomSheet.showWithSheetView(view);
@@ -259,7 +262,6 @@ public class SearchResultsFragment extends BaseSearchFragment {
 
         ButterKnife.bind(bottomSheetViewHolder, view);
 
-
         setupSortView();
         setupBudget();
         setupShimmer();
@@ -268,6 +270,12 @@ public class SearchResultsFragment extends BaseSearchFragment {
     private void setupShimmer() {
         bottomSheetViewHolder.shimmer.setRepeatDelay(1000);
         bottomSheetViewHolder.shimmer.setBaseAlpha(0.7f);
+        bottomSheetViewHolder.shimmer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bottomSheet.expandSheet();
+            }
+        });
     }
 
     private void setupSortView() {
