@@ -95,6 +95,11 @@ public class FilterFragment extends BaseSearchFragment {
         return view;
     }
 
+    @Override
+    public BottomSheetLayout getBottomSheet() {
+        return bottomSheet;
+    }
+
     private void setupBudget() {
         rangeBar.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
             @Override

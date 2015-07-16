@@ -3,6 +3,8 @@ package astar.smartfitness.screen.search;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
+import com.flipboard.bottomsheet.BottomSheetLayout;
+
 public abstract class BaseSearchFragment extends Fragment {
     public abstract void saveSection(Bundle data);
 
@@ -42,4 +44,6 @@ public abstract class BaseSearchFragment extends Fragment {
     public SearchContainerFragment getParentContainer() {
         return (SearchContainerFragment) super.getParentFragment();
     }
+
+    public abstract BottomSheetLayout getBottomSheet();
 }
