@@ -9,6 +9,9 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.parse.ParseUser;
 
+import java.util.ArrayList;
+
+import astar.smartfitness.R;
 import astar.smartfitness.model.User;
 
 public class Utils {
@@ -77,11 +80,12 @@ public class Utils {
 
     /**
      * Map a value within a given range to another range.
-     * @param value the value to map
-     * @param fromLow the low end of the range the value is within
+     *
+     * @param value    the value to map
+     * @param fromLow  the low end of the range the value is within
      * @param fromHigh the high end of the range the value is within
-     * @param toLow the low end of the range to map to
-     * @param toHigh the high end of the range to map to
+     * @param toLow    the low end of the range to map to
+     * @param toHigh   the high end of the range to map to
      * @return the mapped value
      */
     public static double mapValueFromRangeToRange(
@@ -98,12 +102,32 @@ public class Utils {
 
     /**
      * Clamp a value to be within the provided range.
+     *
      * @param value the value to clamp
-     * @param low the low end of the range
-     * @param high the high end of the range
+     * @param low   the low end of the range
+     * @param high  the high end of the range
      * @return the clamped value
      */
     public static double clamp(double value, double low, double high) {
         return Math.min(Math.max(value, low), high);
+    }
+
+    public static String getFormattedServiceText(Context context, ArrayList<Integer> servicesResult) {
+        return getFormattedServiceText(context, servicesResult, "No Preference");
+    }
+
+    public static String getFormattedServiceText(Context context, ArrayList<Integer> servicesResult, String otherText) {
+        if (servicesResult.size() > 0) {
+            if (servicesResult.size() == 1) {
+                int selectedIndex = servicesResult.get(0);
+
+                String[] services = context.getResources().getStringArray(R.array.service_list);
+                return services[selectedIndex];
+            } else {
+                return String.format("%d services selected", servicesResult.size());
+            }
+        } else {
+            return otherText;
+        }
     }
 }

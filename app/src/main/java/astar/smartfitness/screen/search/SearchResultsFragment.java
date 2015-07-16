@@ -3,8 +3,10 @@ package astar.smartfitness.screen.search;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -45,6 +47,7 @@ public class SearchResultsFragment extends BaseSearchFragment {
 
     private ArrayList<Integer> languageResult = new ArrayList<>();
     private ArrayList<Integer> locationResult = new ArrayList<>();
+    private ArrayList<Integer> servicesResult = new ArrayList<>();
 
     private int[] budgetResult = new int[]{0, 1000};
     private SortType sortType = SortType.RATING;
@@ -61,6 +64,8 @@ public class SearchResultsFragment extends BaseSearchFragment {
     @Bind(R.id.empty_view)
     View emptyView;
 
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
 
     static class FilterSheetVH {
         @Bind(R.id.budget_text_view)
@@ -126,6 +131,16 @@ public class SearchResultsFragment extends BaseSearchFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        String formattedText = Utils.getFormattedServiceText(getActivity(), servicesResult, "All services");
+        toolbar.setTitle(formattedText);
+        toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getParentContainer().onBackPressed();
+            }
+        });
+
         if (searchBundle != null) {
             executeSearch(searchBundle);
         } else if (getArguments() != null) {
@@ -176,11 +191,11 @@ public class SearchResultsFragment extends BaseSearchFragment {
             searchBundle = data;
 
             budgetResult = searchBundle.getIntArray(FilterFragment.ARG_BUDGET);
+            servicesResult = searchBundle.getIntegerArrayList(FilterFragment.ARG_SERVICES);
         }
     }
 
     private void executeSearch(Bundle data) {
-        ArrayList<Integer> servicesResult = data.getIntegerArrayList(FilterFragment.ARG_SERVICES);
         int[] budgetResult = data.getIntArray(FilterFragment.ARG_BUDGET);
 
         ParseQuery<CaregiverProfile> query = ParseQuery.getQuery(CaregiverProfile.class);

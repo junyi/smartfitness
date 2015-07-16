@@ -15,6 +15,7 @@ import com.parse.ParseException;
 import com.parse.ParseQuery;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import astar.smartfitness.R;
@@ -22,6 +23,7 @@ import astar.smartfitness.model.CaregiverProfile;
 import astar.smartfitness.model.User;
 import astar.smartfitness.util.MarginDecoration;
 import astar.smartfitness.util.RecyclerItemClickListener;
+import astar.smartfitness.util.Utils;
 import astar.smartfitness.widget.EmptyRecyclerView;
 import bolts.Continuation;
 import bolts.Task;
@@ -128,35 +130,40 @@ public class FilterFragment extends BaseSearchFragment {
     }
 
     private void setupServices() {
-        if (servicesResult.size() > 0) {
-            int selectedIndex = servicesResult.get(0);
-
-            String[] services = getResources().getStringArray(R.array.service_list);
-            servicesTextView.setText(services[selectedIndex]);
-        } else {
-            servicesTextView.setText("No Preference");
-        }
+        String formattedText = Utils.getFormattedServiceText(getActivity(), servicesResult);
+        servicesTextView.setText(formattedText);
     }
 
     @OnClick(R.id.services)
     public void showServicesDialog() {
         int selectedIndex = servicesResult.size() == 0 ? 0 : servicesResult.get(0);
+        Integer[] selectedIndices = new Integer[servicesResult.size()];
+        servicesResult.toArray(selectedIndices);
 
         new MaterialDialog.Builder(getActivity())
                 .backgroundColorRes(R.color.bg_dark_blue)
                 .title("Select services")
                 .items(R.array.service_list)
-                .itemsCallbackSingleChoice(selectedIndex, new MaterialDialog.ListCallbackSingleChoice() {
+                .itemsCallbackMultiChoice(selectedIndices, new MaterialDialog.ListCallbackMultiChoice() {
                     @Override
-                    public boolean onSelection(MaterialDialog materialDialog, View view, int i, CharSequence charSequence) {
+                    public boolean onSelection(MaterialDialog materialDialog, Integer[] integers, CharSequence[] charSequences) {
                         servicesResult.clear();
-                        servicesResult.add(i);
-                        servicesTextView.setText(charSequence);
+                        servicesResult.addAll(new ArrayList<>(Arrays.asList(integers)));
+                        setupServices();
                         return false;
                     }
                 })
                 .positiveText("OK")
                 .negativeText("Cancel")
+                .neutralText("Reset")
+                .callback(new MaterialDialog.ButtonCallback() {
+                    @Override
+                    public void onNeutral(MaterialDialog dialog) {
+                        super.onNeutral(dialog);
+                        servicesResult.clear();
+                        setupServices();
+                    }
+                })
                 .show();
     }
 
@@ -257,15 +264,5 @@ public class FilterFragment extends BaseSearchFragment {
         } else {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
     }
 }

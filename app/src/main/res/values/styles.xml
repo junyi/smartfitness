@@ -23,4 +23,8 @@
         <item name="android:layout_margin">2dp</item>
     </style>
 
+    <style name="AppDarkTheme.Overlay" parent="AppDarkTheme">
+        <item name="colorPrimary">@color/semi_black</item>
+    </style>
+
 </resources>

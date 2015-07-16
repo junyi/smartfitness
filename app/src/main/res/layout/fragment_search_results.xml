@@ -10,10 +10,24 @@
         android:layout_height="match_parent"
         android:background="@color/bg_dark_blue">
 
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            app:theme="@style/AppDarkTheme.Overlay"
+            android:layout_height="wrap_content">
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_scrollFlags="scroll|enterAlways" />
+        </android.support.design.widget.AppBarLayout>
+
         <android.support.v4.widget.SwipeRefreshLayout
             android:id="@+id/swipe_refresh_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <astar.smartfitness.widget.EmptyRecyclerView
                 android:id="@+id/recycler_view"

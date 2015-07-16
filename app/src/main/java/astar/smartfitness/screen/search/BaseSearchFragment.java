@@ -2,8 +2,12 @@ package astar.smartfitness.screen.search;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
+import android.view.View;
 
 import com.flipboard.bottomsheet.BottomSheetLayout;
+
+import astar.smartfitness.screen.MainActivity;
 
 public abstract class BaseSearchFragment extends Fragment {
     public abstract void saveSection(Bundle data);
@@ -33,6 +37,16 @@ public abstract class BaseSearchFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         onAttachFragment(getParentFragment());
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        ActionBar toolbar = ((MainActivity) getActivity()).getSupportActionBar();
+        if (toolbar != null) {
+            toolbar.hide();
+        }
     }
 
     public void onAttachFragment(Fragment fragment) {
