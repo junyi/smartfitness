@@ -7,12 +7,22 @@ import android.util.AttributeSet;
 import android.view.View;
 
 public class EmptyRecyclerView extends RecyclerView {
+
+    private boolean isEnabled = true;
+
     @Nullable
     private View emptyView;
 
-    public EmptyRecyclerView(Context context) { super(context); }
+    @Nullable
+    private View loadingView;
 
-    public EmptyRecyclerView(Context context, AttributeSet attrs) { super(context, attrs); }
+    public EmptyRecyclerView(Context context) {
+        super(context);
+    }
+
+    public EmptyRecyclerView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
 
     public EmptyRecyclerView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -20,7 +30,20 @@ public class EmptyRecyclerView extends RecyclerView {
 
     private void checkIfEmpty() {
         if (emptyView != null && getAdapter() != null) {
-            emptyView.setVisibility(getAdapter().getItemCount() > 0 ? GONE : VISIBLE);
+            if (isEnabled) {
+                emptyView.setVisibility(getAdapter().getItemCount() > 0 ? GONE : VISIBLE);
+            } else {
+                emptyView.setVisibility(GONE);
+            }
+        }
+
+        if (loadingView != null) {
+            if (isEnabled || getAdapter() != null && getAdapter().getItemCount() > 0) {
+                loadingView.setVisibility(GONE);
+            } else {
+                loadingView.setVisibility(VISIBLE);
+                isEnabled = true;
+            }
         }
     }
 
@@ -67,5 +90,14 @@ public class EmptyRecyclerView extends RecyclerView {
     public void setEmptyView(@Nullable View emptyView) {
         this.emptyView = emptyView;
         checkIfEmpty();
+    }
+
+    public void setLoadingView(@Nullable View loadingView) {
+        this.loadingView = loadingView;
+        checkIfEmpty();
+    }
+
+    public void setEnabled(boolean isEnabled) {
+        this.isEnabled = isEnabled;
     }
 }

@@ -64,6 +64,9 @@ public class SearchResultsFragment extends BaseSearchFragment {
     @Bind(R.id.empty_view)
     View emptyView;
 
+    @Bind(R.id.loading_view)
+    View loadingView;
+
     @Bind(R.id.toolbar)
     Toolbar toolbar;
 
@@ -157,6 +160,8 @@ public class SearchResultsFragment extends BaseSearchFragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new MarginDecoration(getActivity()));
         recyclerView.setEmptyView(emptyView);
+        recyclerView.setLoadingView(loadingView);
+        recyclerView.setEnabled(false);
         recyclerView.setAdapter(adapter);
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
             @Override
@@ -199,6 +204,7 @@ public class SearchResultsFragment extends BaseSearchFragment {
     @Override
     public void saveSection(Bundle data) {
         data.putIntArray(FilterFragment.ARG_BUDGET, budgetResult);
+        data.putIntegerArrayList(FilterFragment.ARG_SERVICES, servicesResult);
     }
 
     @Override
@@ -212,6 +218,8 @@ public class SearchResultsFragment extends BaseSearchFragment {
     }
 
     private void executeSearch() {
+        swipeRefreshLayout.setRefreshing(true);
+
         ParseQuery<CaregiverProfile> query = ParseQuery.getQuery(CaregiverProfile.class);
         query.include(CaregiverProfile.KEY_USER_ID);
 
@@ -422,8 +430,6 @@ public class SearchResultsFragment extends BaseSearchFragment {
         filterSheetVH.applyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                swipeRefreshLayout.setRefreshing(true);
-
                 executeSearch();
             }
         });

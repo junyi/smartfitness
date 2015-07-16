@@ -69,9 +69,6 @@ public class FilterFragment extends BaseSearchFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        setupBudget();
-        setupServices();
-
         adapter = new SearchResultsRecyclerViewAdapter(getActivity(), SearchResultsFragment.SortType.RATING);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         recyclerView.setHasFixedSize(true);
@@ -82,10 +79,13 @@ public class FilterFragment extends BaseSearchFragment {
                 profileSheetVH.showProfileSheet(getActivity(), bottomSheet, adapter.getCaregiverProfile(position));
             }
         }));
-//        recyclerView.setEmptyView(emptyView);
         recyclerView.setAdapter(adapter);
 
         executeSearch();
+
+        setupBudget();
+        setupServices();
+
     }
 
     @Override
@@ -113,9 +113,6 @@ public class FilterFragment extends BaseSearchFragment {
 
                 // Save wage range result
                 budgetResult = new int[]{budgetStart, budgetEnd};
-
-                // Notify section change
-                notifySectionChanged();
             }
         });
 
@@ -127,6 +124,7 @@ public class FilterFragment extends BaseSearchFragment {
         }
 
         budgetTextView.setText(String.format(getResources().getString(R.string.wage_range_formatted_text), budgetResult[0], budgetResult[1]));
+
     }
 
     private void setupServices() {
@@ -182,13 +180,6 @@ public class FilterFragment extends BaseSearchFragment {
     public void restoreSection(Bundle data) {
         servicesResult = data.getIntegerArrayList(ARG_SERVICES);
         budgetResult = data.getIntArray(ARG_BUDGET);
-
-        setupBudget();
-        setupServices();
-    }
-
-    private void notifySectionChanged() {
-
     }
 
     private void executeSearch() {

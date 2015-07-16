@@ -1,6 +1,7 @@
 package astar.smartfitness.screen.launch;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.Email;
@@ -48,6 +50,7 @@ public class LoginFragment extends Fragment implements Validator.ValidationListe
     TextInputLayout passwordTextInputLayout;
 
     private Validator validator;
+    private MaterialDialog dialog = null;
 
     public LoginFragment() {
     }
@@ -98,6 +101,22 @@ public class LoginFragment extends Fragment implements Validator.ValidationListe
 
     @Override
     public void onValidationSucceeded() {
+        dialog = new MaterialDialog.Builder(getActivity())
+                .title("Submitting...")
+                .content("Please wait")
+                .progress(true, 0)
+                .showListener(new DialogInterface.OnShowListener() {
+                    @Override
+                    public void onShow(final DialogInterface dialog) {
+                        submitLoginToServer();
+                    }
+                })
+                .cancelable(false)
+                .show();
+
+    }
+
+    private void submitLoginToServer() {
         String email = emailEditText.getText().toString();
         String password = passwordEditText.getText().toString();
 
@@ -125,6 +144,14 @@ public class LoginFragment extends Fragment implements Validator.ValidationListe
     }
 
     private void handleError(final Exception e, final ParseUser user) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (dialog != null)
+                    dialog.dismiss();
+            }
+        });
+
         if (e instanceof ParseException) {
             ParseException error = (ParseException) e;
             int errorCode = error.getCode();

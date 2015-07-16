@@ -70,24 +70,32 @@ public class SearchContainerFragment extends Fragment implements OnBackPressedLi
     }
 
     public void passSearchResults() {
+        saveFragment(currentType);
+        switch (currentType) {
+            case FILTER:
+                replaceFragment(PageType.RESULTS);
+                break;
+            case RESULTS:
+                replaceFragment(PageType.FILTER);
+                break;
+        }
+    }
+
+    private void saveFragment(PageType pageType) {
         Bundle data = new Bundle();
 
-        switch (currentType) {
+        switch (pageType) {
             case FILTER:
                 getFragment(PageType.FILTER).saveSection(data);
                 getFragment(PageType.RESULTS).restoreSection(data);
                 dataMap.put(PageType.FILTER, data);
                 dataMap.put(PageType.RESULTS, data);
-
-                replaceFragment(PageType.RESULTS);
                 break;
             case RESULTS:
                 getFragment(PageType.RESULTS).saveSection(data);
                 getFragment(PageType.FILTER).restoreSection(data);
                 dataMap.put(PageType.FILTER, data);
                 dataMap.put(PageType.RESULTS, data);
-
-                replaceFragment(PageType.FILTER);
                 break;
         }
     }
@@ -139,6 +147,7 @@ public class SearchContainerFragment extends Fragment implements OnBackPressedLi
         } else if (currentType == PageType.FILTER) {
             return true;
         } else {
+            saveFragment(currentType);
             replaceFragment(PageType.FILTER, false);
             return false;
         }

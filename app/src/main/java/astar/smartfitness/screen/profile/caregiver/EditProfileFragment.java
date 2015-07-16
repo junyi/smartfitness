@@ -200,7 +200,6 @@ public class EditProfileFragment extends Fragment implements OnSectionChangedLis
 
         int stateOrdinal = currentState.ordinal();
         if (stateOrdinal == PageState.SERVICES.ordinal()) {
-            //TODO: Change this dummy progress dialog
             dialog = new MaterialDialog.Builder(getActivity())
                     .title("Submitting...")
                     .content("Please wait")
