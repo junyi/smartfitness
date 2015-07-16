@@ -2,6 +2,7 @@
 <resources>
     <color name="semi_white">#55AAAAAA</color>
     <color name="login_blue">#5177b0</color>
+    <color name="login_blue_dark">#446693</color>
     <color name="bg_dark_blue">#45535C</color>
     <color name="chip_text_color">@color/bg_dark_blue</color>
     <color name="chip_text_color_selected">#FFFFFF</color>

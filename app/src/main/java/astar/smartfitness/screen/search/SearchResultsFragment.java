@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.appyvet.rangebar.RangeBar;
-import com.facebook.shimmer.ShimmerFrameLayout;
 import com.flipboard.bottomsheet.BottomSheetLayout;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -24,6 +23,7 @@ import astar.smartfitness.model.CaregiverProfile;
 import astar.smartfitness.model.User;
 import astar.smartfitness.util.InsetViewTransformer;
 import astar.smartfitness.util.MarginDecoration;
+import astar.smartfitness.util.RecyclerItemClickListener;
 import astar.smartfitness.util.Utils;
 import astar.smartfitness.widget.EmptyRecyclerView;
 import astar.smartfitness.widget.MultiOptionView;
@@ -62,7 +62,7 @@ public class SearchResultsFragment extends BaseSearchFragment {
     View emptyView;
 
 
-    static class BottomSheetViewHolder {
+    static class FilterSheetVH {
         @Bind(R.id.budget_text_view)
         TextView budgetTextView;
 
@@ -79,7 +79,7 @@ public class SearchResultsFragment extends BaseSearchFragment {
         SingleOptionView sortView;
 
         @Bind(R.id.shimmer_view_container)
-        ShimmerFrameLayout shimmer;
+        View shimmer;
 
         @Bind(R.id.filter_container)
         LinearLayout filterContainer;
@@ -101,7 +101,9 @@ public class SearchResultsFragment extends BaseSearchFragment {
         }
     }
 
-    final BottomSheetViewHolder bottomSheetViewHolder = new BottomSheetViewHolder();
+    final FilterSheetVH filterSheetVH = new FilterSheetVH();
+
+    final ProfileSheetVH profileSheetVH = new ProfileSheetVH();
 
     private SearchResultsRecyclerViewAdapter adapter;
 
@@ -137,6 +139,12 @@ public class SearchResultsFragment extends BaseSearchFragment {
         recyclerView.addItemDecoration(new MarginDecoration(getActivity()));
         recyclerView.setEmptyView(emptyView);
         recyclerView.setAdapter(adapter);
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                profileSheetVH.showProfileSheet(getActivity(), bottomSheet, adapter.getCaregiverProfile(position));
+            }
+        }));
 
         swipeRefreshLayout.setColorSchemeResources(R.color.login_blue);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -277,20 +285,20 @@ public class SearchResultsFragment extends BaseSearchFragment {
             @Override
             public void viewTransformed(float translation, float maxTranslation, float peekedTranslation, BottomSheetLayout parent, View view) {
                 if (height == 0f) {
-                    height = bottomSheetViewHolder.shimmer.getMeasuredHeight() + Utils.dpToPx(getActivity(), 16);
+                    height = filterSheetVH.shimmer.getMeasuredHeight() + Utils.dpToPx(getActivity(), 16);
                 }
 
                 double shimmerClampedTranslation = Utils.clamp(translation, peekedTranslation, maxTranslation);
                 float shimmerTranslationAmount = (float) Utils.mapValueFromRangeToRange(shimmerClampedTranslation, peekedTranslation, maxTranslation, 0, -height);
-                bottomSheetViewHolder.shimmer.setTranslationY(shimmerTranslationAmount);
+                filterSheetVH.shimmer.setTranslationY(shimmerTranslationAmount);
 
                 float filterTranslationAmount = (float) Utils.mapValueFromRangeToRange(shimmerClampedTranslation, peekedTranslation, maxTranslation, y, 0);
-                bottomSheetViewHolder.filterContainer.setTranslationY(height + shimmerTranslationAmount + filterTranslationAmount);
+                filterSheetVH.filterContainer.setTranslationY(height + shimmerTranslationAmount + filterTranslationAmount);
 
                 double fromRangeSize = maxTranslation - peekedTranslation;
                 double valueScale = (shimmerClampedTranslation - peekedTranslation) / fromRangeSize;
-                bottomSheetViewHolder.shimmer.setAlpha((float) (1 - Utils.clamp(2.0 * valueScale, 0, 1)));
-                bottomSheetViewHolder.filterContainer.setAlpha((float) valueScale);
+                filterSheetVH.shimmer.setAlpha((float) (1 - Utils.clamp(2.0 * valueScale, 0, 1)));
+                filterSheetVH.filterContainer.setAlpha((float) valueScale);
             }
         });
         bottomSheet.setDefaultViewTransformer(transformer);
@@ -300,22 +308,22 @@ public class SearchResultsFragment extends BaseSearchFragment {
             public void onSheetStateChanged(BottomSheetLayout.State state) {
                 switch (state) {
                     case PEEKED:
-                        bottomSheetViewHolder.filterContainer.setVisibility(View.VISIBLE);
-                        bottomSheetViewHolder.shimmer.setVisibility(View.VISIBLE);
-                        bottomSheetViewHolder.shimmer.startShimmerAnimation();
+                        filterSheetVH.filterContainer.setVisibility(View.VISIBLE);
+                        filterSheetVH.shimmer.setVisibility(View.VISIBLE);
+//                        filterSheetVH.shimmer.startShimmerAnimation();
                         break;
                     case EXPANDED:
-                        bottomSheetViewHolder.shimmer.stopShimmerAnimation();
-//                        bottomSheetViewHolder.shimmer.setVisibility(View.GONE);
-                        bottomSheetViewHolder.filterContainer.setVisibility(View.VISIBLE);
+//                        filterSheetVH.shimmer.stopShimmerAnimation();
+                        filterSheetVH.shimmer.setVisibility(View.GONE);
+                        filterSheetVH.filterContainer.setVisibility(View.VISIBLE);
                         break;
                     case HIDDEN:
-                        bottomSheetViewHolder.shimmer.stopShimmerAnimation();
+//                        filterSheetVH.shimmer.stopShimmerAnimation();
                 }
             }
         });
 
-        ButterKnife.bind(bottomSheetViewHolder, view);
+        ButterKnife.bind(filterSheetVH, view);
 
         setupSortView();
         setupBudget();
@@ -326,9 +334,9 @@ public class SearchResultsFragment extends BaseSearchFragment {
     }
 
     private void setupShimmer() {
-        bottomSheetViewHolder.shimmer.setRepeatDelay(1000);
-        bottomSheetViewHolder.shimmer.setBaseAlpha(0.7f);
-        bottomSheetViewHolder.shimmer.setOnClickListener(new View.OnClickListener() {
+//        filterSheetVH.shimmer.setRepeatDelay(1000);
+//        filterSheetVH.shimmer.setBaseAlpha(0.7f);
+        filterSheetVH.shimmer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 bottomSheet.expandSheet();
@@ -337,8 +345,8 @@ public class SearchResultsFragment extends BaseSearchFragment {
     }
 
     private void setupSortView() {
-        bottomSheetViewHolder.sortView.setCurrentSelectedPosition(sortType.ordinal());
-        bottomSheetViewHolder.sortView.setOnItemSelectedListener(new SingleOptionView.OnItemSelectedListener() {
+        filterSheetVH.sortView.setCurrentSelectedPosition(sortType.ordinal());
+        filterSheetVH.sortView.setOnItemSelectedListener(new SingleOptionView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(int position, CharSequence item) {
                 sortType = SortType.values()[position];
@@ -347,10 +355,10 @@ public class SearchResultsFragment extends BaseSearchFragment {
     }
 
     private void setupBudget() {
-        bottomSheetViewHolder.rangeBar.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
+        filterSheetVH.rangeBar.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
             @Override
             public void onRangeChangeListener(RangeBar rangeBar, int startIndex, int endIndex, String start, String end) {
-                bottomSheetViewHolder.budgetTextView.setText(String.format(getResources().getString(R.string.wage_range_formatted_text), start, end));
+                filterSheetVH.budgetTextView.setText(String.format(getResources().getString(R.string.wage_range_formatted_text), start, end));
 
                 int budgetStart = Integer.parseInt(start);
                 int budgetEnd = Integer.parseInt(end);
@@ -362,17 +370,17 @@ public class SearchResultsFragment extends BaseSearchFragment {
         });
 
         if (budgetResult[0] == 0 && budgetResult[0] == budgetResult[1]) {
-            budgetResult[0] = Math.max(0, (int) bottomSheetViewHolder.rangeBar.getTickStart());
-            budgetResult[1] = Math.min(1000, (int) bottomSheetViewHolder.rangeBar.getTickEnd());
+            budgetResult[0] = Math.max(0, (int) filterSheetVH.rangeBar.getTickStart());
+            budgetResult[1] = Math.min(1000, (int) filterSheetVH.rangeBar.getTickEnd());
         } else {
-            bottomSheetViewHolder.rangeBar.setRangePinsByValue(budgetResult[0], budgetResult[1]);
+            filterSheetVH.rangeBar.setRangePinsByValue(budgetResult[0], budgetResult[1]);
         }
 
-        bottomSheetViewHolder.budgetTextView.setText(String.format(getResources().getString(R.string.wage_range_formatted_text), budgetResult[0], budgetResult[1]));
+        filterSheetVH.budgetTextView.setText(String.format(getResources().getString(R.string.wage_range_formatted_text), budgetResult[0], budgetResult[1]));
     }
 
     private void setupApplyButton() {
-        bottomSheetViewHolder.applyButton.setOnClickListener(new View.OnClickListener() {
+        filterSheetVH.applyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 swipeRefreshLayout.setRefreshing(true);
@@ -385,7 +393,7 @@ public class SearchResultsFragment extends BaseSearchFragment {
     }
 
     private void setupResetButton() {
-        bottomSheetViewHolder.resetButton.setOnClickListener(new View.OnClickListener() {
+        filterSheetVH.resetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 switch (bottomSheet.getState()) {
@@ -401,13 +409,15 @@ public class SearchResultsFragment extends BaseSearchFragment {
     }
 
     private void setupLanguages() {
-        bottomSheetViewHolder.languageMultiOptionView.setSelection(languageResult, true);
-        bottomSheetViewHolder.languageMultiOptionView.setOnItemSelectedListener(new MultiOptionView.OnItemSelectedListener() {
+        filterSheetVH.languageMultiOptionView.setSelection(languageResult, true);
+        filterSheetVH.languageMultiOptionView.setOnItemSelectedListener(new MultiOptionView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(boolean selected, int position, String item) {
                 languageResult.clear();
-                languageResult.addAll(bottomSheetViewHolder.languageMultiOptionView.getSelectedIndices());
+                languageResult.addAll(filterSheetVH.languageMultiOptionView.getSelectedIndices());
             }
         });
     }
+
+
 }

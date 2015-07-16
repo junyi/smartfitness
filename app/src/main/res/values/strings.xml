@@ -77,4 +77,16 @@
     </string-array>
 
     <string name="wage_range_formatted_text">$ %1$s &#8212; %2$s</string>
+
+    <plurals name="year_of_exp_plural">
+        <item quantity="zero">No prior experience</item>
+        <item quantity="one">1 year of experience</item>
+        <item quantity="other">%d years of experience</item>
+    </plurals>
+
+    <plurals name="rating_plural">
+        <item quantity="zero">No star</item>
+        <item quantity="one">1 star</item>
+        <item quantity="other">%f stars</item>
+    </plurals>
 </resources>

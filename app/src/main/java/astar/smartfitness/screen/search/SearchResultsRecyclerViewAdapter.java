@@ -127,4 +127,8 @@ public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<Searc
         notifyDataSetChanged();
     }
 
+    public CaregiverProfile getCaregiverProfile(int position) {
+        return caregiverList.get(position);
+    }
+
 }

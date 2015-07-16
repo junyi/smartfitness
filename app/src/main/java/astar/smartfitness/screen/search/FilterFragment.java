@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.appyvet.rangebar.RangeBar;
+import com.flipboard.bottomsheet.BottomSheetLayout;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 
@@ -20,6 +21,7 @@ import astar.smartfitness.R;
 import astar.smartfitness.model.CaregiverProfile;
 import astar.smartfitness.model.User;
 import astar.smartfitness.util.MarginDecoration;
+import astar.smartfitness.util.RecyclerItemClickListener;
 import astar.smartfitness.widget.EmptyRecyclerView;
 import bolts.Continuation;
 import bolts.Task;
@@ -50,6 +52,11 @@ public class FilterFragment extends BaseSearchFragment {
     @Bind(R.id.recycler_view)
     EmptyRecyclerView recyclerView;
 
+    @Bind(R.id.bottomsheet)
+    BottomSheetLayout bottomSheet;
+
+    final ProfileSheetVH profileSheetVH = new ProfileSheetVH();
+
     public static FilterFragment newInstance(Bundle data) {
         FilterFragment fragment = new FilterFragment();
         fragment.setArguments(data);
@@ -67,6 +74,12 @@ public class FilterFragment extends BaseSearchFragment {
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new MarginDecoration(getActivity()));
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                profileSheetVH.showProfileSheet(getActivity(), bottomSheet, adapter.getCaregiverProfile(position));
+            }
+        }));
 //        recyclerView.setEmptyView(emptyView);
         recyclerView.setAdapter(adapter);
 

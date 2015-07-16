@@ -7,7 +7,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#1c4178"
+        android:background="#001731"
         android:orientation="vertical"
         android:padding="16dp">
 
@@ -68,21 +68,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-            <com.facebook.shimmer.ShimmerFrameLayout
+            <TextView
                 android:id="@+id/shimmer_view_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginTop="16dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/shimmer_full_rounded_rect"
-                    android:gravity="center"
-                    android:text="Drag up to see advanced filter options" />
-            </com.facebook.shimmer.ShimmerFrameLayout>
+                android:layout_marginTop="16dp"
+                android:background="@drawable/shimmer_full_rounded_rect"
+                android:gravity="center"
+                android:text="Drag up to see advanced filter options" />
 
             <LinearLayout
                 android:id="@+id/filter_container"
