@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.flipboard.bottomsheet.BottomSheetLayout;
+import com.flipboard.bottomsheet.ViewTransformer;
 import com.squareup.picasso.Picasso;
 
 import java.math.BigDecimal;
@@ -35,11 +36,16 @@ public class ProfileSheetVH {
     @Bind(R.id.years_of_exp)
     TextView yearsOfExpTextView;
 
+
     public void showProfileSheet(Context context, BottomSheetLayout bottomSheet, CaregiverProfile caregiverProfile) {
+        showProfileSheet(context, bottomSheet, caregiverProfile, null);
+    }
+
+    public void showProfileSheet(Context context, BottomSheetLayout bottomSheet, CaregiverProfile caregiverProfile, ViewTransformer viewTransformer) {
         View view = LayoutInflater.from(context).inflate(R.layout.bottom_sheet_profile, bottomSheet, false);
 
-//        InsetViewTransformer transformer = new InsetViewTransformer();
-//        bottomSheet.setDefaultViewTransformer(transformer);
+        if (viewTransformer != null)
+            bottomSheet.setDefaultViewTransformer(viewTransformer);
         bottomSheet.showWithSheetView(view);
 
         ButterKnife.bind(this, view);

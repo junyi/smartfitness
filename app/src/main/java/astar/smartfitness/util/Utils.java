@@ -130,4 +130,14 @@ public class Utils {
             return otherText;
         }
     }
+
+    public static float getActionBarHeight(Context context) {
+        float actionBarHeight = 0;
+        TypedValue tv = new TypedValue();
+        if (context.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
+            actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, context.getResources().getDisplayMetrics());
+        }
+
+        return actionBarHeight;
+    }
 }

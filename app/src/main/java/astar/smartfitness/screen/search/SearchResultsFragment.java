@@ -1,12 +1,12 @@
 package astar.smartfitness.screen.search;
 
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -66,6 +66,9 @@ public class SearchResultsFragment extends BaseSearchFragment {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
+
+    @Bind(R.id.appbar)
+    AppBarLayout appBarLayout;
 
     static class FilterSheetVH {
         @Bind(R.id.budget_text_view)
@@ -157,7 +160,18 @@ public class SearchResultsFragment extends BaseSearchFragment {
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                profileSheetVH.showProfileSheet(getActivity(), bottomSheet, adapter.getCaregiverProfile(position));
+                InsetViewTransformer transformer = new InsetViewTransformer();
+                transformer.setViewTransformedListener(new InsetViewTransformer.ViewTransformedListener() {
+                    float actionBarSize = Utils.getActionBarHeight(getActivity());
+
+                    @Override
+                    public void viewTransformed(float translation, float maxTranslation, float peekedTranslation, BottomSheetLayout parent, View view) {
+                        double appbarCy = Utils.clamp(translation, maxTranslation - actionBarSize, maxTranslation);
+                        double appbarTy = Utils.mapValueFromRangeToRange(appbarCy, maxTranslation - actionBarSize, maxTranslation, 0, -actionBarSize);
+                        appBarLayout.setTranslationY((float) appbarTy);
+                    }
+                });
+                profileSheetVH.showProfileSheet(getActivity(), bottomSheet, adapter.getCaregiverProfile(position), transformer);
             }
         }));
 
@@ -301,6 +315,7 @@ public class SearchResultsFragment extends BaseSearchFragment {
         transformer.setViewTransformedListener(new InsetViewTransformer.ViewTransformedListener() {
             float height = 0f;
             float y = Utils.dpToPx(getActivity(), 24);
+            float actionBarSize = Utils.getActionBarHeight(getActivity());
 
             @Override
             public void viewTransformed(float translation, float maxTranslation, float peekedTranslation, BottomSheetLayout parent, View view) {
@@ -319,6 +334,10 @@ public class SearchResultsFragment extends BaseSearchFragment {
                 double valueScale = (shimmerClampedTranslation - peekedTranslation) / fromRangeSize;
                 filterSheetVH.shimmer.setAlpha((float) (1 - Utils.clamp(2.0 * valueScale, 0, 1)));
                 filterSheetVH.filterContainer.setAlpha((float) valueScale);
+
+                double appbarCy = Utils.clamp(translation, maxTranslation - actionBarSize, maxTranslation);
+                double appbarTy = Utils.mapValueFromRangeToRange(appbarCy, maxTranslation - actionBarSize, maxTranslation, 0, -actionBarSize);
+                appBarLayout.setTranslationY((float) appbarTy);
             }
         });
         bottomSheet.setDefaultViewTransformer(transformer);
