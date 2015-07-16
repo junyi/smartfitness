@@ -131,7 +131,7 @@ public class SearchResultsFragment extends BaseSearchFragment {
             executeSearch(getArguments());
         }
 
-        adapter = new SearchResultsRecyclerViewAdapter(getActivity());
+        adapter = new SearchResultsRecyclerViewAdapter(getActivity(), sortType);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new MarginDecoration(getActivity()));
@@ -239,6 +239,7 @@ public class SearchResultsFragment extends BaseSearchFragment {
                 if (swipeRefreshLayout.isRefreshing())
                     swipeRefreshLayout.setRefreshing(false);
 
+                adapter.setSortType(sortType);
                 adapter.setCaregiverList(result);
 
                 recyclerView.scrollToPosition(0);
