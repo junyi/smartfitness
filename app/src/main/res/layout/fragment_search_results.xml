@@ -1,64 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.flipboard.bottomsheet.BottomSheetLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/bottomsheet"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
-    <android.support.design.widget.CoordinatorLayout
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#CC333333">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/sfs_bg" />
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:theme="@style/AppDarkTheme.Overlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_scrollFlags="scroll|enterAlways" />
+    </android.support.design.widget.AppBarLayout>
+
+    <com.flipboard.bottomsheet.BottomSheetLayout
+        android:id="@+id/bottomsheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/swipe_refresh_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+                <astar.smartfitness.widget.EmptyRecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clipToPadding="false"
+                    android:paddingTop="?attr/actionBarSize" />
+            </android.support.v4.widget.SwipeRefreshLayout>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/filter_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|bottom"
+                android:layout_margin="16dp"
+                android:src="@mipmap/ic_filter_list_white_24dp"
+                app:backgroundTint="@color/login_blue"
+                app:fabSize="normal"
+                app:layout_anchor="@id/swipe_refresh_layout"
+                app:layout_anchorGravity="bottom|right|end"
+                app:layout_behavior="astar.smartfitness.util.ScrollAwareFabBehavior" />
+        </FrameLayout>
+    </com.flipboard.bottomsheet.BottomSheetLayout>
+
+    <include
+        android:id="@+id/empty_view"
+        layout="@layout/search_results_empty_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#CC333333">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scaleType="centerCrop"
-            android:src="@mipmap/sfs_bg"/>
-
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/appbar"
-            android:layout_width="match_parent"
-            app:theme="@style/AppDarkTheme.Overlay"
-            android:layout_height="wrap_content">
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_scrollFlags="scroll|enterAlways" />
-        </android.support.design.widget.AppBarLayout>
-
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swipe_refresh_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-            <astar.smartfitness.widget.EmptyRecyclerView
-                android:id="@+id/recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </android.support.v4.widget.SwipeRefreshLayout>
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/filter_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right|bottom"
-            android:layout_margin="16dp"
-            android:src="@mipmap/ic_filter_list_white_24dp"
-            app:backgroundTint="@color/login_blue"
-            app:fabSize="normal"
-            app:layout_anchor="@id/swipe_refresh_layout"
-            app:layout_anchorGravity="bottom|right|end"
-            app:layout_behavior="astar.smartfitness.util.ScrollAwareFabBehavior" />
-
-        <include
-            android:id="@+id/empty_view"
-            layout="@layout/search_results_empty_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone" />
-    </android.support.design.widget.CoordinatorLayout>
-</com.flipboard.bottomsheet.BottomSheetLayout>
+        android:visibility="gone" />
+</android.support.design.widget.CoordinatorLayout>
