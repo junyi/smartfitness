@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.flipboard.bottomsheet.BottomSheetLayout;
+
 import java.util.HashMap;
 
 import astar.smartfitness.R;
@@ -127,12 +129,21 @@ public class SearchContainerFragment extends Fragment implements OnBackPressedLi
     }
 
     public boolean onBackPressed() {
-        if (currentType == PageType.FILTER)
+        BottomSheetLayout bottomSheet = getFragment(currentType).getBottomSheet();
+        if (bottomSheet != null && bottomSheet.isSheetShowing()) {
+            if (bottomSheet.getState() == BottomSheetLayout.State.EXPANDED) {
+                bottomSheet.peekSheet();
+            } else {
+                bottomSheet.dismissSheet();
+            }
+        } else if (currentType == PageType.FILTER) {
             return true;
-        else {
+        } else {
             replaceFragment(PageType.FILTER, false);
             return false;
         }
+
+        return true;
     }
 
 }

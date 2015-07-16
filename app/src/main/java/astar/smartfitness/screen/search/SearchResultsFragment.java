@@ -161,6 +161,11 @@ public class SearchResultsFragment extends BaseSearchFragment {
     }
 
     @Override
+    public BottomSheetLayout getBottomSheet() {
+        return bottomSheet;
+    }
+
+    @Override
     public void saveSection(Bundle data) {
         data.putIntArray(FilterFragment.ARG_BUDGET, budgetResult);
     }
