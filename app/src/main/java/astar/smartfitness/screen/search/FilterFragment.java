@@ -19,7 +19,6 @@ import java.util.List;
 import astar.smartfitness.R;
 import astar.smartfitness.model.CaregiverProfile;
 import astar.smartfitness.model.User;
-import astar.smartfitness.screen.MainActivity;
 import astar.smartfitness.util.MarginDecoration;
 import astar.smartfitness.widget.EmptyRecyclerView;
 import bolts.Continuation;
@@ -64,7 +63,7 @@ public class FilterFragment extends BaseSearchFragment {
         setupBudget();
         setupServices();
 
-        adapter = new SearchResultsRecyclerViewAdapter(getActivity());
+        adapter = new SearchResultsRecyclerViewAdapter(getActivity(), SearchResultsFragment.SortType.RATING);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
         recyclerView.setHasFixedSize(true);
         recyclerView.addItemDecoration(new MarginDecoration(getActivity()));
@@ -169,6 +168,7 @@ public class FilterFragment extends BaseSearchFragment {
 
     private void executeSearch() {
         ParseQuery<CaregiverProfile> query = ParseQuery.getQuery(CaregiverProfile.class);
+        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK);
         query.include(CaregiverProfile.KEY_USER_ID);
         query.setLimit(3);
 

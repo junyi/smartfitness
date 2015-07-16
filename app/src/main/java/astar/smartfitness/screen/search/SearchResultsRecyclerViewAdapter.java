@@ -3,6 +3,7 @@ package astar.smartfitness.screen.search;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,15 +29,21 @@ public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<Searc
     private ArrayList<CaregiverProfile> caregiverList;
     private Context context;
     private RecyclerView recyclerView;
+    private SearchResultsFragment.SortType sortType;
 
-    public SearchResultsRecyclerViewAdapter(Context context) {
+    public SearchResultsRecyclerViewAdapter(Context context, SearchResultsFragment.SortType sortType) {
         this.context = context;
         this.caregiverList = new ArrayList<>();
+        this.sortType = sortType;
     }
 
     public SearchResultsRecyclerViewAdapter(Context context, ArrayList<CaregiverProfile> caregiverList) {
         this.context = context;
         this.caregiverList = caregiverList;
+    }
+
+    public void setSortType(SearchResultsFragment.SortType sortType) {
+        this.sortType = sortType;
     }
 
     @Override
@@ -64,7 +73,26 @@ public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<Searc
                 .placeholder(placeholder)
                 .into(holder.avatar);
         holder.titleTextView.setText(caregiver.getUser().getFirstName() + " " + caregiver.getUser().getLastName());
-        holder.ratingTextView.setText(String.format("%.1f", caregiver.getRating()));
+
+        String infoString;
+        switch (sortType) {
+            default:
+            case RATING:
+                float rating = caregiver.getRating();
+                String ratingStr = new BigDecimal(rating).setScale(1, RoundingMode.HALF_EVEN).stripTrailingZeros().toString();
+                infoString = String.format("%s &#x2605;", ratingStr);
+                break;
+            case PRICE:
+                int price = caregiver.getWageRangeMin();
+                infoString = String.format("$%d+", price);
+                break;
+            case YEARS_OF_EXP:
+                int years = caregiver.getYearOfExp();
+                infoString = String.format("%d yrs", years);
+                break;
+        }
+
+        holder.infoTextView.setText(Html.fromHtml(infoString));
     }
 
     @Override
@@ -81,8 +109,8 @@ public class SearchResultsRecyclerViewAdapter extends RecyclerView.Adapter<Searc
         @Bind(R.id.title)
         TextView titleTextView;
 
-        @Bind(R.id.rating)
-        TextView ratingTextView;
+        @Bind(R.id.info)
+        TextView infoTextView;
 
         // We also create a constructor that accepts the entire item row
         // and does the view lookups to find each subview

@@ -26,18 +26,20 @@
             android:duplicateParentState="true" />
 
         <TextView
-            android:id="@+id/rating"
-            android:layout_width="25dp"
+            android:id="@+id/info"
+            android:layout_width="wrap_content"
             android:layout_height="25dp"
             android:layout_gravity="bottom|right"
             android:layout_marginBottom="2dp"
             android:layout_marginRight="2dp"
-            android:background="@drawable/rating_bg"
+            android:background="@drawable/info_bg"
             android:elevation="2dp"
             android:gravity="center"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp"
             android:textSize="10sp"
             android:textStyle="bold"
-            tools:text="3.5" />
+            tools:text="5 yrs" />
     </FrameLayout>
 
     <TextView

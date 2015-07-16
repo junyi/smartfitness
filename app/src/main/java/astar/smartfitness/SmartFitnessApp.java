@@ -16,7 +16,7 @@ public class SmartFitnessApp extends Application {
         super.onCreate();
 
         // Enable Local Datastore.
-        Parse.enableLocalDatastore(this);
+//        Parse.enableLocalDatastore(this);
 
         Parse.initialize(this, "aOyWlaIJ3RWHQsScSG2maPda9pLd380xhE3SR5KP", "8VLwTAUhEWdUIAbhyaMPgcB0THae8hEnnbilKs7F");
 
