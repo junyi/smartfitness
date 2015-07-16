@@ -145,10 +145,11 @@ public class SearchResultsFragment extends BaseSearchFragment {
         });
 
         if (searchBundle != null) {
-            executeSearch(searchBundle);
+            restoreSection(searchBundle);
+            executeSearch();
         } else if (getArguments() != null) {
-            searchBundle = getArguments();
-            executeSearch(getArguments());
+            restoreSection(getArguments());
+            executeSearch();
         }
 
         adapter = new SearchResultsRecyclerViewAdapter(getActivity(), sortType);
@@ -180,7 +181,8 @@ public class SearchResultsFragment extends BaseSearchFragment {
             @Override
             public void onRefresh() {
                 if (searchBundle != null) {
-                    executeSearch(searchBundle);
+                    restoreSection(searchBundle);
+                    executeSearch();
                 } else {
                     swipeRefreshLayout.setRefreshing(false);
                 }
@@ -209,9 +211,7 @@ public class SearchResultsFragment extends BaseSearchFragment {
         }
     }
 
-    private void executeSearch(Bundle data) {
-        int[] budgetResult = data.getIntArray(FilterFragment.ARG_BUDGET);
-
+    private void executeSearch() {
         ParseQuery<CaregiverProfile> query = ParseQuery.getQuery(CaregiverProfile.class);
         query.include(CaregiverProfile.KEY_USER_ID);
 
@@ -424,9 +424,7 @@ public class SearchResultsFragment extends BaseSearchFragment {
             public void onClick(View v) {
                 swipeRefreshLayout.setRefreshing(true);
 
-                searchBundle.putIntArray(FilterFragment.ARG_BUDGET, budgetResult);
-
-                executeSearch(searchBundle);
+                executeSearch();
             }
         });
     }
@@ -435,14 +433,15 @@ public class SearchResultsFragment extends BaseSearchFragment {
         filterSheetVH.resetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (bottomSheet.getState()) {
-                    case PEEKED:
+                sortType = SortType.RATING;
+                budgetResult = new int[]{0, 1000};
+                languageResult.clear();
 
-                        break;
-                    case EXPANDED:
-                        break;
-                    default:
-                }
+                setupSortView();
+                setupBudget();
+                setupLanguages();
+
+                executeSearch();
             }
         });
     }

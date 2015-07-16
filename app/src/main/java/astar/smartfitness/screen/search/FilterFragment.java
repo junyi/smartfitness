@@ -183,8 +183,8 @@ public class FilterFragment extends BaseSearchFragment {
         servicesResult = data.getIntegerArrayList(ARG_SERVICES);
         budgetResult = data.getIntArray(ARG_BUDGET);
 
-//        setupBudget();
-//        setupServices();
+        setupBudget();
+        setupServices();
     }
 
     private void notifySectionChanged() {
